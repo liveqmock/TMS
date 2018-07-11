@@ -1,0 +1,201 @@
+.company{
+  height: 100%;
+  padding-bottom: 40px;
+}
+.company-box{
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+/*左侧栏*/
+.side_left{
+  width: 200px;
+  flex-wrap:wrap;
+  padding-top:10px;
+  border-right: 2px solid #ccc;
+}
+.side_left .el-tree-node__content{
+  border-bottom: 1px solid #ddd;
+}
+.side_left .el-tree-node__children .el-tree-node .el-tree-node__content{
+  margin-left: 14px;
+  padding-left: 0 !important;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+.side_left .el-tree-node__children .el-tree-node .el-tree-node__content{
+  margin-left: 14px;
+  padding-left: 0 !important;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+.side_left .el-tree .is-focusable .el-tree-node__children .is-focusable {
+  margin-left: 13px;
+}
+side_left .el-tree-node__content:hover{
+  background: rgb(195,232,255);
+}
+.side_left .is-current>.el-tree-node__content{
+  background: rgb(195,232,255);
+}
+
+.side_left .el-tree-node__content:hover {
+background-color: rgb(195,232,255);
+}
+.side_left .el-tree-node__content:visited {
+  background-color: rgb(195,232,255);
+}
+.side_left .add-role-tree .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  background: lightpink;
+}
+
+/*右侧栏*/
+.side_right {
+  flex: 1;
+  flex-wrap:wrap;
+  padding: 0px 10px 10px 10px;
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+}
+.side_right_top{
+  border-bottom:2px dotted #ccc;
+  padding-bottom:10px;
+}
+.side_right .el-collapse-item__header{
+  height: 30px;
+  line-height: 30px;
+}
+.side_right .el-collapse-item__header i{
+  line-height: 30px;
+   margin-right: 0;
+  float:left;
+  margin-left: 700px;
+}
+.side_right .el-collapse-item__content{
+  padding-bottom: 0;
+}
+.side_right_top .el-form{
+  display: inline-block;
+
+}
+.side_right_top .el-form-item .el-form-item__label{
+  width: 90px !important;
+}
+.side_right_top .el-form-item__content{
+  line-height: 0;
+}
+
+.side_right_top .el-form-item {
+  margin-bottom: 10px;
+  border-color:#fff;
+  margin-right:0
+}
+.side_right_top .el-input.is-disabled .el-input__inner{
+  color: #3e9ff1;
+  background: transparent;
+}
+.side_right_top .el-input__inner{
+  line-height: 24px;
+  height:24px;
+  border-radius: 2px;
+  width: 75%;
+  color: #3e9ff1;
+}
+.side_right_top .el-input{
+  height: 0;
+}
+
+/*表格功能*/
+.company .side_right_bottom {
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+}
+.company .side_right_bottom .btns_box_lrl{
+  margin:10px 0 10px 14px;
+  height: 32px;
+}
+
+.org-name{
+  float:right;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  letter-spacing: 2px;
+  color: #333;
+  margin-top: 5px;
+  width: 5%;
+}
+.dele-peo{
+  width: 9.33333%;
+}
+/*分页*/
+
+
+.company .info_news_footer{
+  padding-left: 20px;
+  background: #eee;
+  height: 40px;
+  line-height: 40px;
+  box-shadow: 0 -2px 2px rgba(0,0,0,.1);
+  z-index: 10;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.show_pager{
+  float: right;
+  line-height: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+
+/*分页*/
+.btns_box_lrl img{
+  position: relative;
+  top: 1px;
+  left: 31px;
+  width: 13px;
+  height: 17px;
+}
+.btns_box_lrl .el-button--primary{
+  color:#3e9ff1;
+  background: #fff;
+  border-color: #3e9ff1;
+  /*padding: 8px 12px 8px 10px;*/
+  cursor: pointer;
+}
+.company .el-table {
+  width: 100% !important;
+}
+.company .el-table table{
+  width: 100% !important;
+
+}
+.company .el-table th,td{
+  text-align:center;
+}
+/*表格功能*/
+
+/*表格内容*/
+.company .info_news {
+  margin: 0 0px 0;
+  flex: 1;
+  overflow: auto;
+}
+.company .info_news .el-table__header{
+  background-color: #eee;
+}
+.company .info_news .cell{
+  color: #333;
+  font-size: 14px;
+}
+/*表格内容*/
+
+
+/*其他**/
+

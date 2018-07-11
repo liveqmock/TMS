@@ -1,0 +1,98 @@
+.add-dot .addEmployeerPop{
+  min-width: 760px;
+  max-width: 760px;
+}
+.add-dot .el-form-item__label{
+  width: 82px !important;
+}
+.add-dot .el-input__inner{
+  width: 100%;
+  color:#3e9ff1
+}
+.add-dot .el-input--mini{
+  margin-right: -39px;
+  padding-right: 16px;
+}
+.add-dot .el-form--inline .el-form-item{
+  margin-right: 0;
+}
+.el-select-dropdown{
+  min-width: 140px !important;
+}
+.add-dot .el-input__suffix{
+  right: 23px;
+}
+
+.add-dot .el-select-dropdown__item{
+  font-size: 12px;
+}
+
+.ad-add-dot{
+  display: inline-block;
+  font-size: 12px;
+  color: #999;
+  margin-left: 15px;
+
+}
+
+.ad-add-dot .el-checkbox__label{
+  margin-bottom: 7px;
+}
+.ad-add-dot .el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #666;
+}
+.ad-add-dot .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner{
+  background-color: #409EFF;
+  border-color: #409EFF;
+}
+.ad-add-dot .ad-add-dot .el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #666;
+  font-weight: 600;
+}
+/*备注*/
+.rem-add-dot {
+  margin-top: 5px;
+}
+.rem-add-dot .el-form-item__label{
+  color: #666;
+  vertical-align: top;
+  padding-right: 10px;
+}
+.rem-add-dot .el-textarea__inner{
+  width: 594px;
+  padding: 6px 15px;
+  line-height: 1.9;
+}
+
+.add-dot .spanDiv{
+  display:inline-block;
+}
+.add-dot .spanDiv span{
+  font-size: 12px;
+  color: #666;
+}
+.add-dot .spanDiv span:first-of-type{
+  position: relative;
+  top: -170px;
+  left: 440px;
+
+}
+.add-dot .spanDiv span:nth-of-type(2){
+  position: relative;
+  top: -123px;
+  left: 183px;
+
+}
+.add-dot .spanDiv .span-hidden{
+  position: relative;
+  top: -123px;
+  left: 409px;
+
+}
+.add-dot .spanDiv .span-last{
+  position: relative;
+  top: -170px;
+  left: 650px;
+
+}
+

@@ -1,0 +1,108 @@
+.customer{
+
+}
+.customer-top{
+  margin-top: 30px;
+}
+.top-time,.top-state,.top-num{
+  display: inline-block;
+}
+.top-right{
+  display: inline-block;
+  padding-left: 150px;
+}
+.top-query,.top-empty{
+  display: inline-block;
+  width: 80px;
+  height: 20px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.top-query{
+  background: #ccc;
+}
+
+
+/*功能设置*/
+.customer-fun{
+
+}
+
+.fun-left li{
+  float:left;
+  list-style: none;
+  width: 100px;
+  /*height: 30px;*/
+  padding: 10px 0;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.fun-right{
+  margin: 0 10px 0 1500px;
+}
+.fun-right .el-input__inner{
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+/*表格设置*/
+.customer-table{
+  margin-top: 30px;
+  min-width: 1500px;
+  /*height: 100px;*/
+  overflow-x: scroll;
+  /* 内容会被裁剪，会以滚动条显示 */
+  overflow-y: hidden;  /* 超出内容不可见 */
+  white-space: nowrap;  /* 不换行 */
+  /*!* 文本不会换行，会在同一行上继续，直到遇到<br>为止 *!*/
+
+  /*width: 100%;*/
+  /*height: 50px;*/
+  /*background-color: rgba(0,0,0,0.8);*/
+  /*white-space: nowrap;*/
+  /*overflow: hidden;*/
+  /*overflow-x: scroll; !* 1 *!*/
+  /*-webkit-backface-visibility: hidden;*/
+  /*-webkit-perspective: 1000;*/
+  /*-webkit-overflow-scrolling: touch; !* 2 *!*/
+}
+
+/*分页*/
+.customer-page{
+  margin-top: 30px;
+  text-align: right;
+}
+
+
+/*新建订单*/
+
+.create-order .el-dialog{
+  left: 480px;
+  margin-top: 9vh !important;
+}
+.create-order .el-dialog__header{
+  text-align: center;
+}
+.create-order .el-dialog__headerbtn{
+  font-size: 20px;
+}
+.order-left{
+  display: inline-block;
+}
+.order-left .el-form-item__content,.order-right .el-form-item__content{
+  display: inline-block;
+}
+.order-left .el-input__inner{
+  /*border:;*/
+}
+.order-right{
+  display: inline-block;
+  margin-left: 120px;
+}
+.order-bottom{
+  margin-top: 30px;
+}
+
+

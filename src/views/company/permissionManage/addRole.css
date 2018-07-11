@@ -1,0 +1,76 @@
+.add-role-pop-content{
+  left: auto;
+  top: 50px;
+  bottom: auto;
+  min-width: 820px;
+  max-width:  820px;
+
+}
+.popRight-content{
+  padding: 20px 20px 0;
+  box-sizing: border-box;
+}
+.el-select .el-input__inner{
+  padding-right: 15px;
+}
+/*头部输入框*/
+.add-role .add-role-top .el-form--inline .el-form-item:first-of-type{
+  margin-bottom: 20px;
+}
+.add-role-top .el-form--inline .el-form-item{
+  margin-right: 0
+}
+.add-role .el-form-item .el-form-item__content{
+  line-height: 26px;
+}
+.add-role .el-form-item .el-form-item__content .el-input{
+  width: 74%;
+}
+.add-role .el-form-item .el-form-item__content .el-input__inner{
+  height: 26px;
+  line-height: 26px;
+}
+.add-role .el-form-item .el-form-item__label{
+  line-height: 26px;
+}
+
+.add-role .el-form-item .el-form-item__content .el-textarea{
+  height: 26px;
+}
+.add-role .el-form-item .el-form-item__content .el-textarea__inner{
+  padding: 0px 15px;
+  height: 26px;
+  width: 410px !important;
+}
+/*头部输入框*/
+/*中部树形*/
+.add-role-tree .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content{
+  background: rgb(195,232,255);
+}
+
+.el-tree-node__content:hover {
+  background-color: rgb(195,232,255);
+}
+/*.add-role-tree .el-tree .el-tree-node:first-of-type > div.el-tree-node__content{*/
+/*border-top:1px solid #b0d1e9;*/
+/*border-bottom:1px solid #cddde9;*/
+/*}*/
+.add-role-tree .el-tree .el-tree-node.is-expanded>.el-tree-node__children{
+  /*display: flex;*/
+}
+.add-role-tree .el-tree .el-tree-node__label{
+  color: #666;
+  font-size: 14px;
+}
+.add-role-tree .el-tree--highlight-current > .el-tree-node__content{
+  background: #333;
+}
+.add-role-tree .el-checkbox__inner::before {
+  /*border-bottom: 5px solid #333;*/
+}
+.add-role-tree .el-tree--highlight-current .is-focusable > .el-tree-node__children{
+  /*overflow-x: scroll;*/
+}
+.add-role-tree .custom-tree-node span img{
+  /*vertical-align: center;*/
+}

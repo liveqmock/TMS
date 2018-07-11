@@ -1,0 +1,98 @@
+.permManage{
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.permManage-content{
+  flex: 1;
+  flex-grow: 1;
+}
+.permManage-top{
+  border-bottom: 2px dotted #c8c8c8
+}
+.permManage-top .el-form-item__label{
+  color: #333;
+  font-size: 14px;
+  line-height: 24px;
+}
+.permManage-top .el-form--inline .el-form-item{
+   margin-right: 0;
+   margin-bottom: 10px;
+}
+.permManage-top .el-form-item .el-form-item__content{
+  line-height: 24px;
+}
+.permManage-top .el-form-item .el-input__inner{
+  width: 74%;
+  height: 24px;
+  line-height: 24px;
+}
+.permManage-top .el-button--primary{
+  margin: -1px 0 0 -45px;
+  padding: 4px 14px;
+  background-color: transparent;
+  border-color: #3e9ff1;
+  color: #3e9ff1;
+}
+
+.permManage-top .el-input__inner:focus{
+  border-color: #0a84ff;
+}
+.permManage-top .el-input__suffix{
+  right: 60px;
+}
+
+/*表格功能*/
+.permManage .side_right_bottom .btns_box_lrl{
+  margin:10px 0 10px 0;
+}
+.permManage .btns_box_left{
+  float: left;
+}
+
+.permManage .side_right_bottom {
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+}
+
+.permManage .btns_box img{
+  position: relative;
+  top: 1px;
+  left: 31px;
+  width:13px;
+  height: 17px;
+}
+.permManage .btns_box .el-button--primary{
+  color:#3e9ff1;
+  background: #fff;
+  border-color: #3e9ff1;
+  cursor: pointer;
+}
+.permManage .el-table {
+  width: 100% !important;
+}
+.permManage .el-table table{
+  width: 100% !important;
+
+}
+.permManage .el-table th,td{
+  text-align:center;
+}
+/*表格功能*/
+
+/*表格内容*/
+.permManage .info_news {
+  margin: 0 0;
+  flex: 1;
+  flex-grow: 1;
+}
+.permManage .info_news .el-table__header{
+  background-color: #eee;
+}
+.permManage .info_news .cell{
+  color: #333;
+  font-size: 14px;
+}
+/*表格内容*/

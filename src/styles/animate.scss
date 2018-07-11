@@ -1,0 +1,21 @@
+//vue router transition css
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .2s ease
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+// 右侧划出动画
+.slideInRight-enter-active,
+.slideInRight-leave-active {
+  transition: transform 60s ease;
+  transform: translate(0, 0);
+}
+
+.slideInRight-enter,
+.slideInRight-leave-active {
+  transform: translate(100%,0);
+}

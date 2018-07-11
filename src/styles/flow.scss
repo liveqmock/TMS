@@ -1,0 +1,37 @@
+.flowicon { 
+  background: url('./assets/flow/flowicon.png') no-repeat top left;  
+&.15huishou { background-position: 0px 0px; width: 56px; height: 60px;  } 
+&.16jichu { background-position: 0px -70px; width: 55px; height: 60px;  } 
+&.17jieshou { background-position: 0px -140px; width: 51px; height: 60px;  } 
+&.18fafang { background-position: 0px -210px; width: 55px; height: 60px;  } 
+&.19songhuoshangmen { background-position: 0px -280px; width: 62px; height: 52px;  } 
+&.01tihuo { background-position: 0px -342px; width: 62px; height: 52px;  } 
+&.02daoru { background-position: 0px -404px; width: 62px; height: 52px;  } 
+&.03dingdna { background-position: 0px -466px; width: 62px; height: 52px;  } 
+&.04yundan { background-position: 0px -528px; width: 62px; height: 52px;  } 
+&.04zhongzhuan { background-position: 0px -590px; width: 62px; height: 52px;  } 
+&.06fahuokc { background-position: 0px -652px; width: 62px; height: 52px;  } 
+&.07duanbo { background-position: 0px -714px; width: 62px; height: 52px;  } 
+&.08peizai { background-position: 0px -776px; width: 62px; height: 52px;  } 
+&.09daohuo { background-position: 0px -838px; width: 62px; height: 52px;  } 
+&.10kucun { background-position: 0px -900px; width: 62px; height: 52px;  } 
+&.11duobofache { background-position: 0px -962px; width: 62px; height: 52px;  } 
+&.12ziti { background-position: 0px -1024px; width: 39px; height: 79px;  } 
+&.13songhuosm { background-position: 0px -1113px; width: 62px; height: 52px;  } 
+&.14qianshou { background-position: 0px -1175px; width: 62px; height: 52px;  }
+
+}
+.flowitem{
+
+}
+.flowtitle{
+  background: url('./assets/flow/title-bg.png') no-repeat top left;
+  width: 147px;
+  height: 41px;
+
+  &-s{
+    background: url('./assets/flow/s-title-bg.png') no-repeat top left;
+    width: 108px;
+    height: 38px;
+  }
+}

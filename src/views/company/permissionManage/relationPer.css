@@ -1,0 +1,115 @@
+
+.addRelationPop{
+  left: auto;
+  top: 50px;
+  bottom: auto;
+  min-width: 820px;
+  max-width:  820px;
+
+}
+.addRelationPop-content{
+  padding: 20px 20px 0;
+  box-sizing: border-box;
+}
+.el-select .el-input__inner{
+  padding-right: 15px;
+}
+.relation-per table{
+  width: 100%;
+}
+.relation-per table thead tr th:nth-of-type(1){
+  width: 215px;
+  height: 30px;
+}
+.relation-per table thead th:nth-of-type(1) .el-input .el-input__inner{
+  height: 30px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 0;
+  border-color: #fff;
+}
+.relation-per table thead th:last-of-type .el-input .el-input__inner{
+  height: 30px;
+}
+.relation-per .popRight-content tbody td:nth-of-type(1) .el-input.is-active .el-input__inner .el-input__inner:focus{
+  border-color: #fff;
+}
+.relation-per tbody td:nth-of-type(1) .el-input__inner, tbody td:last-of-type .el-input__inner{
+  border-color: #fff;
+  height:40px;
+}
+.relation-per .el-input.is-disabled .el-input__inner{
+  background: #fff;
+
+}
+.relation-per tbody td:last-of-type{
+  padding: 0 2px;
+}
+.relation-per tbody td:last-of-type .el-input__inner{
+  border-color: #d2d2d2;
+
+}
+.relation-per table thead tr th:nth-of-type(2){
+  width: 280px;
+  height: 30px;
+}
+.relation-per table thead tr th:nth-of-type(2) .is-disabled .el-input__inner{
+  /*width: 280px;*/
+  /*height: 30px;*/
+  border-radius: 0
+}
+
+.my-autocomplete li {
+  line-height: normal;
+  padding: 7px;
+}
+.my-autocomplete .name {
+text-overflow: ellipsis;
+overflow: hidden;
+}
+.my-autocomplete .addr {
+font-size: 12px;
+color: #b4b4b4;
+}
+.my-autocomplete .highlighted .addr {
+color: #ddd;
+}
+.relation-per tbody .el-autocomplete{
+  padding: 2px;
+  width: 280px;
+}
+.relation-per .el-autocomplete .el-input__inner{
+  border-radius: 0;
+}
+/*.relation-per tbody .el-select .el-input{*/
+  /*padding: 2px;*/
+/*}*/
+.relation-per th,.relation-per td{
+  border: 1px solid #ccc;
+  padding: 2px;
+  text-align: center;
+  font-size: 14px;
+}
+.relation-per thead th{
+  background: #eee;
+}
+
+/*固定下拉框*/
+.hiddenDiv {
+  position: fixed;
+  top: 135px;
+  left: 240px;
+  transform-origin: center top 0px;
+  width: 278px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border-radius: 4px;
+}
+.hiddenDiv ul li{
+  padding: 10px 0 5px 15px;
+}
+.hiddenDiv ul li:hover {
+  background-color: #f5f7fa;
+}
+/**/

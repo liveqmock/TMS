@@ -1,0 +1,14 @@
+$dialogHeader_bgcolor: #e6e6e6;
+.tms_dialog {
+  min-width: 680px;
+  .el-dialog__header {
+    background-color: $dialogHeader_bgcolor;
+  }
+  .el-dialog__footer {
+    background-color: $dialogHeader_bgcolor;
+  }
+  .el-dialog__body {
+    text-align: center;
+    .el-transfer {}
+  }
+}
