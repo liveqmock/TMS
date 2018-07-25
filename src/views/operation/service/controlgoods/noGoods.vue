@@ -1,6 +1,6 @@
 <template>
     <div class="tab-content">
-      <SearchForm :orgid="otherinfo.orgid" @change="getSearchParam" :btnsize="btnsize" />
+      <SearchForm :orgid="otherinfo.orgid" :allId="allId" @change="getSearchParam" :btnsize="btnsize" />
       <div class="tab_info">
         <div class="btns_box">
             <el-button type="primary" :size="btnsize" icon="el-icon-goods" plain @click="doAction('haveGoods')">放货</el-button>
@@ -48,13 +48,13 @@
                 {{ scope.row.status === 1 ? "未放货" : "已放货" }}
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop=""
               sortable
               width="200"
               label="放货时间">
               <template slot-scope="scope">{{ scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="shipStatusName"
               label="运单状态"
@@ -68,6 +68,9 @@
               width="120"
               sortable
               >
+              <template slot-scope="scope">
+                <div v-html="parseShipStatus(scope.row.shipIdentifying)"></div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="fromOrgName"
@@ -86,7 +89,7 @@
               sortable
               width="200"
               label="开单时间">
-              <template slot-scope="scope">{{ scope.row.startTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
+              <template slot-scope="scope">{{ scope.row.orderCreateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
             </el-table-column>
             <el-table-column
               prop="senderCustomerName"
@@ -486,6 +489,8 @@ import { mapGetters } from 'vuex'
 import Pager from '@/components/Pagination/index'
 // import { deleteTrunkInfo } from '@/api/company/trunkManage'
 import { objectMerge2 } from '@/utils/index'
+import { parseShipStatus } from '@/utils/dict'
+
 export default {
   components: {
     SearchForm,
@@ -520,10 +525,14 @@ export default {
 
       },
       total: 0,
-      id: ''
+      id: '',
+      allId: false
     }
   },
   methods: {
+    parseShipStatus(id) {
+      return parseShipStatus(id)
+    },
           // PutFh
     fetchAllPutFh() {
             // this.loading = true

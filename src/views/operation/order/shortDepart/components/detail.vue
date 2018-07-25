@@ -77,17 +77,17 @@
           <el-table-column fixed width="50" sortable type="selection"></el-table-column>
           <el-table-column sortable width="120" prop="shipFromOrgName" label="开单网点"></el-table-column>
           <el-table-column sortable width="120" prop="shipSn" label="运单号"></el-table-column>
-          <el-table-column sortable width="110" prop="actualAmount" label="实到件数">
+          <el-table-column sortable width="110" prop="actualAmount" label="实到件数" v-if="!isEditActual">
             <template slot-scope="scope">
               <el-input type="number" :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualAmount" @change="changeData(scope.$index)" required></el-input>
             </template>
           </el-table-column>
-          <el-table-column sortable width="110" prop="actualWeight" label="实到重量">
+          <el-table-column sortable width="110" prop="actualWeight" label="实到重量" v-if="!isEditActual">
             <template slot-scope="scope">
               <el-input type="number"  :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualWeight" @change="changeData(scope.$index)" required></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="actualVolume" sortable label="实到体积" width="110">
+          <el-table-column prop="actualVolume" sortable label="实到体积" width="110" v-if="!isEditActual">
             <template slot-scope="scope">
               <el-input type="number"  :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualVolume" @change="changeData(scope.$index)" required></el-input>
             </template>
@@ -105,7 +105,7 @@
           <el-table-column sortable width="120" prop="shipReceiverName" label="收货人"></el-table-column>
           <el-table-column sortable width="120" prop="shipReceiverMobile" label="收货人电话"></el-table-column>
           <el-table-column sortable width="200" prop="cargoName" label="货品名"></el-table-column>
-          <el-table-column sortable width="120" prop="shipSn" label="货号"></el-table-column>
+          <el-table-column sortable width="120" prop="shipGoodsSn" label="货号"></el-table-column>
           <el-table-column sortable width="120" prop="shipRemarks" label="运单备注"></el-table-column>
         </el-table>
       </div>

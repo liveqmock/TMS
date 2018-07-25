@@ -30,12 +30,12 @@
           <SelectTree v-model="form.orgid" />
         </el-form-item>
         <el-form-item label="权限角色" :label-width="formLabelWidth">
-          <el-select multiple v-model="form.rolesId" placeholder="请选择权限">
+          <el-select filterable  multiple v-model="form.rolesId" placeholder="请选择权限">
             <el-option v-for="item in roles" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="归属部门" :label-width="formLabelWidth">
-          <SelectType v-model="form.departmentId" type="department_type" placeholder="请选择部门" />
+          <SelectType v-model="form.departmentId" type="department_type" filterable placeholder="请选择部门" />
           <!-- <el-select v-model="form.departmentId" placeholder="请选择部门">
             <el-option v-for="item in departments" :key="item.id" :label="item.dictName" :value="item.id"></el-option>
           </el-select> -->
@@ -50,8 +50,8 @@
   </pop-right>
 </template>
 <script>
-import { validateMobile, REGEX }  from '@/utils/validate'
-import { postEmployeer, putEmployeer,  getAuthInfo, getDepartmentInfo } from '../../../api/company/employeeManage'
+import { validateMobile, REGEX } from '@/utils/validate'
+import { postEmployeer, putEmployeer, getAuthInfo, getDepartmentInfo } from '../../../api/company/employeeManage'
 import popRight from '@/components/PopRight/index'
 import SelectTree from '@/components/selectTree/index'
 import { mapGetters } from 'vuex'
@@ -81,32 +81,32 @@ export default {
     }
   },
   computed: {
-      ...mapGetters([
-          'otherinfo'
+    ...mapGetters([
+        'otherinfo'
       ])
   },
-  data () {
+  data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass');
+          this.$refs.ruleForm2.validateField('checkPass')
         }
-        callback();
+        callback()
       }
     }
 
-    const validateFormMobile = function (rule, value, callback) {
-      if(validateMobile(value)){
+    const validateFormMobile = function(rule, value, callback) {
+      if (validateMobile(value)) {
         callback()
       } else {
         callback(new Error('请输入有效的手机号码'))
       }
     }
 
-    const validateusername = function (rule, value, callback) {
-      if(isvalidUsername(value)){
+    const validateusername = function(rule, value, callback) {
+      if (isvalidUsername(value)) {
         callback()
       } else {
         callback(new Error('用户名只能由中文，数字，字母组成'))
@@ -120,7 +120,7 @@ export default {
         username: '', // 登录账户
         password: '123456',
         position: '', // 职位
-        sexFlag: '',// 性别
+        sexFlag: '', // 性别
         orgid: '', // 归属网点
         rolesId: [], // 权限角色
         departmentId: '' // 归属部门
@@ -141,10 +141,10 @@ export default {
         ],
         username: [
           { required: true, message: '请输入有效的登录账号', trigger: 'blur', pattern: REGEX.USERNAME },
-          { max: 15, message: '不能超过15个字符', trigger: 'blur' },
+          { max: 15, message: '不能超过15个字符', trigger: 'blur' }
         ],
         position: [
-          { max: 10,  message: '不能超过10个字符', trigger: 'blur' }
+          { max: 10, message: '不能超过10个字符', trigger: 'blur' }
         ]
       },
       popTitle: '新增员工',
@@ -159,34 +159,34 @@ export default {
 
     }
   },
-  mounted () {
+  mounted() {
     this.form.orgid = this.orgid
-    if(!this.inited){
+    if (!this.inited) {
       this.inited = true
       this.initInfo()
     }
   },
   watch: {
-    popVisible (newVal, oldVal) {
-      if(!this.inited){
+    popVisible(newVal, oldVal) {
+      if (!this.inited) {
         this.inited = true
         this.initInfo()
       }
     },
-    orgid (newVal) {
+    orgid(newVal) {
       this.form.orgid = newVal
     },
-    userInfo () {
-      if(this.isModify){
+    userInfo() {
+      if (this.isModify) {
         this.popTitle = '修改员工'
-        let data = Object.assign({},this.userInfo)
-        for(let i in this.form){
+        const data = Object.assign({}, this.userInfo)
+        for (const i in this.form) {
           this.form[i] = this.userInfo[i]
         }
         this.form.rolesId = this.userInfo.rolesIdList === '0' ? '' : this.userInfo.rolesIdList
       } else {
         this.popTitle = '新增员工'
-        for(let i in this.form){
+        for (const i in this.form) {
           this.form[i] = i === 'password' ? '123456' : i === 'rolesId' ? [] : ''
         }
         this.form.orgid = this.orgid
@@ -194,7 +194,7 @@ export default {
     }
   },
   methods: {
-    initInfo () {
+    initInfo() {
       this.loading = true
       return Promise.all([getAuthInfo(this.otherinfo.companyId), getDepartmentInfo(this.otherinfo.companyId)]).then(resArr => {
         this.loading = false
@@ -205,18 +205,18 @@ export default {
         this.inited = false
       })
     },
-    getOrgid (id) {
+    getOrgid(id) {
       this.form.orgid = id
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          let data = Object.assign({},this.form)
+          const data = Object.assign({}, this.form)
           let promiseObj
           data.rolesId = data.rolesId.join(',')
           // 判断操作，调用对应的函数
-          if(this.isModify){
+          if (this.isModify) {
             data.id = this.userInfo.id
             promiseObj = putEmployeer(data)
           } else {
@@ -232,10 +232,10 @@ export default {
                 this.$emit('success')
               }
             }); */
-            
+
             this.$message({
-                type: 'success',
-                message: '操作成功!'
+              type: 'success',
+              message: '操作成功!'
             })
             this.closeMe()
             this.$emit('success')
@@ -243,17 +243,17 @@ export default {
             this.loading = false
           })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    closeMe (done) {
+    closeMe(done) {
       this.$refs['ruleForm'].resetFields()
-      this.$emit('update:popVisible', false);
-      if(typeof done === 'function'){
+      this.$emit('update:popVisible', false)
+      if (typeof done === 'function') {
         done()
       }
-    },
+    }
   }
 }
 </script>

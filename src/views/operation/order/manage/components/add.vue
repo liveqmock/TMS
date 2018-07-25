@@ -1,6 +1,6 @@
 <template>
-  <pop-right :title="popTitle +  orderSn" :isShow="popVisible" @close="closeMe" class="addCustomerPop" v-loading="loading">
-    <template class="addCustomerPop-content" slot="content">
+  <pop-right :title="popTitle +  orderSn" :isShow="popVisible" @close="closeMe" class="addPreOrderPop_lll" v-loading="loading">
+    <template class="addPreOrderPop-content" slot="content">
       <el-form :model="form" :rules="rules" ref="ruleForm" :inline="true" label-position="right" size="mini" class="manage-add manage-add_lrl" label-width="100px">
         <div class="info_order clearfloat">发货人信息</div>
         <div class="info_send clearfloat">
@@ -59,14 +59,14 @@
               </li>
               <li>
                 <p>重量</p>
-                <el-form-item prop="tmsOrderCargoList.weightFee">
-                  <el-input maxlength="10" v-model="form.tmsOrderCargoList.weightFee" :disabled="isDbclick"></el-input>
+                <el-form-item prop="tmsOrderCargoList.cargoWeight">
+                  <el-input maxlength="10" v-model="form.tmsOrderCargoList.cargoWeight" :disabled="isDbclick"></el-input>
                 </el-form-item>
               </li>
               <li>
                 <p>体积</p>
-                <el-form-item prop="tmsOrderCargoList.volumeFee">
-                  <el-input maxlength="10" v-model="form.tmsOrderCargoList.volumeFee" :disabled="isDbclick"></el-input>
+                <el-form-item prop="tmsOrderCargoList.cargoVolume">
+                  <el-input maxlength="10" v-model="form.tmsOrderCargoList.cargoVolume" :disabled="isDbclick"></el-input>
                 </el-form-item>
               </li>
               <li>
@@ -84,84 +84,86 @@
             </ul>
         </div>
 
-        <div class="info_order" style="margin-top: 12px">订单信息</div>
-        <table class="manage-add-table-foot">
-          <tbody>
-          <tr>
-            <td>
-              <el-form-item label="出发城市">
+        <div class="info_order" style="margin-top: 18px">订单信息</div>
+        <div class="manage-add-table-foot">
+          <table >
+            <tbody>
+            <tr>
+              <td>
+                <el-form-item label="出发城市">
 
-                <querySelect search="longAddr" @change="selectFromCity" type="city"  v-model="form.tmsOrderPre.orderFromCityName" :remote="true" :disabled="isDbclick"/>
-              </el-form-item>
-            </td>
-            <td>
-              <el-form-item label="到达城市" prop="tmsOrderPre.orderToCityName">
-                <querySelect @change="selectToCity" search="longAddr" type="city"  v-model="form.tmsOrderPre.orderToCityName" :remote="true" :disabled="isDbclick"/>
-              </el-form-item>
-            </td>
-            <td>
-              <el-form-item label="开单网点">
-                <SelectTree v-model="form.tmsOrderPre.orderFromOrgid" disabled="disabled" :disabled="isDbclick"/>
-              </el-form-item>
-            </td>
+                  <querySelect search="longAddr" @change="selectFromCity" type="city"  v-model="form.tmsOrderPre.orderFromCityName" :remote="true" :disabled="isDbclick"/>
+                </el-form-item>
+              </td>
+              <td>
+                <el-form-item label="到达城市" prop="tmsOrderPre.orderToCityName">
+                  <querySelect @change="selectToCity" search="longAddr" type="city"  v-model="form.tmsOrderPre.orderToCityName" :remote="true" :disabled="isDbclick"/>
+                </el-form-item>
+              </td>
+              <td>
+                <el-form-item label="开单网点">
+                  <SelectTree v-model="form.tmsOrderPre.orderFromOrgid" :disabled="isDbclick"/>
+                </el-form-item>
+              </td>
 
-            <td>
-              <el-form-item label="目的网点" >
-                <SelectTree v-model="form.tmsOrderPre.orderToOrgid" :disabled="isDbclick"/>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <el-form-item label="提货方式">
-                <SelectType v-model="form.tmsOrderPre.orderPickupMethod" type="order_pickup_method"  :disabled="isDbclick"/>
-              </el-form-item>
-            </td>
-            <td>
-              <el-form-item label="紧急度">
-                <SelectType v-model="form.tmsOrderPre.orderEffective" type="ship_effective" :disabled="isDbclick" />
-              </el-form-item>
-            </td>
+              <td>
+                <el-form-item label="目的网点" >
+                  <SelectTree v-model="form.tmsOrderPre.orderToOrgid" :disabled="isDbclick"/>
+                </el-form-item>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <el-form-item label="提货方式">
+                  <SelectType v-model="form.tmsOrderPre.orderPickupMethod" type="order_pickup_method"  :disabled="isDbclick"/>
+                </el-form-item>
+              </td>
+              <td>
+                <el-form-item label="紧急度">
+                  <SelectType v-model="form.tmsOrderPre.orderEffective" type="ship_effective" :disabled="isDbclick" />
+                </el-form-item>
+              </td>
 
-            <td>
-              <el-form-item label="代收款">
-                <el-input v-numberOnly v-model="form.tmsOrderCargoList.agencyFund" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
-              </el-form-item>
-            </td>
-            <td>
-              <el-form-item label="代收款手续费">
-                <el-input v-numberOnly v-model="form.tmsOrderCargoList.commissionFee" maxlength="8" auto-complete="off" clearable class="order_com" :disabled="isDbclick"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <el-form-item label="付款方式">
-                <SelectType v-model="form.tmsOrderPre.orderPayWay" type="ship_pay_way" :disabled="isDbclick" />
-              </el-form-item>
-            </td>
+              <td>
+                <el-form-item label="代收款">
+                  <el-input v-numberOnly v-model="form.tmsOrderCargoList.agencyFund" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
+                </el-form-item>
+              </td>
+              <td>
+                <el-form-item label="代收款手续费">
+                  <el-input v-numberOnly v-model="form.tmsOrderCargoList.commissionFee" maxlength="8" auto-complete="off" clearable class="order_com" :disabled="isDbclick"></el-input>
+                </el-form-item>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <el-form-item label="付款方式">
+                  <SelectType v-model="form.tmsOrderPre.orderPayWay" type="ship_pay_way" :disabled="isDbclick" />
+                </el-form-item>
+              </td>
 
-            <td>
-              <el-form-item label="运费">
-                <el-input v-numberOnly v-model="form.tmsOrderCargoList.shipFee" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
-              </el-form-item>
-            </td>
-            <td>
-              <el-form-item label="声明价值">
-                <el-input v-numberOnly v-model="form.tmsOrderCargoList.productPrice" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <el-form-item label="备注">
-                <el-input v-model="form.tmsOrderPre.orderRemarks" maxlength="300" auto-complete="off" type="textarea" clearable class="add-textarea" placeholder="少于300字" :disabled="isDbclick"></el-input>
-              </el-form-item>
-            </td>
-          </tr>
-          </tbody>
+              <td>
+                <el-form-item label="运费">
+                  <el-input v-numberOnly v-model="form.tmsOrderCargoList.shipFee" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
+                </el-form-item>
+              </td>
+              <td>
+                <el-form-item label="声明价值">
+                  <el-input v-numberOnly v-model="form.tmsOrderCargoList.productPrice" maxlength="8" auto-complete="off" clearable :disabled="isDbclick"></el-input>
+                </el-form-item>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <el-form-item label="备注">
+                  <el-input v-model="form.tmsOrderPre.orderRemarks" maxlength="300" auto-complete="off" type="textarea" clearable class="add-textarea" placeholder="少于300字" :disabled="isDbclick"></el-input>
+                </el-form-item>
+              </td>
+            </tr>
+            </tbody>
 
-        </table>
+          </table>
+        </div>
       </el-form>
     </template>
     <div slot="footer" class="dialog-footer" v-if="isDbclick">
@@ -175,14 +177,14 @@
 </template>
 <script>
 import { REGEX } from '@/utils/validate'
-import { postAddOrder , postModifyOrder } from '@/api/operation/manage'
+import { postAddOrder, postModifyOrder } from '@/api/operation/manage'
 import popRight from '@/components/PopRight/index'
 import Upload from '@/components/Upload/singleImage'
 import SelectTree from '@/components/selectTree/index'
 import SelectType from '@/components/selectType/index'
 import querySelect from '@/components/querySelect/index'
 import { mapGetters } from 'vuex'
-import {objectMerge2} from '@/utils/index'
+import { objectMerge2 } from '@/utils/index'
 
 export default {
   components: {
@@ -218,31 +220,31 @@ export default {
     }
   },
   computed: {
-      ...mapGetters([
-          'otherinfo'
-      ])
+    ...mapGetters([
+      'otherinfo'
+    ])
   },
-  data () {
+  data() {
     const validateOnlyNumberAndLetter = (rule, value, callback) => {
-      if(REGEX.ONLY_NUMBER_AND_LETTER.test(value)){
+      if (REGEX.ONLY_NUMBER_AND_LETTER.test(value)) {
         callback()
-      } else if(value == ''){
+      } else if (value == '') {
         callback()
-      }else{
+      } else {
         callback(new Error('只能输入数字或者字母'))
       }
     }
     const validateMobile = (rule, value, callback) => {
-      if(REGEX.MOBILE.test(value)){
+      if (REGEX.MOBILE.test(value)) {
         callback()
-      } else if(this.isDbclick){
+      } else if (this.isDbclick) {
         callback()
-      }else {
+      } else {
         callback(new Error('请输入正确的联系号码~'))
       }
     }
-    const validatePickupNum = function (rule, value, callback) {
-      if(REGEX.ONLY_NUMBER.test(value)){
+    const validatePickupNum = function(rule, value, callback) {
+      if (REGEX.ONLY_NUMBER.test(value)) {
         callback()
       } else {
         callback(new Error('只能输入数字'))
@@ -250,131 +252,134 @@ export default {
     }
     let hasOne = false
     const validateVolumnWeight = (rule, value, callback) => {
-      if(this.form.tmsOrderCargoList.volumeFee === '' && this.form.tmsOrderCargoList.weightFee === '' ){
+      if (this.form.tmsOrderCargoList.cargoVolume === '' && this.form.tmsOrderCargoList.cargoWeight === '') {
         hasOne = false
       }
-      if(!value && !hasOne){
+      if (!value && !hasOne) {
         callback(new Error('体积或重量必填其中一项'))
-      }else{
+      }
+      if (!REGEX.ONLY_NUMBER.test(value)) {
+        callback(new Error('只能输入数字'))
+      } else {
         hasOne = true
         callback()
       }
     }
     return {
-      rules:{
-        "tmsOrderPre.orderToCityName": [
-          {validator: this.validateIsEmpty('到达城市不能为空'), trigger: ['blur']}
+      rules: {
+        'tmsOrderPre.orderToCityName': [
+          { validator: this.validateIsEmpty('到达城市不能为空'), trigger: ['blur'] }
         ],
-        "customSend.customerName": [
-          {required: true,validator: this.validateIsEmpty('发货人不能为空'), trigger: 'blur'}
+        'customSend.customerName': [
+          { required: true, validator: this.validateIsEmpty('发货人不能为空'), trigger: 'blur' }
         ],
-        "customSend.customerMobile": [
-          {required: true,validator: this.validateIsEmpty('发货人联系电话不能为空'), trigger: 'blur'},
+        'customSend.customerMobile': [
+          { required: true, validator: this.validateIsEmpty('发货人联系电话不能为空'), trigger: 'blur' },
+          { validator: validateMobile, trigger: 'blur' }
+        ],
+        'customRece.customerName': [
+          { required: true, validator: this.validateIsEmpty('收货人不能为空'), trigger: 'blur' }
+        ],
+        'customRece.customerMobile': [
+          { required: true, validator: this.validateIsEmpty('收货人联系电话不能为空'), trigger: 'blur' },
           { validator: validateMobile, trigger: 'change' }
-        ] ,
-        "customRece.customerName": [
-          {required: true,validator: this.validateIsEmpty('收货人不能为空'), trigger: 'blur'}
         ],
-        "customRece.customerMobile": [
-          {required: true,validator: this.validateIsEmpty('收货人联系电话不能为空'), trigger: 'blur'},
-          { validator: validateMobile, trigger: 'change' }
-        ],
-        "tmsOrderCargoList.cargoName": [
-          {validator: this.validateIsEmpty('货品名不能为空'), trigger: 'blur'},
+        'tmsOrderCargoList.cargoName': [
+          { validator: this.validateIsEmpty('货品名不能为空'), trigger: 'blur' }
           // { validator: validateCargoName, trigger: 'change' }
         ],
-        "tmsOrderCargoList.cargoAmount": [
-          {validator: this.validateIsEmpty('件数不能为空'), trigger: 'blur'},
-          {validator: validatePickupNum, trigger: 'blur'}
+        'tmsOrderCargoList.cargoAmount': [
+          { validator: this.validateIsEmpty('件数不能为空'), trigger: 'blur' },
+          { validator: validatePickupNum, trigger: 'blur' }
         ],
-        'tmsOrderCargoList.volumeFee': [{
+        'tmsOrderCargoList.cargoVolume': [{
           validator: validateVolumnWeight, trigger: 'blur'
         }],
-        'tmsOrderCargoList.weightFee': [{
+        'tmsOrderCargoList.cargoWeight': [{
           validator: validateVolumnWeight, trigger: 'blur'
         }],
-        "tmsOrderCargoList.description": [
-          { validator: validateOnlyNumberAndLetter,trigger: ['change'] }
+        'tmsOrderCargoList.description': [
+          { validator: validateOnlyNumberAndLetter, trigger: ['change'] }
         ]
       },
       btnsize: 'mini',
       carObj: {
-        cargoName:'',  // 货品名
-        cargoAmount:'',  // 件数
-        weightFee:'',  // 重量
-        volumeFee:'',  // 体积
-        cargoPack:'',  // 包装
+        cargoName: '',  // 货品名
+        cargoAmount: '',  // 件数
+        cargoWeight: '',  // 重量
+        cargoVolume: '',  // 体积
+        cargoPack: ''  // 包装
         // description:''  // 品种规格
       },
       form: {
-        customSend:{
+        customSend: {
           // 发货人
-          customerId:'',
-          customerUnit:'',
-          customerName:'',
-          customerMobile:'',
-          detailedAddress:'',
-          customerType:1
+          customerId: '',
+          customerUnit: '',
+          customerName: '',
+          customerMobile: '',
+          detailedAddress: '',
+          customerType: 1
         },
-        customRece:{
-          customerId:'',
-          customerUnit:'',
-          customerName:'',
-          customerMobile:'',//
-          detailedAddress:'',
-          customerType:2
+        customRece: {
+          customerId: '',
+          customerUnit: '',
+          customerName: '',
+          customerMobile: '', //
+          detailedAddress: '',
+          customerType: 2
         },
-        customerList:[{},{}],
-        //货物信息
+        customerList: [{}, {}],
+        // 货物信息
         tmsOrderCargoList: [
           {
-            cargoName:'',  // 货品名
-            cargoAmount:'',  // 件数
-            weightFee:'',  // 重量
-            volumeFee:'',  // 体积
-            cargoPack:'',  // 包装
-            description:'' , // 品种规格
-            commissionFee:'',//代收款手续费
-            agencyFund:'',//代收款
-            productPrice:'',//声明价值
-            shipFee:'',//运费shipFee
-            cargoId:''
+            cargoName: '',  // 货品名
+            cargoAmount: '',  // 件数
+            cargoWeight: '',  // 重量
+            cargoVolume: '',  // 体积
+            cargoPack: '',  // 包装
+            description: '', // 品种规格
+            commissionFee: '', // 代收款手续费
+            agencyFund: '', // 代收款
+            productPrice: '', // 声明价值
+            shipFee: '', // 运费shipFee
+            cargoId: ''
           }
         ],
-        //订单信息
+        // 订单信息
         tmsOrderPre: {
-          orderFromCityCode:'',
-          orderFromCityName:'',
-          orderToCityCode:'',
-          orderToCityName:'',
-          orderFromOrgid:'',
-          orderToOrgid:'',//目的网点
-          orderPickupMethod :218,//提货方式
-          orderEffective:94,//紧急度
-          orderPayWay:76,//付款方式 orderPayWayName
+          orderFromCityCode: '',
+          orderFromCityName: '',
+          orderToCityCode: '',
+          orderToCityName: '',
+          orderFromOrgid: '',
+          orderToOrgid: '', // 目的网点
+          orderPickupMethod: 218, // 提货方式
+          orderEffective: 94, // 紧急度
+          orderPayWay: 76, // 付款方式 orderPayWayName
           // deliveryFee:'',//运费
           // commissionFee:'',//代收款手续费
           // agencyFund:'',//代收款
           // productPrice:'',//声明价值
-          orderRemarks:''//
+          orderRemarks: ''//
           // cargoId,senderId,receiverId
         }
       },
-      customSend:{
+      customSend: {
         // 发货人
         // customerId:'',
-        customerUnit:'',
-        customerName:'',
-        customerMobile:'',
-        detailedAddress:'',
-        customerType:1
+        customerUnit: '',
+        customerName: '',
+        customerMobile: '',
+        detailedAddress: '',
+        customerType: 1
       },
-      customRece:{
-        customerUnit:'',
-        customerName:'',
-        customerMobile:'',//
-        detailedAddress:'',
-        customerType:2
+      customRece: {
+        customerUnit: '',
+        customerName: '',
+        customerMobile: '', //
+        detailedAddress: '',
+        customerType: 2
       },
       popTitle: '新增订单',
       orderSn: '',
@@ -382,33 +387,32 @@ export default {
       inited: false
     }
   },
-  mounted () {
-    if(!this.inited){
+  mounted() {
+    if (!this.inited) {
       this.inited = true
       this.initInfo()
     }
     this.form.tmsOrderPre.orderFromOrgid = this.otherinfo.orgid
   },
   watch: {
-    popVisible (newVal, oldVal) {
-      if(!this.inited){
+    popVisible(newVal, oldVal) {
+      if (!this.inited) {
         this.inited = true
         this.initInfo()
       }
     },
-    orgid (newVal) {
+    orgid(newVal) {
     },
-    info () {
-      if(this.isModify){
+    info() {
+      if (this.isModify) {
         this.popTitle = '修改订单'
         this.orderSn = this.info.orderSn
         this.infoData(this.info)
-      }else if(this.isDbclick) {
+      } else if (this.isDbclick) {
         this.popTitle = '查看订单'
         this.orderSn = this.info.orderSn
         this.infoData(this.info)
-      }
-      else {
+      } else {
         this.popTitle = '新增订单'
         this.orderSn = ''
         // cargoId
@@ -425,32 +429,32 @@ export default {
         this.form.tmsOrderCargoList.shipFee = ''
         this.form.tmsOrderCargoList.productPrice = ''
         this.form.tmsOrderPre.orderRemarks = ''
-        this.form.tmsOrderPre.orderPickupMethod  = 218
+        this.form.tmsOrderPre.orderPickupMethod = 218
         this.form.tmsOrderPre.orderEffective = 94
         this.form.tmsOrderPre.orderPayWay = 76
       }
     }
   },
   methods: {
-    infoData(item){
+    infoData(item) {
       this.form.tmsOrderCargoList.cargoName = item.cargoName
       this.form.tmsOrderCargoList.cargoAmount = item.cargoAmount
-      this.form.tmsOrderCargoList.weightFee = item.cargoWeight
-      this.form.tmsOrderCargoList.volumeFee = item.cargoVolume
+      this.form.tmsOrderCargoList.cargoWeight = item.cargoWeight
+      this.form.tmsOrderCargoList.cargoVolume = item.cargoVolume
       this.form.tmsOrderCargoList.cargoPack = item.cargoPack
       this.form.tmsOrderCargoList.description = item.description
       this.form.tmsOrderCargoList.agencyFund = item.agencyFund
-      this.form.tmsOrderCargoList.commissionFee = item.orderProcedureFee
-      this.form.tmsOrderCargoList.shipFee = item.deliveryFee
+      this.form.tmsOrderCargoList.commissionFee = item.commissionFee
+      this.form.tmsOrderCargoList.shipFee = item.shipFee
       this.form.tmsOrderCargoList.productPrice = item.productPrice
       this.form.tmsOrderCargoList.cargoId = item.id
-      //发
+      // 发
       this.form.customSend.customerName = item.senderName
       this.form.customSend.customerMobile = item.senderMobile
       this.form.customSend.detailedAddress = item.senderAddr
       this.form.customSend.customerUnit = item.senderUnit
       this.form.customSend.customerId = item.senderId
-      //收
+      // 收
       this.form.customRece.customerName = item.receiverName
       this.form.customRece.customerMobile = item.receiverMobile
       this.form.customRece.detailedAddress = item.receiverAddr
@@ -464,37 +468,36 @@ export default {
       // this.form.tmsOrderPre.orderPickupMethodName = this.info.orderPickupMethodName
       this.form.tmsOrderPre.orderEffective = item.orderEffective
     },
-    validateIsEmpty (msg = '不能为空！') {
+    validateIsEmpty(msg = '不能为空！') {
       return (rule, value, callback) => {
-        if(!value){
+        if (!value) {
           callback(new Error(msg))
-        }else{
+        } else {
           callback()
         }
       }
     },
     // 选择出发城市
-    selectFromCity (item, city) {
-      if(item){
+    selectFromCity(item, city) {
+      if (item) {
         this.form.tmsOrderPre.orderFromCityCode = item.id
         this.form.tmsOrderPre.orderFromCityName = item.longAddr
       } else {
-        //this.form.tmsOrderPre.orderFromCityCode = city || ''
+        // this.form.tmsOrderPre.orderFromCityCode = city || ''
       }
     },
     // 选择到达城市
-    selectToCity (item, city) {
-      if(item){
+    selectToCity(item, city) {
+      if (item) {
         this.form.tmsOrderPre.orderToCityCode = item.id
         this.form.tmsOrderPre.orderToCityName = item.longAddr
       } else {
       }
     },
     /** 收货人/发货人 */
-    setSender(item, type){
+    setSender(item, type) {
       type = type ? 'customRece' : 'customSend'
-      if(item){
-
+      if (item) {
         // this.form[type].customerId = item.customerId || ''
         this.form[type].customerType = type === 'customSend' ? 1 : 2
         this.form[type].customerUnit = item.customerUnit
@@ -503,7 +506,7 @@ export default {
         this.form[type].detailedAddress = item.detailedAddress
       }
     },
-    setReceiver(item){
+    setReceiver(item) {
       this.setSender(item, 'receiver')
     },
 
@@ -513,10 +516,10 @@ export default {
       }
       return obj1
     },
-    initInfo () {
+    initInfo() {
       this.loading = false
     },
-    getOrgid (id) {
+    getOrgid(id) {
       // this.form.orgid = id
     },
     submitForm(formName) {
@@ -527,16 +530,16 @@ export default {
           this.form.customerList[1] = this.form.customRece
 
           let promiseObj
-          let data = objectMerge2({}, this.form)
+          const data = objectMerge2({}, this.form)
           delete data.customSend
           delete data.customRece
-          let obj = {}
-          for(let i in data.tmsOrderCargoList) {
+          const obj = {}
+          for (const i in data.tmsOrderCargoList) {
             obj[i] = data.tmsOrderCargoList[i]
           }
           data.tmsOrderCargoList = [obj]
           // 判断操作，调用对应的函数
-          if(this.isModify){
+          if (this.isModify) {
             promiseObj = postModifyOrder(data)
           } else {
             promiseObj = postAddOrder(data)
@@ -550,28 +553,28 @@ export default {
                 this.closeMe()
                 this.$emit('success')
               }
-            });
+            })
           }).catch(err => {
             this.loading = false
           })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    reset () {
+    reset() {
       this.$refs['ruleForm'].resetFields()
       this.form.customerList[0] = ''
       this.form.customerList[1] = ''
       // this.form.tmsOrderCargoList = ''
     },
-    closeMe (done) {
+    closeMe(done) {
       this.reset()
-      this.$emit('update:popVisible', false);
-      if(typeof done === 'function'){
+      this.$emit('update:popVisible', false)
+      if (typeof done === 'function') {
         done()
       }
-    },
+    }
   }
 }
 </script>
@@ -588,22 +591,22 @@ export default {
       font-size: 12px;
     }
   }
-.addCustomerPop{
+.addPreOrderPop_lll{
   left: auto;
   top: 50px;
   bottom: auto;
-  min-width: 900px;
-  max-width:  900px;
-
-  .el-autocomplete{
-    width: 100%;
+  min-width: 870px;
+  max-width:  870px;
+  .el-input__inner{
+    color: #3e9ff1;
+  }
+  .el-textarea__inner{
+    color: #3e9ff1;
   }
 
+
   .el-form--inline .el-form-item{
-    margin-right: -9px;
-    width: 90%;
-    display: flex;
-    margin-left: 7px
+
   }
 
   .el-form-item__content{
@@ -655,68 +658,98 @@ export default {
     margin-top: 10px;
     li{
       float: left;
-
-      .send_detailedAddress{
-
+      .el-form-item{
+        margin-right: -23px;
+        width: 90%;
+        display: flex;
+        margin-left: 7px
       }
     }
     li:last-of-type{
       width: 100%;
       .el-form-item--mini{
         .el-form-item__content{
-          width: 100%;
+          width: 146%;
           .el-autocomplete{
-            width: 100%;
+            width: 106%;
           }
         }
       }
 
     }
-  }
-}
-
-.manage-add-table-foot{
-  height: 100%;
-  width: 100%;
-}
-.manage-add-table-foot{
-  margin-top: 10px;
-}
-.manage-add-table-foot th{
-  width: 50%;
-  height: 30px;
-  background: #eee;
-  margin-left: 10px;
-  font-size: 14px;
-  padding: 2px 2px 2px 5px !important;
-}
-  .manage-add-table-foot th{
-  background:transparent;
-  width: 0;
-}
-.manage-add-table-foot {
-  tbody{
-    tr{
-      td{
-        .el-form-item--mini{
-          .el-form-item__label{
-            width: 40%;
-          }
-        }
-
+    li:nth-of-type(1){
+      .el-input__inner{
+        width: 94%;
       }
     }
-  }
-  .add-textarea{
-    width: 630%;
+    li:nth-of-type(2){
+      .el-input__inner{
+        width: 88%;
+      }
+    }
+    .el-autocomplete{
+      width: 146%;
+    }
   }
 }
 
+/*margin-right: -23px;
+ width: 90%;
+display: -ms-flexbox;
+ display: flex;
+ margin-left: 7px;*/
 
+.manage-add-table-foot{
+  margin-right: 30px;
+  table{
+    height: 100%;
+    width: 100%;
+    margin-top: 10px;
+    .el-input__inner{
+      color: #3e9ff1;
+    }
+
+    th{
+      width: 50%;
+      height: 30px;
+      background: #eee;
+      margin-left: 10px;
+      font-size: 14px;
+      padding: 2px 2px 2px 5px !important;
+      background:transparent;
+      width: 0;
+    }
+    tbody{
+      tr{
+        td{
+          .el-form-item{
+            margin-right: -23px;
+            width: 101%;
+            display: flex;
+            margin-left:0
+          }
+
+        }
+      }
+    }
+    .add-textarea{
+      width: 660%;
+    }
+    .el-form-item--mini {
+      margin-left: 12px;
+      /*margin: 0 8px;*/
+    }
+  }
+}
+
+  .info_order:first-of-type{
+    margin-top: 20px;
+  }
 .info_order,.info_rece{
   height: 36px;
   line-height: 36px;
   /*margin-top: 12px;*/
+  margin: 0 20px;
   padding-left: 10px;
   font-size: 14px;
   color: #666;
@@ -725,16 +758,15 @@ export default {
   border-bottom: 1px solid #d4d4d4;
   background: #e9f3fa;
 }
-.manage-add-table-foot .el-form-item--mini {
-  margin-left: 12px;
-}
 
   .manage-add div.el-form-item{
     width: 40%;
   }
   .info_table{
     border-color: #dcdfe6;
-    margin: 22px 0 20px;
+    margin: 22px 30px 20px;
+    border-left: 2px solid #dcdfe6;
+    border-right: 2px solid #dcdfe6;
     ul{
       width: 100%;
       display: -ms-flexbox;
@@ -758,18 +790,52 @@ export default {
           font-size: 14px;
           text-align: center;
           line-height: 34px;
-          background: #e8e8e8;
+          background: #eaf0ff;
           margin-bottom: 5px;
           i{
             color: red;
           }
         }
+        .el-form-item.is-success {
+          .el-input__inner{
+            border-color: transparent;
+          }
+        }
+        .el-input__inner{
+          width: 245%;
+        }
+        .el-form-item__error{
+
+        }
       }
 
+      .el-input__inner {
+        border-color: transparent;
+        border-radius: 0;
+        text-align: center;
+      }
+      .el-form-item.is-error {
+        .el-input__inner{
+          border-color: transparent;
+          border-radius: 0;
+          text-align: center;
+        }
+      }
+      .el-form-item__error{
+        top: 150%;
+        width: 145px;
+      }
       .el-form-item{
         margin-bottom: 0;
         margin-right: 0;
 
+      }
+      .el-input.is-disabled{
+        .el-input__inner{
+          border-color: transparent;
+          border-radius: 0;
+          text-align: center;
+        }
       }
     }
 

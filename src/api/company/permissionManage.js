@@ -77,11 +77,11 @@ export function getauthTreeInfo(role_id) {
  * 获取指定网点的部门信息    （迁移）
  * @param {*} orgid 网点id
  */
-export function getSelectDictInfo(orgid) {
+export function getSelectDictInfo(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'menu_type',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []

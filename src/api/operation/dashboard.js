@@ -130,6 +130,14 @@ export function PutFh(id) {
   return fetch.put('/api-order/order/controlgoods/v1/' + id)
 }
 /**
+ * 要传shipId
+ * 控货
+ */
+
+export function GetControl(id) {
+  return fetch.get('/api-order/order/controlgoods/v1/' + id)
+}
+/**
  * 根据公司id自动生成编号/order/abnormal/v1/getabnormalNo
  */
 export function GetAbnormalNo() {

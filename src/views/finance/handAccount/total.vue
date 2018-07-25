@@ -131,9 +131,8 @@ export default {
       this.$router.push({
         path: '/finance/handAccount/detail',
         query: {
-          orderid: row.id,
-          type: 'view',
-          tab: '查看' + row.shipSn
+          id: row.userId,
+          tab: '查看' + row.name
         }
       })
     },

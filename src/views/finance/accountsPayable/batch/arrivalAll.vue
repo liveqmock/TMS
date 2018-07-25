@@ -6,7 +6,7 @@
     <!-- 操作按钮 -->
     <div class="tab_info">
       <div class="btns_box">
-        <el-button type="success" :size="btnsize" icon="el-icon-sort" @click="doAction('count')" plain>结算</el-button>
+        <el-button type="primary" :size="btnsize" icon="el-icon-sort" @click="doAction('count')" plain>结算</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-printer" @click="doAction('print')" plain>打印</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-download" @click="doAction('export')" plain>导出</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-setting" @click="setTable" class="table_setup" plain>表格设置</el-button>
@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       btnsize: 'mini',
-      sign: 2, // 1-到车汇总
+      sign: 2, // 2-到车汇总
       searchQuery: {
         currentPage: 1,
         pageSize: 100,
@@ -98,8 +98,8 @@ export default {
           fixed: true
         },
         {
-          label: '结算状态',
-          prop: 'statusName',
+          label: '批次状态',
+          prop: 'batchTypeName',
           width: '150',
           fixed: false
         },
@@ -250,12 +250,9 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.fetchList()
-  },
   methods: {
     getSearchParam(obj) {
-      this.$set(this.searchQuery.vo, 'sign', this.sign)
+      // this.$set(this.searchQuery.vo, 'sign', this.sign)
       this.searchQuery.vo = Object.assign({}, obj)
       this.fetchList()
     },
@@ -284,13 +281,26 @@ export default {
       }
     },
     count() {
-      this.$router.push({ path: '../accountsLoad' })
-      console.log('router', this.$router)
+     this.$router.push({
+        path: '../accountsLoad',
+        query: {
+          currentPage: 'batchArrivalAll', // 本页面标识符
+          searchQuery: this.searchQuery, // 搜索项
+          selectListBatchNos: this.selectListBatchNos // 列表选择项的批次号batchNo
+        }
+      })
     },
-    clickDetails(row) {},
-    getSelection(list) {},
+    clickDetails(row) {
+      this.$refs.multipleTable.toggleRowSelection(row)
+    },
+    getSelection(list) {
+      this.selectListBatchNos = []
+      list.forEach((e, index) => {
+        this.selectListBatchNos.push(e.batchNo)
+      })
+    },
     showDetail(order) {
-      this.eventBus.$emit('showOrderDetail', order.id)
+      // this.eventBus.$emit('showOrderDetail', order.id)
     },
     setTable() {
       this.setupTableVisible = true

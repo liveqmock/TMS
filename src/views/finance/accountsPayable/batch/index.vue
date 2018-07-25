@@ -49,9 +49,49 @@ export default {
   },
   props: {
   },
+  mounted() {
+    this.initPage()
+  },
   data() {
     return {
       component: 'Short'
+    }
+  },
+  methods: {
+    initPage() {
+      if (this.$route.query.name) {
+        // console.log(this.$route.query.name)
+        const name = this.$route.query.name  // 接收子父组件路由传过来的值
+        switch (name) {
+          case 'Short':
+            this.component = 'Short'
+            break
+          case 'Deliver':
+            this.component = 'Deliver'
+            break
+          case 'TruckAll':
+            this.component = 'TruckAll'
+            break
+          case 'ArrivalAll':
+            this.component = 'ArrivalAll'
+            break
+          case 'Insurance':
+            this.component = 'Insurance'
+            break
+          case 'StationLoad':
+            this.component = 'StationLoad'
+            break
+          case 'StationOther':
+            this.component = 'StationOther'
+            break
+          case 'ArriveLoad':
+            this.component = 'ArriveLoad'
+            break
+          case 'ArriveOther':
+            this.component = 'ArriveOther'
+            break
+        }
+      }
     }
   }
 }

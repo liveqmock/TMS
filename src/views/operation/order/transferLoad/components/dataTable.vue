@@ -252,7 +252,10 @@ export default {
       current[filed] = val
       // 计算总费用
       current['totalCost'] = getTotal(current['transferCharge'], current['deliveryExpense'], current['transferOtherFee'])
-      _this.rightTable[index].totalCost = current['totalCost']
+      this.$set(_this.rightTable, index, Object.assign(_this.rightTable[index], {
+        totalCost: current['totalCost']
+      }))
+      // _this.rightTable[index].totalCost = current['totalCost']
       _this.$emit('loadTable', _this.rightTable)
     },
     goLeft() { // 数据从左边穿梭到右边

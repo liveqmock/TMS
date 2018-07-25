@@ -7,7 +7,7 @@
             type="daterange"
             align="right"
             :size="btnsize"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
             start-placeholder="开始日期"
             :picker-options="pickerOptions2"
             end-placeholder="结束日期">
@@ -40,7 +40,7 @@
             type="daterange"
             align="right"
             :size="btnsize"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
             start-placeholder="开始日期"
             :picker-options="pickerOptions2"
             end-placeholder="结束日期">
@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import { REGEX }  from '@/utils/validate'
 import { pickerOptions2, parseTime } from '@/utils/'
 import SelectTree from '@/components/selectTree/index'
 import querySelect from '@/components/querySelect/index'
@@ -80,13 +79,11 @@ export default {
       dafault: false
     }
   },
-  data () {
-    let _this = this
-
+  data() {
     return {
       searchCreatTime: [],
       searchCreatTime2: [],
-      defaultTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
+      defaultTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000, '{y}-{m}-{d}'), parseTime(new Date(), '{y}-{m}-{d}')],
       searchForm: {
         orgid: '',
         shipFromCityName: '',
@@ -95,7 +92,7 @@ export default {
       },
       rules: {
         mobile: [{
-          //validator: validateFormMobile, trigger: 'blur'
+          // validator: validateFormMobile, trigger: 'blur'
          // validator: validateFormNumber, trigger: 'change'
         }]
       },
@@ -105,38 +102,38 @@ export default {
     }
   },
   watch: {
-    orgid(newVal){
+    orgid(newVal) {
       this.searchForm.orgid = newVal
     }
   },
-  mounted () {
+  mounted() {
     this.searchForm.orgid = this.orgid
     this.searchCreatTime = this.defaultTime
     this.onSubmit()
   },
   methods: {
-    onSubmit () {
-      let searchObj = {}
+    onSubmit() {
+      const searchObj = {}
 
       searchObj.orgId = this.searchForm.orgid
-      if(!this.isbatch){
+      if (!this.isbatch) {
         searchObj.shipFromCityName = this.searchForm.shipFromCityName
         searchObj.shipToCityName = this.searchForm.shipToCityName
       }
-      
-      if(this.searchCreatTime) {
-        searchObj.transferTimeStart = this.searchCreatTime[0]
-        searchObj.transferTimeEnd = this.searchCreatTime[1]
+
+      if (this.searchCreatTime && this.searchCreatTime[0]) {
+        searchObj.transferTimeStart = this.searchCreatTime[0] + ' 00:00:00'
+        searchObj.transferTimeEnd = this.searchCreatTime[1] + ' 23:59:59'
       }
-      if(this.searchCreatTime2 && !this.isbatch){
-        searchObj.ydCreateTimeStart = this.searchCreatTime2[0] || ''
-        searchObj.ydCreateTimeEnd = this.searchCreatTime2[1] || ''
+      if (this.searchCreatTime2 && this.searchCreatTime2[0] && !this.isbatch) {
+        searchObj.ydCreateTimeStart = this.searchCreatTime2[0] + ' 00:00:00'
+        searchObj.ydCreateTimeEnd = this.searchCreatTime2[1] + ' 23:59:59'
       }
       searchObj.carrierId = this.searchForm.carrierId
 
       this.$emit('change', searchObj)
     },
-    clearForm () {
+    clearForm() {
       this.searchForm.orgid = this.orgid
       this.searchForm.shipFromCityName = ''
       this.searchForm.shipToCityName = ''

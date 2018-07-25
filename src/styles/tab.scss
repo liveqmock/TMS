@@ -58,8 +58,11 @@
 
         .btns_box{
             margin-bottom:10px;
+            height: 28px;
+            clear: both;
             .el-button{
                 margin-right:0;
+                float: left;
             }
             .table_setup{
                 float: right;
@@ -81,9 +84,6 @@
                 .unauth{
                     color: #f00;
                 }
-            }
-            .el-table td, .el-table th{
-                padding: 5px 0;
             }
         }
     }

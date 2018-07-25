@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!--By Supcan Report -->
+<Report>
+	<WorkSheet name="演示demo">
+		<Properties>
+			<BackGround bgColor="#FFFFFF"/>
+			<DefaultTD>
+				<TD fontIndex="0" textColor="#000000" transparent="true" leftBorder="1" topBorder="1" leftBorderColor="#C0C0C0" leftBorderStyle="solid" topBorderColor="#C0C0C0" topBorderStyle="solid" decimal="2" align="left" vAlign="middle" isProtected="false" isThousandSeparat="true" datatype="0" isRound="true" isPrint="true"/>
+			</DefaultTD>
+			<Other isShowZero="true" isRefOri="true" LineDistance="0" isRowHeightAutoExtendAble="true"/>
+		</Properties>
+		<Fonts>
+			<Font faceName="Microsoft YaHei UI" charSet="134" height="-14" weight="400"/>
+		</Fonts>
+		<Table>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<Col width="140" isHide="true"/>
+			<TR height="24" sequence="0" isHide="true">
+				<TD col="0" datatype="1" formula="=headrow(&apos;ds1\data\jsonobject&apos;)">time</TD>
+				<TD col="1" datatype="1">运费</TD>
+				<TD col="2" datatype="1">件数</TD>
+				<TD col="3" datatype="1">吨(千克)</TD>
+				<TD col="4" datatype="1">方(体积)</TD>
+				<TD col="5" datatype="1"/>
+				<TD col="6" datatype="1"/>
+				<TD col="7" datatype="1"/>
+				<TD col="8" datatype="1"/>
+				<TD col="9" datatype="1"/>
+			</TR>
+			<TR height="24" sequence="1">
+				<TD col="0" datatype="1" formula="=datarow(&apos;ds1\data\jsonobject&apos;)"/>
+				<TD col="1" datatype="1"/>
+				<TD col="2" datatype="1"/>
+				<TD col="3" datatype="1"/>
+				<TD col="4" datatype="1"/>
+				<TD col="5" datatype="1"/>
+				<TD col="6" datatype="1"/>
+				<TD col="7" datatype="1"/>
+				<TD col="8" datatype="1"/>
+				<TD col="9" datatype="1"/>
+			</TR>
+			<TR height="24" sequence="2">
+			</TR>
+			<TR height="24" sequence="3">
+			</TR>
+			<TR height="24" sequence="4">
+			</TR>
+			<TR height="24" sequence="5">
+			</TR>
+			<TR height="24" sequence="6">
+			</TR>
+			<TR height="24" sequence="7">
+			</TR>
+			<TR height="24" sequence="8">
+			</TR>
+			<TR height="24" sequence="9">
+			</TR>
+			<TR height="24" sequence="10">
+			</TR>
+			<TR height="24" sequence="11">
+			</TR>
+			<TR height="24" sequence="12">
+			</TR>
+			<TR height="24" sequence="13">
+			</TR>
+			<TR height="24" sequence="14">
+			</TR>
+			<TR height="24" sequence="15">
+			</TR>
+			<TR height="24" sequence="16">
+			</TR>
+			<TR height="24" sequence="17">
+			</TR>
+			<TR height="24" sequence="18">
+			</TR>
+			<TR height="24" sequence="19">
+			</TR>
+			<TR height="24" sequence="20">
+			</TR>
+			<TR height="24" sequence="21">
+			</TR>
+			<TR height="24" sequence="22">
+			</TR>
+			<TR height="24" sequence="23">
+			</TR>
+			<TR height="24" sequence="24">
+			</TR>
+			<TR height="24" sequence="25">
+			</TR>
+			<TR height="24" sequence="26">
+			</TR>
+			<TR height="15" sequence="27">
+				<TD col="0" leftBorder="0"/>
+				<TD col="1" leftBorder="0"/>
+				<TD col="2" leftBorder="0"/>
+				<TD col="3" leftBorder="0"/>
+				<TD col="4" leftBorder="0"/>
+				<TD col="5" leftBorder="0"/>
+				<TD col="6" leftBorder="0"/>
+				<TD col="7" leftBorder="0"/>
+				<TD col="8" leftBorder="0"/>
+				<TD col="9" leftBorder="0"/>
+				<TD col="10" leftBorder="0"/>
+			</TR>
+		</Table>
+		<GraphicObjects>
+			<Echart name="营运统计分析" unDragAbleAtRuntime="1" borderThick="1" borderColor="#000000" SamplePage="bar1">
+				<Properties Exp="Type=4;IsRevert=1;Title=营运统计分析;Theme=macarons;DataExp1=2;DataExp2=B:E;Meaning1=1;Meaning2=A;MeaningPos=1;"/>
+				<Rect x1="4" y1="11" x2="1539" y2="717"/>
+				<Option><![CData[
+option = {
+    title : {
+        text: '营运统计分析', 
+        subtext: '数值\/运费.吨.方.件数'
+    }, 
+    tooltip : {
+        trigger: 'axis'
+    }, 
+    toolbox : {
+        show: true, 
+        feature : {
+            magicType : {
+                show: true, 
+                type : ['line','bar']
+            }, 
+            saveAsImage : {
+                show: true
+            }
+        }
+    }, 
+    legend : {
+        data : ['运费','件数','吨(千克)','方(体积)']
+    }, 
+    xAxis : [
+        {
+            type: 'category', 
+            data : ['2018-05','2018-06','2018-07','2018-08']
+        }
+    ], 
+    yAxis : [
+        {type: 'value'}
+    ], 
+    series : [
+        {
+            type: 'bar', 
+            name: '运费', 
+            data : [0,0,1200.00,0]
+        }, 
+        {
+            type: 'bar', 
+            name: '件数', 
+            data : [0,0,170,0]
+        }, 
+        {
+            type: 'bar', 
+            name: '吨(千克)', 
+            data : [0.0,0.0,800.0,0.0]
+        }, 
+        {
+            type: 'bar', 
+            name: '方(体积)', 
+            data : [0.0,0.0,700.0,0.0]
+        }
+    ], 
+    calculable: true
+};
+]]></Option>
+			</Echart>
+		</GraphicObjects>
+		<PrintPage>
+			<Paper>
+				<Margin left="19" top="25" right="19" bottom="25"/>
+			</Paper>
+			<Page isIgnoreValidBorder="false">
+				<PageCode>
+					<Font faceName="Microsoft YaHei UI" charSet="134" height="-14" weight="400"/>
+				</PageCode>
+			</Page>
+		</PrintPage>
+	</WorkSheet>
+	<DataSources Version="255" isAutoCalculateWhenOpen="false" isSaveCalculateResult="false">
+		<DataSource type="4"><!-- Desc: Supcan Report Component DataSource Specification -->
+<Data>
+	<ID>ds1</ID>
+	<Version>2</Version>
+	<Type>4</Type>
+	<TypeMeaning>JSON</TypeMeaning>
+	<Source>http://localhost:7010/api-finance/finance/report/v1/findOperationReport?&amp;startTime=2018-05-13 11:11:11&amp;endTime=2018-08-17 11:11:11&amp;orgId=1&amp;selectType=1&amp;shipToCityName&amp;businessType&amp;access_token=d6a6ab53-0aac-4d1f-87c1-6653390fa31d</Source>
+	<Memo>11111</Memo>
+	<XML_RecordAble_Nodes>
+		<Node>
+			<name/>
+		</Node>
+		<Node>
+			<name>data\jsonobject</name>
+		</Node>
+	</XML_RecordAble_Nodes>
+	<Columns>
+		<Column>
+			<name>status</name>
+			<text>status</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+		<Column>
+			<name>text</name>
+			<text>text</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>2</sequence>
+		</Column>
+		<Column>
+			<name>errorInfo</name>
+			<text>errorInfo</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>3</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\time</name>
+			<text>time</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\shipAmount</name>
+			<text>件数</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>3</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\shipWeight</name>
+			<text>吨(千克)</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>4</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\shipVolume</name>
+			<text>方(体积)</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>5</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\shipFee</name>
+			<text>运费</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>2</sequence>
+		</Column>
+		<Column>
+			<name>data\jsonobject\childShipIds</name>
+			<text>childShipIds</text>
+			<type>string</type>
+			<visible>false</visible>
+			<sequence>6</sequence>
+		</Column>
+	</Columns>
+</Data>
+
+		</DataSource>
+	</DataSources>
+</Report>

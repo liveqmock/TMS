@@ -1,130 +1,78 @@
 <template>
-  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="addCustomerPop" v-loading="loading">
-    <template class="addCustomerPop-content" slot="content" :label-width="formLabelWidth">
+  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="wzl_addSignPop" v-loading="loading">
+    <template class="wzl_addSignPop-content" slot="content" :label-width="formLabelWidth">
       <el-form :model="form" :rules="rules" ref="ruleForm" :label-width="formLabelWidth" :inline="true" label-position="right" size="mini" class="manage-add">
-      <table class="table">
-        <tr>
-          <td>
-            <el-form-item label="运单号:" prop="shipSn">
-                <el-input maxlength="20" v-model="form.shipSn" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="开单日期:" prop="createTime">
-                <el-input maxlength="20" v-model="form.createTime" auto-complete="off" :disabled="true"></el-input>
-            </el-form-item>
-            <!-- <el-table-column
-              sortable
-              width="120"
-              label="开单日期">
-              <template slot-scope="scope">{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</template>
-            </el-table-column> -->
-          </td>
-          <td>
-            <el-form-item label="回单号:" prop="shipReceiptSn">
-                <el-input maxlength="20" v-model="form.shipReceiptSn" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="回单数:" prop="shipReceiptNum">
-                <el-input maxlength="20" v-model="form.shipReceiptNum" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <el-form-item label="发货人:" prop="sender_customer_name">
-                <el-input maxlength="20" v-model="form.sender_customer_name" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="发货人电话:" prop="sender_customer_mobile">
-                <el-input maxlength="20" v-model="form.sender_customer_mobile" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="收货人:" prop="receiver_customer_name"> 
-                <el-input maxlength="20" v-model="form.receiver_customer_name" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="收货人电话:" prop="eceiver_customer_mobile">
-              <el-input maxlength="20" v-model="form.eceiver_customer_mobile" auto-complete="off" :disabled="true"></el-input>
-            </el-form-item>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <el-form-item label="签收时间:" prop="signTime" >
-              <el-date-picker
-                  v-model="searchCreatTime"
-                  align="right"
-                  type="date"
-                  :picker-options="pickOption2"
-                  placeholder="选择日期"
-                  value-format="timestamp"
-                  :disabled="isDbclick"
-                  >
-              </el-date-picker>
-            </el-form-item>
-            <!-- <el-form-item label="签收时间:" prop="signTime">
-                <el-input maxlength="20" v-model="form.signTime" auto-complete="off"></el-input>
-              </el-form-item> -->
-          </td>
-          <td>
-            <el-form-item label="交接方式:" prop="shipDeliveryMethodName" >
-              <SelectType v-model="form.shipDeliveryMethodName" type="ship_delivery_method" :disabled="true"/>
-            </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="到付款:" prop="shipArrivepayFee">
-                <el-input maxlength="20" v-model="form.shipArrivepayFee" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="代收货款:" prop="agencyFund">
-                <el-input maxlength="20" v-model="form.agencyFund" auto-complete="off" :disabled="true"></el-input>
-              </el-form-item>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <el-form-item label="签收人:" prop="signName">
-                <el-input maxlength="10" v-model="form.signName" auto-complete="off" :disabled="isDbclick ? true :false"></el-input>
-              </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="签收证件:" prop="signCocumentTypeId" >
-              <SelectType v-model="form.signCocumentTypeId" type="sign_cocument_type" :disabled="isDbclick"/>
-            </el-form-item>
-          </td>
-          <td>
-            <el-form-item label="证件号码:" prop="documentNum">
-              <el-input v-model="form.documentNum" auto-complete="off" :disabled="isDbclick"></el-input>
-            </el-form-item>
-          </td>
-          <td>
-           <el-form-item label="签收类型:" prop="signTypeId" >
-              <SelectType v-model="form.signTypeId" type="sign_type" :disabled="isDbclick"/>
-            </el-form-item>
-          </td>
-        </tr>
-        <tr>
-          <!-- <td>备注</td> -->
-          <td colspan="7" prop="remark" class="mark">
-            <label class="label">备注</label>
-            <input type="text" v-model.trim="form.remark" placeholder="备注最多输入250个字符" maxlength="250" :disabled="isDbclick"/></td>
-        </tr>
-        <tr style="height:152px">
-          <!-- <td>签收凭证</td> -->
-          <td colspan="7" class="imgshow mark">
-            <div class="pz"><div>签收凭证<span class="ts">（最多可上传6张）</span></div></div>
-            <div class="clearfix uploadcard">
-              <upload :title="'本地上传'" :showFileList="true" :limit="6" listtype="picture"  v-model="form.signPic" :disabled="isDbclick"/>
-            </div>
-          </td>
-        </tr> 
-      </table>
+      <div class="content_top">
+        <el-form-item label="运单号:" prop="shipSn">
+          <el-input maxlength="20" v-model="form.shipSn" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="开单日期:" prop="createTime">
+          <el-input maxlength="20" v-model="form.createTime" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="回单号:" prop="shipReceiptSn">
+          <el-input maxlength="20" v-model="form.shipReceiptSn" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="回单数:" prop="shipReceiptNum">
+          <el-input maxlength="20" v-model="form.shipReceiptNum" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="发货人:" prop="sender_customer_name">
+          <el-input maxlength="20" v-model="form.sender_customer_name" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="发货人电话:" prop="sender_customer_mobile">
+          <el-input maxlength="20" v-model="form.sender_customer_mobile" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="收货人:" prop="receiver_customer_name"> 
+          <el-input maxlength="20" v-model="form.receiver_customer_name" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="收货人电话:" prop="receiver_customer_mobile">
+          <el-input maxlength="20" v-model="form.receiver_customer_mobile" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="签收时间:" prop="signTime" >
+          <el-date-picker
+              v-model="searchCreatTime"
+              align="right"
+              type="date"
+              :picker-options="pickOption2"
+              placeholder="选择日期"
+              value-format="timestamp"
+              :disabled="isDbclick"
+              >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="交接方式:" prop="shipDeliveryMethodName" >
+          <!-- <SelectType v-model="form.shipDeliveryMethodName" type="ship_delivery_method" :disabled="true"/> -->
+          <el-input v-model="form.shipDeliveryMethodName" type="ship_delivery_method" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="到付款:" prop="shipArrivepayFee">
+          <el-input maxlength="20" v-model="form.shipArrivepayFee" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="代收货款:" prop="agencyFund">
+          <el-input maxlength="20" v-model="form.agencyFund" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="签收人:" prop="signName">
+          <el-input maxlength="10" v-model="form.signName" auto-complete="off" :disabled="isDbclick ? true :false"></el-input>
+        </el-form-item>
+        <el-form-item label="签收证件:" prop="signCocumentTypeId" >
+          <SelectType v-model="form.signCocumentTypeId" type="sign_cocument_type" :disabled="isDbclick"/>
+        </el-form-item>
+        <el-form-item label="证件号码:" prop="documentNum">
+          <el-input v-model="form.documentNum" auto-complete="off" :disabled="isDbclick"></el-input>
+        </el-form-item>
+        <el-form-item label="签收类型:" prop="signTypeId" >
+          <SelectType v-model="form.signTypeId" type="sign_type" :disabled="isDbclick"/>
+        </el-form-item>
+        <el-form-item class="driverRemarks ms" label="备注" prop="remark" >
+          <input class="bz" maxlength="200" v-model.trim="form.remark" v-if="isDbclick" disabled="isDbclick"  placeholder="最多可输入250个字符"/>
+          <input class="bz1" maxlength="200" v-model.trim="form.remark" v-else  placeholder="最多可输入250个字符"/>
+            <!-- <el-input type="textarea" maxlength="200" v-model="form.remark" :disabled="isDbclick"></el-input> -->
+        </el-form-item>
+      </div>
+        <div class="content_bot imgshow mark">
+          <div class="pz"><div>签收凭证<span class="ts">（最多可上传6张）</span></div></div>
+          <div class="clearfix uploadcard">
+            <upload :title="'本地上传'" :showFileList="true" :limit="6" listtype="picture"  v-model="form.signPic" :disabled="isDbclick"/>
+          </div>
+        </div>
       </el-form>
     </template>
     <div slot="footer" class="dialog-footer" v-if="isDbclick">
@@ -141,7 +89,7 @@
 import { REGEX } from '@/utils/validate'
 import { postPickuplist, postPickupSign, putXiugai, postSign } from '@/api/operation/sign'
 import popRight from '@/components/PopRight/index'
-import Upload from '@/components/Upload/singleImage'
+import Upload from '@/components/Upload/singleImage2'
 import SelectTree from '@/components/selectTree/index'
 import SelectType from '@/components/selectType/index'
 import { mapGetters } from 'vuex'
@@ -219,18 +167,19 @@ export default {
         callback(new Error('不可以输入特殊字符和空格'))
       }
     }
-    const validateremark = function(rule, value, callback) {
-      if (value === '' || value === null || !value || value === undefined) {
-        callback(new Error('请输入备注'))
-      } else if (value.length > 250) {
-        callback(new Error('最多可以输入250位字符'))
-      } else if (REGEX.KONGE.test(value)) {
-        callback()
-      } else {
-        callback(new Error('不可以输入空格'))
-      }
-    }
+    // const validateremark = function(rule, value, callback) {
+    //   if (value === '' || value === null || !value || value === undefined) {
+    //     callback(new Error('请输入备注'))
+    //   } else if (value.length > 250) {
+    //     callback(new Error('最多可以输入250位字符'))
+    //   } else if (REGEX.KONGE.test(value)) {
+    //     callback()
+    //   } else {
+    //     callback(new Error('不可以输入空格'))
+    //   }
+    // }
     return {
+     // id: '',
       senderList: [],
       receiverList: [],
       dataset: [],
@@ -241,6 +190,7 @@ export default {
       disabled: false,
       // getrepertoryId:'',
       form: {
+        // 'loadId': '',
         'repertoryId': '',
         'signTime': '',
         'signName': '',
@@ -252,6 +202,7 @@ export default {
         'signPic': ''
       },
       obj: {
+        // 'loadId': '',
         'repertoryId': '',
         'signTime': '',
         'signName': '',
@@ -279,10 +230,10 @@ export default {
         signTypeId: [
           { required: true, message: '请选择签收类型', trigger: 'blur' }
         ],
-        remark: [
-          // { required: true, message: '请输入签收备注', trigger: 'blur' },
-           { required: true, trigger: 'blur', validator: validateremark }
-        ],
+        // remark: [
+        //   // { required: true, message: '请输入签收备注', trigger: 'blur' },
+        //    { required: true, trigger: 'blur', validator: validateremark }
+        // ],
         searchCreatTime: [
           { required: true, message: '请选择时间', trigger: 'blur' }
         ]
@@ -396,6 +347,7 @@ export default {
     setInfo() {
       // this.$set('form', this.repertoryId)
       this.form = objectMerge2({}, this.form, this.repertoryId)
+      // this.obj.loadId = this.repertoryId.loadId
       this.obj.repertoryId = this.repertoryId.repertoryId
       this.obj.signTime = this.repertoryId.signTime
       this.obj.signCocumentTypeId = this.repertoryId.signCocumentTypeId
@@ -425,13 +377,13 @@ export default {
           // console.log(res, "this.form.abnormalNo: ", this.form);
       })
     },
-    handleSelectSender(res) {
-      this.customSend.senderName = res.customerName
-      this.customSend.companyName = res.companyName
-      this.customSend.senderMobile = res.customerMobile
-      this.customSend.detailedAddress = res.detailedAddress
-      this.customSend.customerType = res.customerType
-    },
+    // handleSelectSender(res) {
+    //   this.customSend.senderName = res.customerName
+    //   this.customSend.companyName = res.companyName
+    //   this.customSend.senderMobile = res.customerMobile
+    //   this.customSend.detailedAddress = res.detailedAddress
+    //   this.customSend.customerType = res.customerType
+    // },
     querySearchReceiver(name) {
       const _this = this
       return function(query, cb) {
@@ -463,6 +415,8 @@ export default {
           }
           data.childShipId = this.repertoryId.childShipId
           data.shipId = this.repertoryId.shipId
+          data.loadId = this.repertoryId.loadId
+          // console.log(this.repertoryId.loadId)
           let promiseObj
           if (this.isPick) {
             promiseObj = putXiugai(this.id, data)
@@ -540,6 +494,125 @@ export default {
 }
 </script>
 <style lang="scss">
+.wzl_addSignPop{
+  left: auto;
+  top: 50px;
+  bottom: auto;
+  min-width: 1200px;
+  max-width:  1325px;
+  .content_top{
+    padding:33px 0 0 0;
+  }
+  .content_bot{
+    border-top: 1px dashed #3e9ff1;
+    border-bottom: 1px dashed #3e9ff1;
+    margin:0 35px;
+    padding-top: 20px;
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner{
+    width: 178px;
+  }
+  .el-input--suffix .el-input__inner{
+    padding-right: 15px;
+  }
+  .bz{
+    height: 35px;
+    line-height: 35px;
+    width:1055px;
+    padding-left:20px;
+    border:1px solid #ccc;
+    border-radius: 5px;
+    color:#999;
+    background:rgb(244,246,249);
+    // background-color:#f5f7fa;;
+  }
+  .bz1{
+  height: 35px;
+  line-height: 35px;
+  width:1055px;
+  padding-left:20px;
+  border:1px solid #ccc;
+  border-radius: 5px;
+  color:#999;
+  // background:rgb(244,246,249);
+  // background-color:#f5f7fa;;
+  }
+  .mark .pz{
+    width:100px;
+    height: 167px;
+    // margin-top:30px;
+    // line-height: 167px;
+      // border-right:1px solid #ccc;
+    float:left;
+    text-align: center;
+    // background: #f2f2f2;
+    div{
+      font-size:14px;
+      margin-top:30px;
+      // color:#999;
+
+      .ts{
+        display: block;
+        color:#999999;
+        font-size:13px;
+        margin-top:3px;
+      }
+    }
+          
+  }
+  .imgshow{
+    .el-upload-list--picture .el-upload-list__item{
+        overflow: hidden;
+        z-index: 0;
+        background-color: #fff;
+        border: 1px solid #3e9ff1;
+        border-radius: 6px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-top: 10px;
+        padding: 10px 10px 10px 90px;
+        height: 92px;
+        width: 100px;
+        float: left;
+        margin:5px 10px;
+    }
+  
+  }
+  // .uploadlist{
+  //   margin-left: 20px;
+  // }
+  // .el-upload-list{
+  //   float:left;
+  //   margin-left: 136px;
+  // }
+  // .upload-container .el-upload{
+  //   height:104px;
+  //   // margin-top: 20px;
+  // }
+  // .upload-container .uploadlist{
+    
+  //   position:relative;
+    
+  // }
+  // .upload-container .el-upload{
+  //   // background:red;
+  //   border:1px dashed #ccc;
+  //   position:absolute;
+  //   left:0px;
+  //   top:0px;
+  // }
+  .el-upload-list--picture-card .el-upload-list__item{
+    width: 234px;
+    height: 136px;
+  }
+  .el-upload-dragger{
+    width: 234px;
+    height: 136px;
+  }
+  .el-upload--picture-card{
+    width:234px;
+    height:136px;
+  }
   .selectListOption_lrl{
     clear:both;
     span{
@@ -552,118 +625,19 @@ export default {
       font-size: 12px;
     }
   }
-.addCustomerPop{
-  left: auto;
-  top: 50px;
-  bottom: auto;
-  min-width: 1130px;
-  max-width:  1255px;
-  .table{
-    border-collapse :collapse ;
-    color: #333333;
-    // border-left:1px solid #ccc;
-    tr{
-      .mark .label{
-        display: block;
-        float:left;
-        text-align:center;
-        width:100px;
-        height:50px;
-        line-height:50px;
-        background:#f2f2f2;
-        border-right:1px solid #ccc;
-      }
-      .mark input{
-        width:1000px;
-        height:48px;
-        line-height: 48px;
-        padding-left: 20px;
-      }
-      .mark .pz{
-        width:100px;
-        height: 167px;
-        // margin-top:30px;
-        // line-height: 167px;
-         border-right:1px solid #ccc;
-        float:left;
-        text-align: center;
-        background: #f2f2f2;
-        div{
-          height: 167px;
-          margin-top:50px;
-         
-        // line-height: 167px;
-          .ts{
-            display: block;
-            color:#999999;
-          }
-        }
-        
-      }
-      .upload-container[data-v-de7091b2]{
-        margin-left: 40px;
-      }
-      td{
-        // width:157px;
-        height:50px;
-        border :1px solid black;
-        border-color: rgba(201, 201, 201, 1);
-        font-size:14px;
-        // text-align :center;
-        // background: #f5f7fa;
-        // label{
-        //   background:#fff;
-        // }
-        label{
-          border-right:1px solid #ccc;
-        }
-        input{
-          height: 32px;
-          line-height: 32px;
-          border:none;
-          padding-left:10px;
-          background: #fff;
-        }
-        .el-form-item__label{
-          background:#f2f2f2;
-        }
-        .el-date-editor.el-input, .el-date-editor.el-input__inner{
-          width:182px;
-        }
-        .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
-          margin: 0px;
-          
-        }
-        .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label{
-          height:50px;
-          line-height: 50px;
-          text-align: center;
-        }
-      }
-      .imgshow{
-        .el-upload-list--picture .el-upload-list__item{
-            overflow: hidden;
-            z-index: 0;
-            background-color: #fff;
-            border: 1px solid #c0ccda;
-            border-radius: 6px;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            margin-top: 10px;
-            padding: 10px 10px 10px 90px;
-            height: 92px;
-            width: 100px;
-            float: left;
-        }
-       
-      }
-      .el-input__prefix i{
-        display: none;
-      }
-      .el-input.is-disabled .el-input__inner {
-        background-color: #fff;
-      }
-    }
+  // .el-upload-list{
+  //   border:1px dashed #ccc;
+  //   padding:0 0px 3px 0px;
+  // }
+  .el-input.is-disabled .el-input__inner{
+    color: #3e9ff1;
+    // font-weight: bold;
+  }
+  .el-input--mini .el-input__inner{
+    color: #3e9ff1;
+  }
+  .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
+    margin-bottom: 25px;
   }
 }
 

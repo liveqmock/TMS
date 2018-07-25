@@ -57,11 +57,11 @@ export function getUploadPolicy() {
  * @param {*} type 下拉类型
  * @param {*} orgid 网点id
  */
-export function getSelectType(type = '', orgid) {
+export function getSelectType(type = '', orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: type,
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []

@@ -52,6 +52,16 @@ export function putCancel(ids) {
 }
 
 /**
+ * http://localhost:7010/api-order/order/pre/v1/accept/?access_token={{access_token}}&ids=1,2,3
+ * @param ids
+ * @returns {*}
+ */
+
+export function putAccept(ids) {
+  return fetch.put('/api-order/order/pre/v1/accept/?ids=' + ids)
+}
+
+/**
  * 插入客户订单
  * @param params
  * {
@@ -107,3 +117,5 @@ export function postModifyOrder(params) {
     return res.data || {}
   })
 }
+
+

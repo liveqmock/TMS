@@ -1,6 +1,6 @@
 <template>
-  <div class="detailTable">
-    <el-form inline v-model="info" label-width="100" class="detailTable_info">
+  <div class="detailTables">
+    <el-form inline v-model="info" label-width="100" class="detailTables_info">
       <table>
         <tbody>
           <tr>
@@ -67,7 +67,7 @@
       <div class="info_tab">
         <el-table :data="detailList" stripe border height="100%" style="height:100%;" :default-sort="{prop: 'id', order: 'ascending'}" tooltip-effect="dark">
           <el-table-column sortable width="120" prop="shipFromOrgName" label="开单网点"></el-table-column>
-          <el-table-column sortable width="120" prop="shipId" label="运单号"></el-table-column>
+          <el-table-column sortable width="120" prop="shipSn" label="运单号"></el-table-column>
           <el-table-column sortable width="120" prop="loadAmount" label="配载件数"></el-table-column>
           <el-table-column sortable width="120" prop="loadWeight" label="配载重量"></el-table-column>
           <el-table-column sortable width="120" prop="loadVolume" label="配载体积"></el-table-column>
@@ -84,7 +84,7 @@
           <el-table-column sortable width="120" prop="shipReceiverName" label="收货人"></el-table-column>
           <el-table-column sortable width="120" prop="shipReceiverMobile" label="收货人电话"></el-table-column>
           <el-table-column sortable width="200" prop="cargoName" label="货品名"></el-table-column>
-          <el-table-column sortable width="120" prop="shipSn" label="货号"></el-table-column>
+          <el-table-column sortable width="120" prop="shipGoodsSn" label="货号"></el-table-column>
           <el-table-column sortable width="120" prop="shipRemarks" label="运单备注"></el-table-column>
         </el-table>
       </div>
@@ -164,14 +164,14 @@ export default {
 
 </script>
 <style lang="scss">
-.detailTable {
+.detailTables {
   margin-top: 75px;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 240px);
   padding: 0 10px;
   position: relative;
-  .detailTable_info {
+  .detailTables_info {
     border-bottom: 2px dotted #eee;
     background-color: #fff;
     table {

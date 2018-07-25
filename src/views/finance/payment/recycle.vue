@@ -416,6 +416,7 @@ export default {
                 message: '取消回收成功~',
                 type: 'success'
               })
+              this.$emit('success')
               this.featchAllpayment()
               return false
             }).catch(res => {

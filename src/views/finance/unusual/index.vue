@@ -9,7 +9,7 @@
           <!-- <el-button type="primary" :size="btnsize"  @click="doAction('check')" plain>查看明细</el-button> -->
           <el-button type="danger" :size="btnsize" icon="el-icon-delete" @click="doAction('delete')" plain>删除</el-button>
           <el-button type="primary" :size="btnsize" class="el-icon-upload2" @click="doAction('export')" plain>导出</el-button>
-          
+
           <el-button type="primary" :size="btnsize"  plain @click="setTable" class="table_setup">表格设置</el-button>
       </div>
       <div class="info_tab">
@@ -36,13 +36,13 @@
             sortable
             prop="id"
             label="序号"
-            width="80">
+            width="200">
           </el-table-column>
           <!-- 没有返回字段名 -->
           <el-table-column
             label="开单网点"
             width="180"
-            prop="shipFromOrgid"
+            prop="orgidName"
             sortable
             >
           </el-table-column>
@@ -58,7 +58,7 @@
             sortable
             label="运单号">
           </el-table-column>
-         
+
           <el-table-column
             prop="shipGoodsSn"
             sortable
@@ -66,7 +66,7 @@
             label="货号">
           </el-table-column>
           <el-table-column
-            prop="shipFromCityCode"
+            prop="shipFromCityName"
             label="出发城市"
             width="120"
             sortable
@@ -74,13 +74,13 @@
           </el-table-column>
           <el-table-column
             sortable
-            prop="shipToCityCode"
+            prop="shipToCityName"
             width="120"
             label="到达城市">
           </el-table-column>
            <!-- 没有返回字段名 -->
           <el-table-column
-            prop="status"
+            prop="statusValue"
             label="结算状态"
             width="120"
             sortable
@@ -95,7 +95,7 @@
           </el-table-column>
            <!-- 没有返回字段名 -->
           <el-table-column
-            prop="feeTypeId"
+            prop="incomePayTypeValue"
             label="费用类型"
             width="120"
             sortable
@@ -105,12 +105,12 @@
            <el-table-column
             prop=""
             label="异动时间"
-            width="120"
+            width="200"
             sortable
             >
             <template slot-scope="scope">{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
           </el-table-column>
-   
+
           <el-table-column
             prop="remark"
             label="异动备注"
@@ -153,13 +153,13 @@
             sortable
             >
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             prop="abnormalAmount"
             label="异常件数"
             width="120"
             sortable
             >
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             prop="cargoName"
             label="货品名"
@@ -231,18 +231,11 @@
             >
           </el-table-column>
           <el-table-column
-            prop=""
-            label="多笔付"
-            width="120"
-            sortable
-            >
-          </el-table-column>
-          <el-table-column
             label="到达省"
             width="120"
             sortable
             >
-            <template slot-scope="scope">{{ scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[0] : '' }}</template>     
+            <template slot-scope="scope">{{ scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[0] : '' }}</template>
           </el-table-column>
           <el-table-column
             label="到达市"
@@ -258,7 +251,7 @@
             >
             <template slot-scope="scope">{{ scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[2] : '' }}</template>
           </el-table-column>
-     
+
           <el-table-column
             prop="senderDetailedAddress"
             label="发货地址"
@@ -275,16 +268,16 @@
           </el-table-column>
         </el-table>
       </div>
-      <div class="info_tab_footer">共计:{{ total }} <div class="show_pager"> <Pager :total="total" @change="handlePageChange" /></div> </div>    
+      <div class="info_tab_footer">共计:{{ total }} <div class="show_pager"> <Pager :total="total" @change="handlePageChange" /></div> </div>
     </div>
-      <Addunusual :issender="true" :isModify="isModify"  :isCheck="isCheck" :info="selectInfo" :id="id" :orgid="orgid" :companyId="otherinfo.companyId" :popVisible.sync="AddAbnormalVisible" @close="closeAddAbnormal" @success="fetchData"  />
+      <Addunusual :issender="true" :isModify="isModify" :isDbClick="isDbClick" :isCheck="isCheck" :info="selectInfo" :id="id" :orgid="orgid" :companyId="otherinfo.companyId" :popVisible.sync="AddAbnormalVisible" @close="closeAddAbnormal" @success="fetchData"  />
       <!-- <TableSetup :issender="true" :popVisible="setupTableVisible" @close="closeSetupTable" @success="fetchData"  /> -->
     </div>
-</div> 
+</div>
 </template>
 <script>
 import SearchForm from './components/search'
-import { getAbnormalUnusual } from '@/api/finance/unusual'
+import { postAbnormalUnusual, Delete } from '@/api/finance/unusual'
 import { mapGetters } from 'vuex'
 // import TableSetup from './components/tableSetup'
 import Pager from '@/components/Pagination/index'
@@ -307,11 +300,12 @@ export default {
     }
   },
   mounted() {
-    this.searchQuery.vo.orgId = this.otherinfo.orgid
-    Promise.all([this.fetchAllreceipt(this.otherinfo.orgid)]).then(resArr => {
-      this.loading = false
+    // this.searchQuery.vo.orgId = this.otherinfo.orgid
+    this.fetchAllreceipt()
+    // Promise.all([this.fetchAllreceipt(this.otherinfo.orgid)]).then(resArr => {
+      // this.loading = false
             // this.licenseTypes = resArr[1]
-    })
+    // })
   },
   data() {
     return {
@@ -323,7 +317,7 @@ export default {
       isCheck: false,
       AddAbnormalVisible: false,
       setupTableVisible: false,
-      isDbclick: false,
+      isDbClick: false,
       licenseTypes: [],
       selected: [],
       loading: false,
@@ -331,6 +325,7 @@ export default {
         'currentPage': 1,
         'pageSize': 10,
         'vo': {
+          // 'shipSn': ''
         }
       },
       total: 0,
@@ -346,12 +341,13 @@ export default {
         //   return info[0] ? info[0].dictName : id
         // },
     fetchAllreceipt() {
-      // this.loading = true
-      // return getAbnormalUnusual(this.searchQuery).then(data => {
-      this.dataset = data.list
-      this.total = data.total
-      this.loading = false
-      // })
+      this.loading = true
+      return postAbnormalUnusual(this.searchQuery).then(data => {
+        this.dataset = data.list
+        this.total = data.total
+        this.loading = false
+        console.log(data.list)
+      })
     },
 
     handlePageChange(obj) {
@@ -361,11 +357,11 @@ export default {
     fetchData() {
       this.fetchAllreceipt()
     },
-         // 获取组件返回的搜索参数
+    // 获取组件返回的搜索参数
     getSearchParam(searchParam) {
-            // 根据搜索参数请求后台获取数据
+      // 根据搜索参数请求后台获取数据
       objectMerge2(this.searchQuery.vo, searchParam)
-            // this.searchQuery.vo.orgId = searchParam.orgid
+      // this.searchQuery.vo.orgId = searchParam.orgid
       this.fetchData()
     },
     doAction(type) {
@@ -373,7 +369,7 @@ export default {
         this.showImport()
         return false
       }
-          // 判断是否有选中项
+      // 判断是否有选中项
       if (!this.selected.length && type !== 'reg') {
         this.$message({
           message: '请选择要操作的项~',
@@ -382,28 +378,33 @@ export default {
         return false
       }
       switch (type) {
-              // 登记
+        // 登记
         case 'reg':
           this.isModify = false
           this.isCheck = false
-                // this.isDbclick = false
+          this.isDbClick = false
+          // this.isDbclick = false
           console.log(this.isModify)
           this.selectInfo = {}
           this.openAddAbnormal()
           break
-              // 修改
+        // 修改
         case 'xiugai':
           if (this.selected.length > 1) {
             this.$message({
-              message: '每次只能寄出单条数据',
+              message: '每次只能修改一条数据',
               type: 'warning'
             })
           } else {
-            this.isModify = true
             this.isCheck = false
+            // this.selectInfo = {}
                   //  this.isDbclick = false
-            this.id = this.selected[0].id
-            console.log(this.id)
+            // this.id = this.selected[0].id
+            // this.selectInfo = this.selected[0]
+            this.selectInfo = Object.assign({}, this.selected[0])
+            this.isModify = true
+            this.isDbClick = false
+            // console.log('this.selectInfo:', this.selected)
             this.openAddAbnormal()
           }
           break
@@ -415,13 +416,13 @@ export default {
             return item.id
           })
           ids = ids.join(',')
-
+          console.log(ids + 'wzl')
           this.$confirm('确定要删除 ' + deleteItem + ' 订单异常信息吗？', '提示', {
             confirmButtonText: '删除',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            delAbnormal(ids).then(res => {
+            Delete(ids).then(res => {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
@@ -449,6 +450,8 @@ export default {
     },
     closeAddAbnormal() {
       this.AddAbnormalVisible = false
+      this.isModify = false
+      this.selectInfo = {}
     },
     clickDetails(row, event, column) {
       this.$refs.multipleTable.toggleRowSelection(row)
@@ -463,10 +466,11 @@ export default {
       this.setupTableVisible = false
     },
     getDbClick(row, event) {
-      this.repertoryId = row
-      this.isCheck = true
+      this.selectInfo = row
+      // this.isCheck = true
+      this.isDbClick = true
       this.isModify = false
-          // this.isDbclick = true
+      // this.isCheck = true
       this.openAddAbnormal()
     }
   }

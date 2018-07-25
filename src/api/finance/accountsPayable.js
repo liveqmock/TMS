@@ -45,6 +45,17 @@ export function postFindChangeList(data) {
     return res.data || { list: [], totalCount: 0 }
   })
 }
+/**
+ * 结算保存
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
+export function postCreateloadSettlement(orgId, data) {
+  return fetch.post('/api-finance/finance/tmsfinancefeepayable/v1/create/'+ orgId, data).then(res => {
+    return res.data
+  })
+}
+
 
 /**************************************
  *             批次结算
@@ -83,4 +94,14 @@ export function postPayListByOne(data) {
  */
 export function GetFeeInfo(orgId, paymentsType) {
   return fetch.get('/api-finance/finance/tmsfinancecapitalflow/v1/getFeeInfo/?orgId=' + orgId + '&paymentsType=' + paymentsType)
+}
+/**
+ * 结算保存
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
+export function postLoadSettlement(data) {
+  return fetch.post('/api-finance/finance/tmsfinancefeepayable/v1/loadSettlement/', data).then(res => {
+    return res.data
+  })
 }

@@ -27,7 +27,7 @@
           </selectType>
         </el-form-item>
         <el-form-item label="运单号" prop="shipSn">
-            <el-input v-model="searchForm.shipSn" maxlength="20" auto-complete="off"></el-input>
+            <el-input v-model="searchForm.shipSn" maxlength="20" auto-complete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="出发城市">
             <SelectCity @change="getFromCity" v-model="searchForm.shipFromCityName"/>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { REGEX } from '@/utils/validate'
+// import { REGEX } from '@/utils/validate'
 import SelectTree from '@/components/selectTree/index'
 import SelectType from '@/components/selectType/index'
 import SelectCity from '@/components/selectCity/index'
@@ -72,15 +72,15 @@ export default {
   },
   data() {
     // const _this = this
-    const validateshipSn = function(rule, value, callback) {
-      if (value === '' || value === null || !value || value === undefined) {
-        callback(new Error('请输入运单号'))
-      } else if (REGEX.ONLY_NUMBER_AND_LETTER.test(value)) {
-        callback()
-      } else {
-        callback(new Error('只能输字母和数字'))
-      }
-    }
+    // const validateshipSn = function(rule, value, callback) {
+    //   if (value === '' || value === null || !value || value === undefined) {
+    //     callback(new Error('请输入运单号'))
+    //   } else if (REGEX.ONLY_NUMBER_AND_LETTER.test(value)) {
+    //     callback()
+    //   } else {
+    //     callback(new Error('只能输字母和数字'))
+    //   }
+    // }
 
     return {
       searchCreatTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
@@ -99,10 +99,10 @@ export default {
         endTime: ''
       },
       rules: {
-        shipSn: [
+        // shipSn: [
 
-          { required: true, trigger: 'blur', validator: validateshipSn }
-        ]
+        //   { required: true, trigger: 'blur', validator: validateshipSn }
+        // ]
       }
     }
   },
@@ -127,11 +127,10 @@ export default {
       this.searchForm.shipToCityName = city.longAddr
     },
     onSubmit() {
-      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
-      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
-      // this.searchForm.startTime = this.searchCreatTime[0]
-      // this.searchForm.endTime = this.searchCreatTime[1]
-      // console.log(this.searchCreatTime[0],this.searchCreatTime[1]);
+      // this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
+      // this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
+      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0], '{y}-{m}-{d} ') + '00:00:00' : ''
+      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1], '{y}-{m}-{d} ') + '23:59:59' : ''
       this.$emit('change', this.searchForm)
     },
     clearForm() {
@@ -146,3 +145,9 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.el-range-editor--mini.el-input__inner{
+  height: 28px;
+  width: 200px;
+}
+</style>

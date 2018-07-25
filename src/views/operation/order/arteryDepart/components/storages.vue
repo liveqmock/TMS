@@ -1,5 +1,5 @@
 <template>
-  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="storagesPop" v-loading="loading">
+  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="_storagesPop" v-loading="loading">
     <template class="addCustomerPop-content" slot="content">
       <div class="batchTypeNo">
         批次：{{getBatchNo}}
@@ -7,7 +7,7 @@
       <div class="storagesInfoPop_content">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="tab-card">
           <el-tab-pane label="批次详情" name="first">
-            <div class="tabs-content" v-loading="loading">
+            <div class="_tabs-cont" v-loading="loading">
               <div class="info_form">
                 <!--<el-form-item label="网点">-->
                 <!--<SelectTree v-model="otherinfo.orgid" />-->
@@ -42,11 +42,12 @@
                     </el-input>
                   </el-form-item>
                   <el-form-item label="配载日期:">
-                    <el-input :value="formModel.loadTime | parseTime('{y}/{m}/{d}')" maxlength="15" clearable disabled>
+                    <el-input :value="formModel.loadTime " maxlength="15" clearable disabled>
                     </el-input>
                   </el-form-item>
                   <el-form-item label="要求到达日期:" class="art_arriveTime">
-                    <el-input :value="formModel.requireArrivedTime | parseTime('{y}/{m}/{d}')" maxlength="15" clearable disabled>
+                    <!--<el-input :value="formModel.requireArrivedTime | parseTime('{y}/{m}/{d}')" maxlength="15" clearable disabled>-->
+                    <el-input :value="formModel.requireArrivedTime " maxlength="15" clearable disabled>
                     </el-input>
                   </el-form-item>
                   <el-form-item label="备注:" class="art_remk">
@@ -73,7 +74,7 @@
                     <li>
                       <p>回付运费</p>
                       <el-form-item prop="nowpayCarriage">
-                        <el-input maxlength="10" v-model="formModel.nowpayCarriage" disabled></el-input>
+                        <el-input maxlength="10" v-model="formModel.backpayCarriage" disabled></el-input>
                       </el-form-item>
                     </li>
                     <li>
@@ -128,27 +129,27 @@
                 </el-form>
               </div>
               <div class="tab_info">
-                <div class="btns_box">
+                <div class="btns_box_send">
                   <el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('export')" plain class="table_export">打印清单</el-button>
                   <el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('export')" plain class="table_import">导出清单</el-button>
                   <el-button type="primary" :size="btnsize" icon="el-icon-setting" plain @click="setTable" class="table_setup">表格设置</el-button>
                 </div>
                 <div class="infos_tab">
-                  <el-table ref="multipleTable" :data="usersArr" stripe border @row-click="clickDetails" @selection-change="getSelection" height="100%" tooltip-effect="dark" :default-sort="{prop: 'id', order: 'ascending'}" style="height: 100%">
+                  <el-table ref="multipleTable" :data="usersArr" stripe border @row-click="clickDetails" @selection-change="getSelection" height="80%" tooltip-effect="dark" :default-sort="{prop: 'id', order: 'ascending'}" >
                     <el-table-column fixed sortable type="selection" width="50">
                     </el-table-column>
-                    <!--<el-table-column-->
-                    <!--fixed-->
-                    <!--sortable-->
-                    <!--prop=""-->
-                    <!--label="序号"-->
-                    <!--width="80">-->
-                    <!--</el-table-column>-->
+                    <el-table-column
+                    fixed
+                    sortable
+                    label="序号"
+                    width="100">
+                      <template slot-scope="scope">{{  scope.$index + 1 }}</template>
+                    </el-table-column>
                     <el-table-column fixed sortable prop="shipFromOrgName" width="120" label="开单网点" >
                     </el-table-column>
-                    <el-table-column prop="shipId" width="180" sortable label="运单号">
+                    <el-table-column prop="shipSn" width="150" sortable label="运单号">
                     </el-table-column>
-                    <el-table-column prop="childShipId" sortable width="120" label="子运单号">
+                    <el-table-column prop="childShipId" sortable width="180" label="子运单号">
                     </el-table-column>
                     <el-table-column prop="loadAmount" label="配载件数" width="120" sortable>
                     </el-table-column>
@@ -179,7 +180,7 @@
                     </el-table-column>
                     <el-table-column prop="shipSenderName" label="发货人" width="100" sortable>
                     </el-table-column>
-                    <el-table-column prop="shipSenderMobile" label="发货人电话" width="100" sortable>
+                    <el-table-column prop="shipSenderMobile" label="发货人电话" width="110" sortable>
                     </el-table-column>
                     <el-table-column prop="shipReceiverName" label="收货人" width="120" sortable>
                     </el-table-column>
@@ -187,7 +188,7 @@
                     </el-table-column>
                     <el-table-column prop="cargoName" label="货品名" width="100" sortable>
                     </el-table-column>
-                    <el-table-column prop="shipGoodsSn" label="货号" width="100" sortable>
+                    <el-table-column prop="shipGoodsSn" label="货号" width="130" sortable>
                     </el-table-column>
                     <el-table-column prop="shipRemarks" label="运单备注" width="120" sortable>
                     </el-table-column>
@@ -336,7 +337,7 @@
                       <el-input size="mini" disabled v-model="formModel.nowpayOilCard"></el-input>元，到付运费
                       <el-input size="mini" disabled v-model="formModel.arrivepayCarriage"></el-input>，到付油 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡
                       <el-input size="mini" disabled v-model="formModel.arrivepayOilCard"></el-input>元，回付运费
-                      <el-input size="mini" disabled v-model="formModel.nowpayCarriage"></el-input>元，回付油卡
+                      <el-input size="mini" disabled v-model="formModel.backpayCarriage"></el-input>元，回付油卡
                       <el-input size="mini" disabled v-model="formModel.backpayOilCard"></el-input>元，保险费
                       <el-input size="mini" disabled v-model="formModel.carloadInsuranceFee"></el-input>元 。乙方必须将货物安全 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完整及时运到本公司货运仓库，经双方验收无误后，甲方应一次性付清下次运费；
                     </el-form-item>
@@ -445,7 +446,7 @@ import { REGEX } from '@/utils/validate'
 import popRight from '@/components/PopRight/index'
 import selectType from '@/components/selectType/index'
 import { getLoadDetail, deleteTrack, postAddTrack, putUpdateTrack, getSelectLoadList } from '@/api/operation/track'
-import { getBatchNoId, postSelectLoadMainInfoList, postAddRepertory, postConfirmToCar } from '@/api/operation/arteryDelivery'
+import {postSelectLoadMainInfoList } from '@/api/operation/arteryDelivery'
 import { getExportExcel } from '@/api/company/customerManage'
 import { mapGetters } from 'vuex'
 import SelectTree from '@/components/selectTree/index'
@@ -547,11 +548,6 @@ export default {
     ...mapGetters([
       'otherinfo'
     ]),
-    // orgid () {
-    // console.log(this.selectInfo.orgid , this.searchQuery.vo.orgid , this.otherinfo.orgid)
-
-    // return this.isModify ? this.selectInfo.orgid : this.searchQuery.vo.orgid || this.otherinfo.orgid
-    // }
   },
   props: {
     popVisible: {
@@ -579,27 +575,15 @@ export default {
     }
   },
   watch: {
-    id(newVal) {
-      // this.propsId = this.id
-      // console.log(this.id)
-    },
-    info(newVal) {
-      if (this.isModify) {} else {
 
-      }
+    info(newVal) {
       this.propsId = this.info.id
-      // this.formModel = this.info
       this.getDetail()
       this.fetchAllCustomer()
       this.fetchSelectLoadMainInfoList()
+      this.getBatchNo = this.info.batchNo
     },
     isModify(newVal) {
-      if (this.isModify) {
-        this.popTitle = '到车确定'
-
-      } else {
-        this.popTitle = '到车入库'
-      }
     },
     popVisible(newVal, oldVal) {
       if (!this.inited) {
@@ -609,11 +593,7 @@ export default {
     },
   },
   mounted() {
-
     this.propsId = this.info.id
-
-    this.fetchBatchNo()
-    // this.fetchSelectLoadList()
     if (this.popVisible) {
       this.getDetail()
       this.fetchAllCustomer()
@@ -621,22 +601,12 @@ export default {
     }
   },
   methods: {
-    //批次id
-    fetchBatchNo() {
-      this.loading = true
-      return getBatchNoId(this.otherinfo.orgid, 39).then(data => {
-        this.getBatchNo = data.data
-        this.loading = false
-      })
-
-    },
     fetchSelectLoadMainInfoList() {
       this.loading = true
       let selectMainId = this.propsId
       this.searchQuery.vo.loadId = selectMainId
       return postSelectLoadMainInfoList(this.searchQuery).then(data => {
         this.formModel = data.list[0]
-        // console.log(this.formModel);
         this.loading = false
       })
 
@@ -644,11 +614,10 @@ export default {
     fetchAllCustomer() {
       this.loading = true
       let _id = this.propsId
-      // console.log(_id);
       return getSelectLoadList(_id).then(data => {
         this.usersArr = data
-        // console.log(this.usersArr);
         this.loading = false
+        this.toggleAllRows()
       })
 
     },
@@ -656,6 +625,17 @@ export default {
       let id = this.propsId
       return getLoadDetail(id).then(data => {
         this.trackDetail = Object.assign([], data)
+      })
+    },
+    toggleAllRows() {
+      this.$nextTick(() => {
+        this.usersArr.forEach((e, index) => {
+          if (e.actualVolume === 0 && e.actualWeight === 0 && e.actualAmount === 0) {
+            this.$refs.multipleTable.toggleRowSelection(e, false)
+          } else {
+            this.$refs.multipleTable.toggleRowSelection(e, true)
+          }
+        })
       })
     },
     handleClick(tab, event) {
@@ -667,9 +647,6 @@ export default {
     },
     initInfo() {
       this.loading = false
-    },
-    getOrgid(id) {
-      // this.form.orgid = id
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -728,16 +705,6 @@ export default {
     fetchData() {
       this.fetchAllCustomer()
     },
-    handlePageChange(obj) {
-      this.searchQuery.currentPage = obj.pageNum
-      this.searchQuery.pageSize = obj.pageSize
-    },
-    getSearchParam(obj) {
-      this.searchQuery.vo.orgid = obj.orgid
-      this.searchQuery.vo.customerMobile = obj.mobile
-      this.searchQuery.vo.customerName = obj.name
-      this.fetchAllCustomer()
-    },
     showImport() {
       // 显示导入窗口
     },
@@ -756,49 +723,6 @@ export default {
         return false
       }
       switch (type) {
-        // 添加客户
-        case 'sure':
-          let data
-          if (this.popTitle === '到车确定') {
-            data = 54
-            console.log(typeof this.formModel.id)
-            console.log(typeof data)
-            postConfirmToCar(this.formModel.id, data).then(res => {
-              this.$message({
-                type: 'success',
-                message: '到车确定成功'
-              })
-              this.closeMe()
-            })
-          } else {
-            // data.tmsOrderLoad.id = this.formModel.id
-            // data.tmsOrderLoadFee.loadFeeId = this.formModel.loadFeeId
-            this.sendModel.tmsOrderLoad.id = this.formModel.id
-            this.sendModel.tmsOrderLoadFee.id = this.formModel.loadFeeId
-            this.sendModel.tmsOrderLoadFee.arriveOtherFee = this.formModel.arriveHandlingFee
-            this.sendModel.tmsOrderLoadFee.arriveOtherFee = this.formModel.arriveOtherFee
-            this.sendModel.tmsOrderLoadDetailsList = []
-            this.selected.forEach((value, index, array) => {
-              this.sendModel.tmsOrderLoadDetailsList.push({
-                id: value.id,
-                actualAmount: value.actualAmount,
-                actualWeight: value.actualWeight,
-                actualVolume: value.actualVolume
-              })
-            })
-            data = this.sendModel
-            postAddRepertory(55, data).then(res => {
-              this.$message({
-                type: 'success',
-                message: '到车入库成功'
-              })
-            })
-            this.closeMe()
-          }
-          // this.isModify = false
-          // this.selectInfo = {}
-          // this.openAddCustomer()
-          break;
           // 导出数据
         case 'export':
           let ids2 = this.selected.map(el => {
@@ -853,20 +777,23 @@ export default {
 
 </script>
 <style lang="scss">
-.tabs-content {
+._tabs-cont {
   // height: calc(100%);
   display: flex;
   flex-direction: column;
   position: relative;
 
   .tab_info {
+
     padding: 0 10px;
     height: 100%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 
-    .btns_box {
+    .btns_box_send {
+      border-top: 2px dotted #dcdfe6;
+      padding-top: 10px;
       margin-bottom: 10px;
       .el-button {
         margin-right: 0;
@@ -876,7 +803,7 @@ export default {
         margin-right: 0;
       }
       .table_export {
-        margin-left: 620px;
+        margin-left: 650px;
       }
     }
     .infos_tab {
@@ -924,7 +851,6 @@ export default {
   .info_form {
     margin-top: 85px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #dcdfe6;
     .sta_searchinfo {
       .el-form-item {
         margin-right: 0;
@@ -932,6 +858,9 @@ export default {
       }
       .el-form-item.art_remk{
         width: 100%;
+        .el-form-item__content{
+          width: 82%;
+        }
       }
     }
   }
@@ -939,38 +868,43 @@ export default {
     padding: 0 10px 10px 10px;
     margin-top: 10px;
     border-color: #dcdfe6;
-    ul {
-      /*border-top: 2px dotted #bbbbbb;
-        margin: 10px -10px -10px 0;
-        padding: 5px 10px 10px 10px;
-        /*background-color: #fbfbfb;*/
-      width: 100%;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: row;
-      flex-direction: row;
-      li:nth-of-type(1) {
-        padding-left: 0;
-      }
-      li:last-of-type {
-        border-right: none;
-      }
-      li {
-        border: 1px solid #eee;
-        width: 10%;
-        border-bottom: none;
-        border-left: none;
-        p {
-          font-size: 14px;
-          text-align: center;
-          line-height: 34px;
+    .sta_searchinfo{
+      border-left: 1px solid #d4d4d4;
+      border-right: 1px solid #d4d4d4;
+      ul {
+        /*border-top: 2px dotted #bbbbbb;
+          margin: 10px -10px -10px 0;
+          padding: 5px 10px 10px 10px;
+          /*background-color: #fbfbfb;*/
+        width: 100%;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        li:nth-of-type(1) {
+          padding-left: 0;
+        }
+        li:last-of-type {
+          border-right: none;
+        }
+        li {
+          border: 1px solid #eee;
+          width: 10%;
+          border-bottom: none;
+          border-left: none;
+          p {
+            font-size: 14px;
+            text-align: center;
+            line-height: 34px;
+          }
+        }
+        .el-form-item {
+          margin-bottom: 0;
+          margin-right: 0;
         }
       }
-      .el-form-item {
-        margin-bottom: 0;
-        margin-right: 0;
-      }
     }
+
   }
 }
 
@@ -986,12 +920,38 @@ export default {
 
 /*批次详情*/
 
-.storagesPop {
+._storagesPop {
   left: auto;
   top: 50px;
   bottom: auto;
   min-width: 1000px;
   max-width: 1000px;
+  .sta_searchinfo{
+    .el-input.is-disabled {
+      .el-input__inner{
+        color: #3e9ff1;
+        background-color: transparent;
+
+        /*text-align: center;*/
+      }
+    }
+    .el-textarea.is-disabled{
+      .el-textarea__inner {
+        color: #3e9ff1;
+        background-color: transparent;
+      }
+    }
+  }
+
+
+  .infos_table{
+    .el-input.is-disabled{
+      .el-input__inner{
+        border-radius: 0;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .batchTypeNo {
@@ -1273,29 +1233,34 @@ export default {
         }
         p.p_about {
           padding-left: 25px;
-          margin: 10px 0 10px 0;
+          margin: 5px 0 5px 0;
         }
         p {
-          margin-bottom: 5px;
+          margin-bottom: 2px;
         }
       }
       p.p_salf {
         color: #606266;
         font-size: 14px;
         padding-left: 25px;
-        margin: 10px 0 10px 0;
+        margin: 5px 0 10px 0;
       }
       .p_input {
         .el-form-item {
           margin-bottom: 0;
           .el-form-item__label {
-            padding: 0
+            padding: 0;
+            line-height: 28px
           }
           .el-form-item__content {
+            line-height: 30px;
             .el-input.el-input--mini.is-disabled {
               width: 13%;
               .el-input__inner {
                 background: #fff;
+                border-top-color: transparent;
+                border-left-color: transparent;
+                border-right-color: transparent;
               }
             }
           }
@@ -1309,10 +1274,17 @@ export default {
         .el-form-item {
           margin-bottom: 0;
           .el-form-item__content {
+            line-height: 30px;
             .el-input.el-input--mini.is-disabled {
               width: 59%;
+
               .el-input__inner {
                 width: 200px;
+                background-color: #fff;
+                color:#000 ;
+                border-top-color: transparent;
+                border-left-color: transparent;
+                border-right-color: transparent;
               }
             }
             .el-input.el-input--mini {
@@ -1328,7 +1300,7 @@ export default {
           }
         }
         .el-form-item:last-of-type {
-          margin-bottom: 60px;
+          margin-bottom: 20px;
         }
       }
       .p_table:last-of-type {
@@ -1338,7 +1310,7 @@ export default {
         padding-left: 0;
         /*padding-left: 300px;*/
         .el-form-item:last-of-type {
-          margin-bottom: 100px;
+          margin-bottom: 50px;
         }
         span {
           margin-bottom: 100px;

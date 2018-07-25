@@ -66,7 +66,7 @@
           <el-input v-model="formModel.loadStatus" placeholder="类型" size="mini"></el-input>
         </el-form-item>
         <el-form-item label="时间" prop="operatorTime">
-          <el-date-picker v-model.trim="formModel.operatorTime" type="datetime" placeholder="选择时间" size="mini">
+          <el-date-picker v-model.trim="formModel.operatorTime" value-format="yyyy-MM-dd hh:mm:ss" type="datetime" placeholder="选择时间" size="mini">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="操作信息" prop="operatorInfo">
@@ -138,7 +138,7 @@ export default {
         loadStatus: '',
         operatorInfo: '',
         operatorOrgid: 1,
-        operatorTime: +new Date(),
+        operatorTime: '',
         operatorUserid: 0
       }
     }
@@ -149,6 +149,7 @@ export default {
     popVisible(newVal, oldVal) {
       if (this.popVisible) {
         this.getDetail()
+        this.getSystemTime()
       }
     }
   },
@@ -159,14 +160,14 @@ export default {
   },
   methods: {
     getSystemTime() { // 获取系统时间
-      // if (!this.formModel.id) {
-      //   getSystemTime().then(data => {
-      //       this.formModel.operatorTime = Date.parse(new Date(data.trim()))
-      //     })
-      //     .catch(error => {
-      //       this.$message({ type: 'error', message: '获取系统时间失败' })
-      //     })
-      // }
+      if (!this.formModel.id) {
+        getSystemTime().then(data => {
+          this.formModel.operatorTime = parseTime(data.trim())
+        })
+          .catch(error => {
+            this.$message({ type: 'error', message: '获取系统时间失败' })
+          })
+      }
     },
     submitForm(formName) { // 底部表单提交
       this.$refs[formName].validate((valid) => {
@@ -192,13 +193,13 @@ export default {
       })
     },
     getDetail() {
-      let id = this.id
+      const id = this.id
       return getLoadDetail(id).then(data => {
         this.trackDetail = objectMerge2([], data)
       })
     },
     closeMe(done) { // 关闭右边弹出框
-      this.$emit('update:popVisible', false);
+      this.$emit('update:popVisible', false)
       if (typeof done === 'function') {
         done()
       }
@@ -210,10 +211,10 @@ export default {
         type: 'warning'
       }).then(() => {
         return deleteTrack(item.id).then(data => {
-            this.$message({ type: 'success', message: '删除成功' })
-            this.getDetail()
-            this.resetForm()
-          })
+          this.$message({ type: 'success', message: '删除成功' })
+          this.getDetail()
+          this.resetForm()
+        })
           .catch(error => {
             this.$message({ type: 'success', message: '删除失败' })
           })
@@ -260,16 +261,16 @@ export default {
     },
     // 取消高亮样式
     offThisActive(e) {
-      let p = closest(e.target, ".el-step")
+      const p = closest(e.target, '.el-step')
       if (p) {
-        p.classList.remove("trackactive")
+        p.classList.remove('trackactive')
       }
     },
     // 设置高亮样式
     setThisActive(e) {
-      let p = closest(e.target, ".el-step")
+      const p = closest(e.target, '.el-step')
       if (p) {
-        p.classList.add("trackactive")
+        p.classList.add('trackactive')
       }
     }
   }
@@ -285,7 +286,7 @@ export default {
   vertical-align: middle;
 }
 
-.popRight {
+.trackInfoPop {
   width: 1000px !important;
 }
 

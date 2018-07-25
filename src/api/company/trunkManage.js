@@ -54,11 +54,11 @@ export function getTrunkInfo(id) {
  * 获取车型
  * @param {*} orgid 网点id
  */
-export function getTruckType(orgid) {
+export function getTruckType(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'truck_type',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []
@@ -68,11 +68,11 @@ export function getTruckType(orgid) {
  * 获取车辆来源
  * @param {*} orgid 网点id
  */
-export function getTruckSource(orgid) {
+export function getTruckSource(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'truck_source',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []

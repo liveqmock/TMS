@@ -76,7 +76,7 @@
   </pop-right>
 </template>
 <script>
-import { REGEX }  from '@/utils/validate'
+import { REGEX } from '@/utils/validate'
 import { postCustomer, putCustomer } from '@/api/company/customerManage'
 import popRight from '@/components/PopRight/index'
 import Upload from '@/components/Upload/singleImage'
@@ -115,14 +115,14 @@ export default {
     }
   },
   computed: {
-      "fixPhone": {
-        get(){
-          return this.phoneshort+'-'+this.phonelong
+    'fixPhone': {
+        get() {
+          return this.phoneshort + '-' + this.phonelong
         },
-        set (val){
-          //let names = val.match(/(.*)(.{7})$/)
-          let names = val ?　val.split('-')　: ''
-          if(names){
+        set(val) {
+          // let names = val.match(/(.*)(.{7})$/)
+          const names = val ?　val.split('-')　: ''
+          if (names) {
             this.phoneshort = names[1] ? names[0] : ''
             this.phonelong = names[1] ? names[1] : names[0]
           } else {
@@ -132,28 +132,28 @@ export default {
         }
       }
   },
-  data () {
+  data() {
     const _this = this
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass');
+          this.$refs.ruleForm2.validateField('checkPass')
         }
-        callback();
+        callback()
       }
     }
 
-    const validateFormMobile = function (rule, value, callback) {
-      if(REGEX.MOBILE.test(value)){
+    const validateFormMobile = function(rule, value, callback) {
+      if (REGEX.MOBILE.test(value)) {
         callback()
       } else {
         callback(new Error('请输入有效的手机号码'))
       }
     }
 
-    const validateFormNumber = function (rule, value, callback) {
+    const validateFormNumber = function(rule, value, callback) {
       _this.form.customerMobile = value.replace(REGEX.NO_NUMBER, '')
       callback()
     }
@@ -165,306 +165,306 @@ export default {
       carrierName: '',
       phoneshort: '', // 固话区号
       phonelong: '', // 固话号码
-      //fixPhone: '',
+      // fixPhone: '',
       form: {
-        "carrierName": "",
+        'carrierName': '',
         transferTime: '',
         carrierMobile: '',
         arrivalMobile: '',
         remark: ''
       },
       tableColumn: [{
-        "label": "开单网点",
-        "prop": "shipFromOrgName",
-        "width": "100",
-        "fixed": true
-      },{
-        "label": "承运商",
-        "prop": "carrierName",
-        "width": "100"
-      },{
-        "label": "承运商电话",
-        "prop": "carrierMobile",
-        "width": "100"
-      },{
-        "label": "到站电话",
-        "prop": "arrivalMobile",
-        "width": "100"
-      },{
-        "label": "运单状态",
-        "prop": "shipStatusName",
-        "width": "120"
-      },{
-        "label": "运单号",
-        "prop": "shipSn",
-        "width": "100"
-      },{
-        "label": "中转单号",
-        "prop": "oddNumbers",
-        "width": "100"
-      },{
-        "label": "中转批次",
-        "prop": "transferBatchNo",
-        "width": "100"
-      },{
-        "label": "开单时间",
-        "prop": "ydCreateTime",
-        "width": "100",
-        "slot": function(scope){
-          return `${ parseTime(scope.row.ydCreateTime, '{y}{m}{d}') }`
+        'label': '开单网点',
+        'prop': 'shipFromOrgName',
+        'width': '100',
+        'fixed': true
+      }, {
+        'label': '承运商',
+        'prop': 'carrierName',
+        'width': '100'
+      }, {
+        'label': '承运商电话',
+        'prop': 'carrierMobile',
+        'width': '100'
+      }, {
+        'label': '到站电话',
+        'prop': 'arrivalMobile',
+        'width': '100'
+      }, {
+        'label': '运单状态',
+        'prop': 'shipStatusName',
+        'width': '120'
+      }, {
+        'label': '运单号',
+        'prop': 'shipSn',
+        'width': '100'
+      }, {
+        'label': '中转单号',
+        'prop': 'oddNumbers',
+        'width': '100'
+      }, {
+        'label': '中转批次',
+        'prop': 'transferBatchNo',
+        'width': '100'
+      }, {
+        'label': '开单时间',
+        'prop': 'ydCreateTime',
+        'width': '100',
+        'slot': function(scope) {
+          return `${parseTime(scope.row.ydCreateTime, '{y}{m}{d}')}`
         }
-      },{
-        "label": "中转时间",
-        "prop": "transferTime",
-        "width": "100",
-        "slot": function(scope){
-          return `${ parseTime(scope.row.transferTime, '{y}{m}{d}') }`
+      }, {
+        'label': '中转时间',
+        'prop': 'transferTime',
+        'width': '100',
+        'slot': function(scope) {
+          return `${parseTime(scope.row.transferTime, '{y}{m}{d}')}`
         }
-      },{
-        "label": "中转运费",
-        "prop": "transferCharge",
-        "width": "100"
-      },{
-        "label": "中转送货费",
-        "prop": "deliveryExpense",
-        "width": "100"
-      },{
-        "label": "中转费其他费",
-        "prop": "transferOtherFee",
-        "width": "100"
-      },{
-        "label": "中转费合计",
-        "prop": "totalCost",
-        "width": "100"
-      },{
-        "label": "中转费付款方式",
-        "prop": "paymentName",
-        "width": "100"
-      },{
-        "label": "代收货款",
-        "prop": "codService",
-        "width": "100"
-      },{
-        "label": "发货人",
-        "prop": "shipSenderName",
-        "width": "100"
-      },{
-        "label": "发货人电话",
-        "prop": "shipSenderMobile",
-        "width": "100"
-      },{
-        "label": "收货人",
-        "prop": "shipReceiverName",
-        "width": "100"
-      },{
-        "label": "收货人电话",
-        "prop": "shipReceiverMobile",
-        "width": "100"
-      },{
-        "label": "出发城市",
-        "prop": "shipFromCityName",
-        "width": "100"
-      },{
-        "label": "到达城市",
-        "prop": "shipToCityName",
-        "width": "100"
-      },{
-        "label": "货品名",
-        "prop": "cargoName",
-        "width": "100"
-      },{
-        "label": "件数",
-        "prop": "cargoAmount",
-        "width": "100"
-      },{
-        "label": "重量",
-        "prop": "cargoWeight",
-        "width": "100"
-      },{
-        "label": "体积",
-        "prop": "cargoVolume",
-        "width": "100"
-      },{
-        "label": "包装",
-        "prop": "cargoPack",
-        "width": "100"
-      },{
-        "label": "运单备注",
-        "prop": "shipRemarks",
-        "width": "100"
-      },{
-        "label": "中转备注",
-        "prop": "remark",
-        "width": "100"
-      },{
-        "label": "到达省",
-        "prop": "shipToCityName",
-        "width": "100",
+      }, {
+        'label': '中转运费',
+        'prop': 'transferCharge',
+        'width': '100'
+      }, {
+        'label': '中转送货费',
+        'prop': 'deliveryExpense',
+        'width': '100'
+      }, {
+        'label': '中转费其他费',
+        'prop': 'transferOtherFee',
+        'width': '100'
+      }, {
+        'label': '中转费合计',
+        'prop': 'totalCost',
+        'width': '100'
+      }, {
+        'label': '中转费付款方式',
+        'prop': 'paymentName',
+        'width': '100'
+      }, {
+        'label': '代收货款',
+        'prop': 'codService',
+        'width': '100'
+      }, {
+        'label': '发货人',
+        'prop': 'shipSenderName',
+        'width': '100'
+      }, {
+        'label': '发货人电话',
+        'prop': 'shipSenderMobile',
+        'width': '100'
+      }, {
+        'label': '收货人',
+        'prop': 'shipReceiverName',
+        'width': '100'
+      }, {
+        'label': '收货人电话',
+        'prop': 'shipReceiverMobile',
+        'width': '100'
+      }, {
+        'label': '出发城市',
+        'prop': 'shipFromCityName',
+        'width': '100'
+      }, {
+        'label': '到达城市',
+        'prop': 'shipToCityName',
+        'width': '100'
+      }, {
+        'label': '货品名',
+        'prop': 'cargoName',
+        'width': '100'
+      }, {
+        'label': '件数',
+        'prop': 'cargoAmount',
+        'width': '100'
+      }, {
+        'label': '重量',
+        'prop': 'cargoWeight',
+        'width': '100'
+      }, {
+        'label': '体积',
+        'prop': 'cargoVolume',
+        'width': '100'
+      }, {
+        'label': '包装',
+        'prop': 'cargoPack',
+        'width': '100'
+      }, {
+        'label': '运单备注',
+        'prop': 'shipRemarks',
+        'width': '100'
+      }, {
+        'label': '中转备注',
+        'prop': 'remark',
+        'width': '100'
+      }, {
+        'label': '到达省',
+        'prop': 'shipToCityName',
+        'width': '100',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[0]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[0] : ''
         }
-      },{
-        "label": "到达市",
-        "prop": "shipToCityName",
-        "width": "100",
+      }, {
+        'label': '到达市',
+        'prop': 'shipToCityName',
+        'width': '100',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[1]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[1] : ''
         }
-      },{
-        "label": "到达县区",
-        "prop": "shipToCityName",
-        "width": "100",
+      }, {
+        'label': '到达县区',
+        'prop': 'shipToCityName',
+        'width': '100',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[2]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[2] : ''
         }
-      },{
-        "label": "发货方",
-        "prop": "sendCustomerUnit",
-        "width": "100"
-      },{
-        "label": "收货方",
-        "prop": "receiverCustomerUnit",
-        "width": "100"
-      },{
-        "label": "发货人地址",
-        "prop": "sendDetailedAddress",
-        "width": "100"
-      },{
-        "label": "收货人地址",
-        "prop": "receiverDetailedAddress",
-        "width": "100"
-      },{
-        "label": "运费",
-        "prop": "shipFee",
-        "width": "100"
-      },{
-        "label": "目的网点",
-        "prop": "shipToOrgName",
-        "width": "100"
-      },{
-        "label": "交接方式",
-        "prop": "shipDeliveryMethodName",
-        "width": "100"
-      },{
-        "label": "货号",
-        "prop": "shipGoodsSn",
-        "width": "100"
-      },{
-        "label": "品种规格",
-        "prop": "description",
-        "width": "100"
-      },{
-        "label": "件数单价",
-        "prop": "amountFee",
-        "width": "100"
-      },{
-        "label": "重量单价",
-        "prop": "weightFee",
-        "width": "100"
-      },{
-        "label": "体积单价",
-        "prop": "volumeFee",
-        "width": "100"
-      },{
-        "label": "等通知放货",
-        "prop": "cgStatus",
-        "width": "100"
-      },{
-        "label": "回单要求",
-        "prop": "shipReceiptRequireName",
-        "width": "100"
-      },{
-        "label": "回单份数",
-        "prop": "shipReceiptNum",
-        "width": "100"
-      },{
-        "label": "付款方式",
-        "prop": "shipPayWayName",
-        "width": "100"
-      },{
-        "label": "现付",
-        "prop": "shipNowpayFee",
-        "width": "100"
-      },{
-        "label": "到付",
-        "prop": "shipArrivepayFee",
-        "width": "100"
-      },{
-        "label": "回单付",
-        "prop": "shipReceiptpayFee",
-        "width": "100"
-      },{
-        "label": "月结",
-        "prop": "shipMonthpayFee",
-        "width": "100"
-      },{
-        "label": "运费合计",
-        "prop": "shipTotalFee",
-        "width": "100"
-      },{
-        "label": "制单人",
-        "prop": "shipUserName",
-        "width": "100"
-      },{
-        "label": "回单号",
-        "prop": "shipReceiptNum",
-        "width": "100"
-      },{
-        "label": "回扣",
-        "prop": "brokerageFee",
-        "width": "100"
-      },{
-        "label": "客户单号",
-        "prop": "shipCustomerNumber",
-        "width": "100"
-      },{
-        "label": "送货费",
-        "prop": "deliveryFee",
-        "width": "100"
-      },{
-        "label": "代收款手续费",
-        "prop": "commissionFee",
-        "width": "100"
-      },{
-        "label": "声明价值",
-        "prop": "productPrice",
-        "width": "100"
-      },{
-        "label": "保险费",
-        "prop": "insuranceFee",
-        "width": "100"
-      },{
-        "label": "装卸费",
-        "prop": "handlingFee",
-        "width": "100"
-      },{
-        "label": "包装费",
-        "prop": "packageFee",
-        "width": "100"
-      },{
-        "label": "提货费",
-        "prop": "pickupFee",
-        "width": "100"
-      },{
-        "label": "上楼费",
-        "prop": "goupstairsFee",
-        "width": "100"
-      },{
-        "label": "实际提货费",
-        "prop": "realityhandlingFee",
-        "width": "100"
-      },{
-        "label": "报关费",
-        "prop": "customsFee",
-        "width": "100"
-      },{
-        "label": "其他费收入",
-        "prop": "otherfeeIn",
-        "width": "100"
-      },{
-        "label": "其他费支出",
-        "prop": "otherfeeOut",
-        "width": "100"
+      }, {
+        'label': '发货方',
+        'prop': 'sendCustomerUnit',
+        'width': '100'
+      }, {
+        'label': '收货方',
+        'prop': 'receiverCustomerUnit',
+        'width': '100'
+      }, {
+        'label': '发货人地址',
+        'prop': 'sendDetailedAddress',
+        'width': '100'
+      }, {
+        'label': '收货人地址',
+        'prop': 'receiverDetailedAddress',
+        'width': '100'
+      }, {
+        'label': '运费',
+        'prop': 'shipFee',
+        'width': '100'
+      }, {
+        'label': '目的网点',
+        'prop': 'shipToOrgName',
+        'width': '100'
+      }, {
+        'label': '交接方式',
+        'prop': 'shipDeliveryMethodName',
+        'width': '100'
+      }, {
+        'label': '货号',
+        'prop': 'shipGoodsSn',
+        'width': '100'
+      }, {
+        'label': '品种规格',
+        'prop': 'description',
+        'width': '100'
+      }, {
+        'label': '件数单价',
+        'prop': 'amountFee',
+        'width': '100'
+      }, {
+        'label': '重量单价',
+        'prop': 'weightFee',
+        'width': '100'
+      }, {
+        'label': '体积单价',
+        'prop': 'volumeFee',
+        'width': '100'
+      }, {
+        'label': '等通知放货',
+        'prop': 'cgStatus',
+        'width': '100'
+      }, {
+        'label': '回单要求',
+        'prop': 'shipReceiptRequireName',
+        'width': '100'
+      }, {
+        'label': '回单份数',
+        'prop': 'shipReceiptNum',
+        'width': '100'
+      }, {
+        'label': '付款方式',
+        'prop': 'shipPayWayName',
+        'width': '100'
+      }, {
+        'label': '现付',
+        'prop': 'shipNowpayFee',
+        'width': '100'
+      }, {
+        'label': '到付',
+        'prop': 'shipArrivepayFee',
+        'width': '100'
+      }, {
+        'label': '回单付',
+        'prop': 'shipReceiptpayFee',
+        'width': '100'
+      }, {
+        'label': '月结',
+        'prop': 'shipMonthpayFee',
+        'width': '100'
+      }, {
+        'label': '运费合计',
+        'prop': 'shipTotalFee',
+        'width': '100'
+      }, {
+        'label': '制单人',
+        'prop': 'shipUserName',
+        'width': '100'
+      }, {
+        'label': '回单号',
+        'prop': 'shipReceiptNum',
+        'width': '100'
+      }, {
+        'label': '回扣',
+        'prop': 'brokerageFee',
+        'width': '100'
+      }, {
+        'label': '客户单号',
+        'prop': 'shipCustomerNumber',
+        'width': '100'
+      }, {
+        'label': '送货费',
+        'prop': 'deliveryFee',
+        'width': '100'
+      }, {
+        'label': '代收款手续费',
+        'prop': 'commissionFee',
+        'width': '100'
+      }, {
+        'label': '声明价值',
+        'prop': 'productPrice',
+        'width': '100'
+      }, {
+        'label': '保险费',
+        'prop': 'insuranceFee',
+        'width': '100'
+      }, {
+        'label': '装卸费',
+        'prop': 'handlingFee',
+        'width': '100'
+      }, {
+        'label': '包装费',
+        'prop': 'packageFee',
+        'width': '100'
+      }, {
+        'label': '提货费',
+        'prop': 'pickupFee',
+        'width': '100'
+      }, {
+        'label': '上楼费',
+        'prop': 'goupstairsFee',
+        'width': '100'
+      }, {
+        'label': '实际提货费',
+        'prop': 'realityhandlingFee',
+        'width': '100'
+      }, {
+        'label': '报关费',
+        'prop': 'customsFee',
+        'width': '100'
+      }, {
+        'label': '其他费收入',
+        'prop': 'otherfeeIn',
+        'width': '100'
+      }, {
+        'label': '其他费支出',
+        'prop': 'otherfeeOut',
+        'width': '100'
       }],
       formLabelWidth: '90px',
       tooltip: false,
@@ -481,35 +481,34 @@ export default {
 
     }
   },
-  mounted () {
+  mounted() {
     this.form.orgid = this.orgid
-    if(!this.inited){
+    if (!this.inited) {
       this.inited = true
       this.initInfo()
     }
   },
   watch: {
-    popVisible (newVal, oldVal) {
-      if(!this.inited){
+    popVisible(newVal, oldVal) {
+      if (!this.inited) {
         this.inited = true
         this.initInfo()
       }
     },
-    orgid (newVal) {
+    orgid(newVal) {
       this.form.orgid = newVal
     },
-    info (newVal) {
-      if(newVal.transferBatchNo){
+    info(newVal) {
+      if (newVal.transferBatchNo) {
         this.popTitle = '中转批次：' + newVal.transferBatchNo
         this.transferBatchNo = newVal.transferBatchNo
         this.getUpdateTransferDetail(newVal.transferBatchNo)
       }
-        
     }
   },
   methods: {
     doAction(type) {
-      if(type==='cancel'){
+      if (type === 'cancel') {
         this.$emit('action', 'cancel', [this.transferBatchNo])
       }
     },
@@ -519,17 +518,17 @@ export default {
     // 获取批次详细信息
     getUpdateTransferDetail(transferBatchNo) {
       return transferManageApi.getUpdateTransferDetail(this.otherinfo.orgid, transferBatchNo).then(res => {
-        let data = res.data
-        if(!data.transferBatchNo){
+        const data = res.data
+        if (!data.transferBatchNo) {
           // 当这个批次号不能获取到信息时，提示用户
           this.$alert('当前批次号不存在', '提示', {
             confirmButtonText: '确定',
             callback: action => {
-              this.closeMe()     
+              this.closeMe()
             }
-          });
+          })
         } else {
-          for(let i in this.form){
+          for (const i in this.form) {
             this.form[i] = data[i]
           }
           this.form.transferTime = parseTime(new Date(this.form.transferTime))
@@ -537,22 +536,22 @@ export default {
         }
       })
     },
-    initInfo () {
+    initInfo() {
       this.loading = false
     },
-    getOrgid (id) {
+    getOrgid(id) {
       this.form.orgid = id
     },
-    reset () {
+    reset() {
       this.$refs['ruleForm'].resetFields()
     },
-    closeMe (done) {
+    closeMe(done) {
       this.reset()
-      this.$emit('update:popVisible', false);
-      if(typeof done === 'function'){
+      this.$emit('update:popVisible', false)
+      if (typeof done === 'function') {
         done()
       }
-    },
+    }
   }
 }
 </script>

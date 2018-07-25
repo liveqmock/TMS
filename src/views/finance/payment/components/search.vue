@@ -23,11 +23,10 @@
             <el-input v-model="searchForm.shipSn" maxlength="20" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="出发城市">
-            <SelectCity @change="getFromCity" v-model="searchForm.shipFromCityName"/>
+          <el-input v-model="searchForm.shipFromCityName" maxlength="20" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="到达城市">
-            <!-- <el-input v-model="searchForm.shipToCityCode" maxlength="20" auto-complete="off"></el-input> -->
-            <SelectCity @change="getToCity" v-model="searchForm.shipToCityName" />
+            <el-input v-model="searchForm.shipToCityName" maxlength="20" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="发货人">
             <el-input v-model="searchForm.shipSenderId" maxlength="15" auto-complete="off"></el-input>
@@ -91,9 +90,9 @@ export default {
         // shipFromOrgid: '',
         // number:'',
         shipSn: '',
-        shipFromCityCode: '',
+        // shipFromCityCode: '',
         shipFromCityName: '',
-        shipToCityCode: '',
+        // shipToCityCode: '',
         shipToCityName: '',
         shipSenderId: '',
         shipReceiverId: '',
@@ -139,22 +138,23 @@ export default {
     getOrgid(id) {
       this.searchForm.orgid = id
     },
-    getFromCity(city) {
-      console.log(city)
-      this.searchForm.shipFromCityCode = city.id.toString()
-      this.searchForm.shipFromCityName = city.longAddr
-    },
-    getToCity(city) {
-      this.searchForm.shipToCityCode = city.id.toString()
-      this.searchForm.shipToCityName = city.longAddr
-    },
+    // getFromCity(city) {
+    //   console.log(city)
+    //   this.searchForm.shipFromCityCode = city.id.toString()
+    //   this.searchForm.shipFromCityName = city.longAddr
+    // },
+    // getToCity(city) {
+    //   this.searchForm.shipToCityCode = city.id.toString()
+    //   this.searchForm.shipToCityName = city.longAddr
+    // },
     onSubmit() {
-      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
-      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
-      // this.searchForm.startTime = this.searchCreatTime[0]
-      // this.searchForm.endTime = this.searchCreatTime[1]
+      // this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
+      // this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
+      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0], '{y}-{m}-{d} ') + '00:00:00' : ''
+      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1], '{y}-{m}-{d} ') + '23:59:59' : ''
       this.searchForm[this.status] = this.thestatus
-      this.$emit('change', this.searchForm)
+      const data = Object.assign({}, this.searchForm)
+      this.$emit('change', data)
     },
     clearForm() {
       this.searchForm.shipSn = ''
@@ -197,8 +197,10 @@ export default {
       }
   }
 }
-.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner{
-  width:200px;
+.payment_searchinfo{
+  .el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner{
+    width:200px;
+  }
 }
 </style>
 

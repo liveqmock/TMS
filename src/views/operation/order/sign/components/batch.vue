@@ -1,66 +1,18 @@
 <template> 
-  <!-- <div class="batch_main" :class="{'batch_show':isModify ||isSongh}" ref="batch_show">
-      <PopFrame :title='popTitle' :isShow="popVisible" @close="closeMe" class='addpopDepMain'>
-        <template class='addRelationPop-content' slot="content">
-           <el-form :model="form" :rules="rules" ref="ruleForm"  :label-width="formLabelWidth" class="demo-ruleForm" :inline="true" label-position="right" size="mini">
-            <div class="batch">
-              <el-form-item label="签收单数:" prop="num">
-               
-                 <p class="tp">{{this.form.num}}单</p>
-              </el-form-item>
-              <el-form-item label="到付合计:" prop="shipArrivepayFee">
-              
-                <p class="tp">{{this.form.shipArrivepayFee}}元</p>
-              </el-form-item>
-              <el-form-item label="代收款合计:" prop="agencyFund">
-                
-                <p class="tp">{{this.form.agencyFund}}元</p>
-              </el-form-item>
-             
-              <el-form-item label="签收时间:" prop="signTime">
-                <el-date-picker
-                  v-model="searchCreatTime"
-                  align="right"
-                  type="date"
-                  :picker-options="pickOption2"
-                  placeholder="选择日期"
-                  value-format="timestamp"
-                  >
-                </el-date-picker>
-              </el-form-item> 
-              <el-form-item label="签收类型:" prop="signTypeId" >
-                <SelectType v-model="form.signTypeId" type="sign_type"/>
-              </el-form-item>
-              <el-form-item label="签收证件:" prop="signCocumentTypeId" >
-                <SelectType v-model="form.signCocumentTypeId" type="sign_cocument_type"/>
-              </el-form-item>
-              <el-form-item label="证件号码:" prop="documentNum">
-                <el-input maxlength="20" v-model="form.documentNum" auto-complete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="备注:" prop="remark">
-                <el-input maxlength="250" v-model.trim="form.remark" auto-complete="off"></el-input>
-              </el-form-item>
-            </div>  
-               
-          </el-form>
-        </template>
-        <div slot="footer" class="dialog-footer-frame">
-          <el-button type="primary" @click="submitForm('ruleForm')" class="btn">签收</el-button>
-          <el-button @click="closeMe($event)" class="btn">取消</el-button>
-        </div>
-      </PopFrame>
-  </div> -->
-   <el-dialog :title='popTitle' :visible.sync="isShow" :close-on-click-modal="false" :before-close="closeMe" class="setupTablePop" @close="closeMe">
+   <el-dialog :title='popTitle' :visible.sync="isShow" :close-on-click-modal="false" :before-close="closeMe" class="wzl_addBatchPop" @close="closeMe">
     <el-form :model="form" :rules="rules" ref="ruleForm"  :label-width="formLabelWidth" class="demo-ruleForm" :inline="true" label-position="right" size="mini">
       <div class="batch">
         <el-form-item label="签收单数:" prop="num">
-          <p class="tp">{{this.form.num}}单</p>
+          <!-- <p class="tp">{{this.form.num}}单</p> -->
+          <el-input maxlength="20" :placeholder=" form.num +'单'" auto-complete="off" :disabled="true"></el-input>
         </el-form-item><br>
         <el-form-item label="到付合计:" prop="shipArrivepayFee">
-          <p class="tp">{{this.form.shipArrivepayFee}}元</p>
+          <!-- <p class="tp">{{this.form.shipArrivepayFee}}元</p> -->
+          <el-input maxlength="20" :placeholder=" form.shipArrivepayFee +'元'" auto-complete="off" :disabled="true"></el-input>
         </el-form-item><br>
         <el-form-item label="代收款合计:" prop="agencyFund">
-          <p class="tp">{{this.form.agencyFund}}元</p>
+          <!-- <p class="tp">{{this.form.agencyFund}}元</p> -->
+          <el-input maxlength="20" :placeholder=" form.agencyFund +'元'" auto-complete="off" :disabled="true"></el-input>
         </el-form-item><br>
         <el-form-item label="签收时间:" prop="signTime">
           <el-date-picker
@@ -179,6 +131,7 @@ export default {
         'remark': '',
         'signPic': '',
 
+        'loadIds': [],
         'shipIds': [],
         'childShipIds': []
       },
@@ -281,6 +234,9 @@ export default {
             data.childShipIds = this.dotInfo.map(el => {
               return el.childShipId
             })
+            data.loadIds = this.dotInfo.map(el => {
+              return el.loadId
+            })
             promiseObj = postBatchSign(data)// 送货批量
           }
           promiseObj.then(res => {
@@ -315,102 +271,57 @@ export default {
 </script>
 
 <style lang="scss">
-  // .batch_show{
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   background: rgba(0,0,0,0.4); 
-  //   z-index: 1000;
-  //   transition: all .3s ease-in-out; 
+.wzl_addBatchPop{
 
-  // }
-  // .batch_main .addpopDepMain{
-  //   top: 29%;
-  //   bottom: auto;
-  //   min-width: 426px;
-  //   max-width:  486px;
-  //   .batch_main .addRelationPop-content{
-  //     margin: 20px 20px 0;
-  //     box-sizing: border-box;
-  //   }
-  //   // .batch_main .el-select .el-input__inner{
-  //   //   padding-right: 15px;
-  //   // }
-
-
-  //   .popRight-header {
-  //     background-color: #e6e6e6;
-  //     color: #333;
-  //     text-align: left;
-  //     font-weight: 600;
-  //     top: 0;
-  //     left: 0;
-  //     width: 100%;
-  //     position: absolute;
-  //     border-radius: 6px 0px 0px 0px;
-  //     /* padding-left: 22px; */
-  //     text-align: center;
-      
-  //   }
-   
-  //   .popRight-content{
-  //     width:426px;
-  //     height: 308px;
-  //   }
-  //   .batch{
-  //     margin:10px 50px;
-  //     font-size: 14px;
-  //     text-align: left;
-  //     color: #333333;
-  //     .tp{
-  //       display: inline-block;
-  //       width:200px;
-  //       margin-left:15px
-  //     }
-  //     .el-form-item__label{
-  //       padding: 0px;
-  //     }
-  //     .el-input--suffix .el-input__inner{
-  //       padding-right: 17px;
-  //     }
-  //     .el-date-editor.el-input, .el-date-editor.el-input__inner{
-  //       width: 180px;
-  //     }
-  //   }
-    
-  //   .dialog-footer-frame{
-  //       text-align: center;
-  //       .btn{
-  //         width: 107px;
-  //         height: 35px;
-  //       }
-  //   }
-  // }
- 
-.setupTablePop{
   .el-dialog{
-    max-width: 452px;
+    max-width: 385px;
     min-width: 300px;
+    margin-top: 29vh !important;
   }
   .transfer-footer{
     line-height: 20px;
     color: #666;
     font-size: 12px;
+    padding: 10px 20px 8px;
   }
+  
   .el-dialog__header{
-    text-align: center;
-    background: #ddd;
+    padding: 9px 20px 6px;
+    font-size:14px;
+    border-bottom: 1px solid #3e9ff1;
+  }
+  .el-dialog__title{
+    font-size: 15px;
+    font-weight: bold;
+    // color:#fff;
+  }
+  .el-button{
+    padding: 4px 12px;
+    // float:right;
+  }
+  .el-dialog__headerbtn{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    padding: 0;
+    background: 0 0;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+    font-size: 18px;
+    
   }
  .el-dialog__body{
    padding:8px 20px;
  }
   .el-dialog__footer{
-    text-align: center;
+    // text-align: center;
+    border-top:1px solid #3e9ff1;
+    padding: 10px 20px 9px;
   }
+  
   .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
-    // margin-bottom: 15px;
+    margin-bottom: 12px;
     .el-form-item__label{
       padding:0;
       text-align: center;
@@ -421,11 +332,15 @@ export default {
     width:209px;
   }
   .batch{
-    margin:0 50px;
+    margin:8px 20px 0px;
     .el-input__inner{
       padding:0 30px;
     }
+    .el-input--mini .el-input__inner{
+      color: #3e9ff1;
+    }
   }
+  
 }
   
 </style>

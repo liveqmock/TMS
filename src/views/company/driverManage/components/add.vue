@@ -65,7 +65,7 @@
   </pop-right>
 </template>
 <script>
-import { REGEX }  from '@/utils/validate'
+import { REGEX } from '@/utils/validate'
 import { postDriver, putDriver } from '@/api/company/driverManage'
 import popRight from '@/components/PopRight/index'
 import Upload from '@/components/Upload/singleImage'
@@ -102,32 +102,32 @@ export default {
     }
   },
   computed: {
-      ...mapGetters([
-          'otherinfo'
-      ])
+    ...mapGetters([
+      'otherinfo'
+    ])
   },
-  data () {
+  data() {
     const _this = this
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass');
+          this.$refs.ruleForm2.validateField('checkPass')
         }
-        callback();
+        callback()
       }
     }
 
-    const validateFormMobile = function (rule, value, callback) {
-      if(REGEX.MOBILE.test(value)){
+    const validateFormMobile = function(rule, value, callback) {
+      if (REGEX.MOBILE.test(value)) {
         callback()
       } else {
         callback(new Error('请输入有效的手机号码'))
       }
     }
 
-    const validateFormNumber = function (rule, value, callback) {
+    const validateFormNumber = function(rule, value, callback) {
       console.log('rule:', rule)
       _this.form[rule.field] = value.replace(REGEX.NO_NUMBER, '')
       callback()
@@ -135,22 +135,22 @@ export default {
 
     return {
       form: {
-        "bankCardNumber": "", // 银行卡号 20
-        "bankName": "", // 银行名称 20
-        "certification": "", // 从业资格证图片地址 125
-        "driverAddress": "", // 地址 50
-        "driverCardid": "", // 身份证号码 18
-        "driverMobile": "", // 手机号码 11
-        "driverName": "", // 司机姓名 10
-        "driverRemarks": "", // 备注 125
-        "drivingPicture": "", // 驾驶证图片地址 125
+        'bankCardNumber': '', // 银行卡号 20
+        'bankName': '', // 银行名称 20
+        'certification': '', // 从业资格证图片地址 125
+        'driverAddress': '', // 地址 50
+        'driverCardid': '', // 身份证号码 18
+        'driverMobile': '', // 手机号码 11
+        'driverName': '', // 司机姓名 10
+        'driverRemarks': '', // 备注 125
+        'drivingPicture': '', // 驾驶证图片地址 125
         // "id": 0, // 司机ID 11
-        "idcardPicture": "", // 身份证图片地址 125
-        "licenseType": '', // 驾驶证类型 18
-        "licenseTypeName": "",
-        "openBank": "", // 开户行 20
-        "validityDate": "", // 驾驶证有效期
-        "orgid": 0 // 所属机构 11
+        'idcardPicture': '', // 身份证图片地址 125
+        'licenseType': '', // 驾驶证类型 18
+        'licenseTypeName': '',
+        'openBank': '', // 开户行 20
+        'validityDate': '', // 驾驶证有效期
+        'orgid': 0 // 所属机构 11
       },
       formLabelWidth: '100px',
       tooltip: false,
@@ -177,7 +177,7 @@ export default {
       inited: false,
 
       pickOption2: {
-        firstDayOfWeek:1,
+        firstDayOfWeek: 1,
         disabledDate(time) {
           return time.getTime() < Date.now()
         }
@@ -185,34 +185,34 @@ export default {
 
     }
   },
-  mounted () {
+  mounted() {
     this.form.orgid = this.orgid
-    if(!this.inited){
+    if (!this.inited) {
       this.inited = true
       this.initInfo()
     }
   },
   watch: {
-    popVisible (newVal, oldVal) {
-      if(!this.inited){
+    popVisible(newVal, oldVal) {
+      if (!this.inited) {
         this.inited = true
         this.initInfo()
       }
     },
-    orgid (newVal) {
+    orgid(newVal) {
       this.form.orgid = newVal
     },
-    info () {
-      if(this.isModify){
+    info() {
+      if (this.isModify) {
         this.popTitle = '修改司机'
-        let data = Object.assign({},this.info)
-        for(let i in this.form){
+        const data = Object.assign({}, this.info)
+        for (const i in this.form) {
           this.form[i] = data[i]
         }
         this.form.id = data.id
       } else {
         this.popTitle = '新增司机'
-        for(let i in this.form){
+        for (const i in this.form) {
           this.form[i] = ''
         }
         delete this.form.id
@@ -221,21 +221,21 @@ export default {
     }
   },
   methods: {
-    initInfo () {
+    initInfo() {
       this.loading = false
     },
-    getOrgid (id) {
+    getOrgid(id) {
       this.form.orgid = id
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          let data = Object.assign({},this.form)
+          const data = Object.assign({}, this.form)
           data.fixPhone = this.fixPhone
           let promiseObj
           // 判断操作，调用对应的函数
-          if(this.isModify){
+          if (this.isModify) {
             promiseObj = putDriver(data)
           } else {
             promiseObj = postDriver(data)
@@ -249,25 +249,26 @@ export default {
                 this.closeMe()
                 this.$emit('success')
               }
-            });
+            })
           }).catch(err => {
             this.loading = false
           })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    reset () {
+    reset() {
       this.$refs['ruleForm'].resetFields()
+      this.form.driverMobile = ''
     },
-    closeMe (done) {
+    closeMe(done) {
       this.reset()
-      this.$emit('update:popVisible', false);
-      if(typeof done === 'function'){
+      this.$emit('update:popVisible', false)
+      if (typeof done === 'function') {
         done()
       }
-    },
+    }
   }
 }
 </script>

@@ -65,7 +65,7 @@ export default {
       dataList: [],
       total: 0,
       isDisBtn: true,
-      transferId: 0,
+      transferId: '',
       tablekey: 0,
       selectInfo: [],
       trackInfo: {},
@@ -431,13 +431,15 @@ export default {
     },
     getSelection(list) {
       if (this.$route.query.transfer) {
-        this.transferId = Number(this.this.$route.query.transfer)
+        this.transferId = this.$route.query.transfer
+        console.log(this.transferId)
       } else {
         if (list.length === 1) {
           this.selectInfo = Object.assign([], list)
           this.isDisBtn = false
-          let tid = this.selectInfo[0].transferId
-          this.trackId = tid
+          // let tid = this.selectInfo[0].transferId
+          this.transferId = this.selectInfo[0].transferId
+          console.log(this.transferId)
           this.trackInfo = Object.assign({}, this.selectInfo[0])
         } else if (list.length > 1) {
           this.$message({ type: 'warning', message: '只能选择一条数据进行跟踪设置' })

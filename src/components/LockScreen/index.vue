@@ -1,14 +1,15 @@
 <template>
   <el-dialog class="screenLockPop" title="系统解锁" :visible="lockScreen.opened" :show-close="false" :close-on-press-escape="false" :close-on-click-modal="false">
     <p>当前账号【 {{name}} 】已锁定，请输入密码后解锁</p>
-    <el-form :model="form" status-icon :rules="rules" ref="lockForm">
+    <br>
+    <el-form size="mini" :model="form" status-icon :rules="rules" ref="lockForm">
       <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
         <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
       </el-form-item> 
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" :disabled="form.password.trim().length < 4" :loading="loading" @click="submitForm('lockForm')">解锁</el-button>
-      <el-button  @click="doLogin">重新登录</el-button>
+      <el-button size="mini" type="primary" :disabled="form.password.trim().length < 4" :loading="loading" @click="submitForm('lockForm')">解锁</el-button>
+      <el-button size="mini"  @click="doLogin">重新登录</el-button>
     </div>
   </el-dialog>
 </template>
@@ -26,9 +27,9 @@ export default {
       'lockScreen'
     ])
   },
-  mounted () {
+  mounted() {
   },
-  data () {
+  data() {
     return {
       form: {
         username: '',
@@ -57,15 +58,15 @@ export default {
             this.loading = false
           })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     // 后续可以考虑提取到工具类中
-    doLogin () {
+    doLogin() {
       removeToken()
       this.$store.dispatch('UnLockScreen')
       this.$router.push('/login')
@@ -80,6 +81,18 @@ export default {
     max-width: 400px;
     p{
       text-align: center;
+    }
+    .el-dialog__header{
+      padding-top: 10px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .el-dialog__title{
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .el-dialog__footer{
+      border-top: 1px solid #b6dfff;
+      padding-bottom: 10px;
     }
   }
 </style>

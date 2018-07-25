@@ -36,32 +36,32 @@
       },
       date() {
         return {
-          popTitle:'批量导入'
+          popTitle: '批量导入'
         }
       },
       computed: {
         isShow: {
-          get(){
+          get() {
             return this.popDepMainVisible
           },
-          set(){
+          set() {
 
           }
         }
       },
       methods: {
-        closeMe(done){
+        closeMe(done) {
           this.$emit('close')
           this.$refs['ruleForm'].resetFields()
-          if(typeof done === 'function'){
+          if (typeof done === 'function') {
             done()
           }
         },
-        submitForm(ruleForm){
+        submitForm(ruleForm) {
           this.$refs[ruleForm].validate((valid) => {
-            if(valid){
-              console.log(JSON.stringify(this.form));
-              this.loading = true
+            if (valid) {
+              console.log(JSON.stringify(this.form))
+          this.loading = true
               // postOrgSaveDate(this.form).then(res=>{
               //   console.log(res);
               //   this.$alert('保存成功', '提示', {
@@ -74,7 +74,7 @@
               //   })
               //
               // })
-            }else{
+            }else {
               return false
             }
           })
@@ -91,14 +91,15 @@
     min-width: 486px;
     max-width:  486px;
 
+    .el-select .el-input__inner{
+      padding-right: 15px;
+    }
   }
   .importCustomerPop-content{
     padding: 20px 20px 0;
     box-sizing: border-box;
   }
-  .el-select .el-input__inner{
-    padding-right: 15px;
-  }
+  
   .depmain-div li{
     border-bottom: 1px solid #dcdcdc;
     padding: 10px 0 10px 10px;

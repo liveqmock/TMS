@@ -19,8 +19,8 @@ function getPopZindex() {
     window.tmsPopZindex = 1000
   } else {
     window.tmsPopZindex += 1
-    return window.tmsPopZindex
   }
+  return window.tmsPopZindex
 }
 export default {
   props: {
@@ -77,8 +77,8 @@ export default {
 .popRight-header{
   height: 30px;
   line-height: 30px;
-	background-color: #e6e6e6;
-  color: #333;
+	background-color: #0b4b7c;
+  color: #fff;
   text-align: left;
   font-weight: 600;
   top: 0;

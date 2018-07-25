@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=GB2312" />
+  <link rel="stylesheet" type="text/css" href="untils/common.css" />
+  <script src="binary/dynaload.js"></script>
+  <script src="untils/common.js"></script>
+  <script>
+  function OnReady(id) {
+    var query = getUrlParams()
+    query += Math.random()
+    AF.func("Build", "report/operation.xml");
+
+    //AF.func("SelectCell", "0\r\n0");
+    //指定ds1数据源取数的URL地址 
+    // var access_token ="3471ea1a-8dcd-4c9f-95e9-258dbcf564cb";
+    // var startTime = "2018-05-13 11:11:11";
+    // var endTime = "2018-08-17 11:11:11";
+    // var orgId = 1;
+    // var selectType = 1;
+    // var shipToCityName = "";
+    // var businessType = "";
+
+    //    AF.func("SetSource", "ds1 \r\n http://192.168.1.157:7010/api-finance/finance/report/v1/findOperationReport?startTime="+startTime+"&endTime="+endTime+"&orgId="+orgId+"&selectType="+selectType+"&shipToCityName="+shipToCityName+"&businessType="+businessType+"&access_token="+access_token);  
+    AF.func("SetSource", "ds1 \r\n http://192.168.1.157:7010/api-finance/finance/report/v1/findOperationReport" + query);
+
+    //需要重新计算， 因为SetSource仅仅是相当于更改一个属性?
+    AF.func("Calc", "");
+  }
+
+  function OnEvent() {}
+
+  </script>
+</head>
+
+<body>
+  <div id="main" style="position:relative;width:100%;height:380px">
+    <script>
+    insertReport('AF', 'FullScreen; Rebar=Print; print=11, 216,18;TabScrollBar=none;Border=none;LeftRulerWidthPercent=0')
+    // insertReport('AF', '')
+
+    </script>
+    <!--Rebar=Print;-->
+  </div>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 <template>
-  <!--v-loading="loading"-->
-  <div class="tab-content" >
+  <div class="tab-content" v-loading="loading">
     <SearchForm :orgid="otherinfo.orgid" :issender="true" @change="getSearchParam" :btnsize="btnsize" />
     <div class="tab_info">
       <div class="btns_box">
@@ -77,12 +76,12 @@
           <el-table-column
             label="发车时间"
             width="160"
-
+            prop="createTime"
             sortable
             >
-            <template slot-scope="scope">
-              {{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}
-            </template>
+            <!--<template slot-scope="scope">-->
+              <!--{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}-->
+            <!--</template>-->
             <!--<template slot-scope="scope">{{ new Date(scope.row.createTime).toLocaleDateString() }}</template>-->
           </el-table-column>
           <!--<el-table-column-->
@@ -247,13 +246,14 @@
           >
           </el-table-column>
           <el-table-column
+            prop="loadTime"
             label="配载时间"
             width="160"
             sortable
           >
-            <template slot-scope="scope">
-              {{ scope.row.loadTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}
-            </template>
+            <!--<template slot-scope="scope">-->
+              <!--{{ scope.row.loadTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}-->
+            <!--</template>-->
             <!--<template slot-scope="scope">{{ new Date(scope.row.loadTime).toLocaleDateString() }}</template>-->
           </el-table-column>
           <el-table-column
@@ -317,13 +317,11 @@ export default {
   },
   data () {
     return {
-      loading: false,
+      loading: true,
       btnsize: 'mini',
       usersArr: [],
       total: 0,
       trackId:'',
-      //加载状态
-      // loading: true,
       setupTableVisible: false,
       AddCustomerVisible: false,
       isModify: false,
@@ -365,8 +363,6 @@ export default {
     handlePageChange (obj) {
       Object.assign(this.searchQuery, obj)
       this.fetchData()
-      // this.searchQuery.currentPage = obj.pageNum
-      // this.searchQuery.pageSize = obj.pageSize
     },
     getSearchParam (obj) {
       this.searchQuery.vo = Object.assign(this.searchQuery.vo, obj)
@@ -404,7 +400,7 @@ export default {
             })
             return false
 
-          } else if (this.selected.length === 1) {
+          } else {
 
             this.selectInfo = this.selected[0]
             this.isModify = false
@@ -414,14 +410,13 @@ export default {
           break;
         //修改
             case 'sure':
-
               if (this.selected.length > 1) {
                 this.$message({
                   message: '每次只能修改单条数据~',
                   type: 'warning'
                 })
                 return false
-              } else if (this.selected.length === 1) {
+              } else {
                 this.selectInfo = this.selected[0]
                 this.$router.push({path: '././load', query: {loadTypeId:39, info:this.selectInfo}})
               }
@@ -595,8 +590,8 @@ export default {
     },
     getDbClick(row, event){
       this.selectInfo = row
-      // this.isModify = true
       this.openAddCustomer()
+      this.$refs.multipleTable.clearSelection()
     }
   }
 }

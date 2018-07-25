@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { validateMobile, REGEX }  from '@/utils/validate'
+import { validateMobile, REGEX } from '@/utils/validate'
 import SelectTree from '@/components/selectTree/index'
 
 export default {
@@ -43,16 +43,16 @@ export default {
       type: Number
     }
   },
-  data () {
-    const validateFormMobile = function (rule, value, callback) {
-      if(validateMobile(value)){
+  data() {
+    const validateFormMobile = function(rule, value, callback) {
+      if (validateMobile(value)) {
         callback()
       } else {
         callback(new Error('请输入有效的手机号码'))
       }
     }
 
-    const validateFormEmployeer = function (rule, value, callback) {
+    const validateFormEmployeer = function(rule, value, callback) {
       callback()
     }
 
@@ -70,18 +70,18 @@ export default {
     }
   },
   watch: {
-    orgid (newVal) {
+    orgid(newVal) {
       this.searchForm.orgid = newVal
     }
   },
-  mounted () {
+  mounted() {
     this.searchForm.orgid = this.orgid
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
       this.$emit('change', this.searchForm)
     },
-    clearForm (formName) {
+    clearForm(formName) {
       this.searchForm.name = ''
       this.searchForm.orgid = this.orgid
       this.searchForm.mobile = ''

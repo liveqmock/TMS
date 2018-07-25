@@ -1,7 +1,7 @@
 <template>
   <el-form ref="searchForm" :inline="true" :size="btnsize" label-position="right" :rules="rules" :model="searchForm" label-width="80px" class="staff_searchinfo clearfix">
         <el-form-item label="送货时间">
-          <el-date-picker v-model="searchTime" :default-value="defaultTime" type="daterange" align="right" value-format="yyyy-MM-dd" start-placeholder="开始日期" :picker-options="pickerOptions" end-placeholder="结束日期">
+          <el-date-picker v-model="searchTime" :default-value="defaultTime" type="daterange" align="right" value-format="yyyy-MM-dd HH:mm:ss" start-placeholder="开始日期" :picker-options="pickerOptions" end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="批次状态" prop="batchTypeId">
@@ -29,6 +29,7 @@ import { REGEX } from '@/utils/validate'
 import SelectTree from '@/components/selectTree/index'
 import querySelect from '@/components/querySelect/index'
 import selectBatchType from '@/components/selectType/index'
+import { objectMerge2, parseTime, pickerOptions2 } from '@/utils/index'
 export default {
   components: {
     SelectTree,
@@ -77,34 +78,10 @@ export default {
       rules: {
         shipSn: [{ validator: orgidIdentifier, tigger: 'blur' }]
       },
-      searchTime: [],
+      searchTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
       defaultTime: [+new Date() - 60 * 24 * 60 * 60 * 1000, +new Date()],
       pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近两个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 60);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
+        shortcuts: pickerOptions2
       }
     }
   },
@@ -129,8 +106,8 @@ export default {
         this.searchForm.batchTypeId = undefined
       }
       if (this.searchTime) {
-        this.searchForm.startTime = this.searchTime[0]
-        this.searchForm.endTime = this.searchTime[1]
+        this.searchForm.startTime =  parseTime(this.searchTime[0], '{y}-{m}-{d} ') + '00:00:00'
+        this.searchForm.endTime = parseTime(this.searchTime[1], '{y}-{m}-{d} ') + '23:59:59'
       }
       this.$emit('change', this.searchForm)
       this.searchForm = Object.assign({}, this.searchData)

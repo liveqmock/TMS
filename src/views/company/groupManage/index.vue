@@ -77,11 +77,7 @@
         <div class="side_right_bottom clearfix">
           <!--表格功能-->
           <div class="btns_box_lrl clearfix">
-            <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('addPeople')">新增员工</el-button>
-            <el-button type="danger" :size="btnsize" icon="el-icon-delete" @click="doAction('deletePeople')" plain>删除员工</el-button>
-            <el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('modifyNot')" plain>修改网点</el-button>
-            <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" @click="doAction('addNot')" plain>新增网点</el-button>
-            <el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('depMain')" plain>部门维护</el-button>
+            <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('addPeople')">新增员工</el-button><el-button type="danger" :size="btnsize" icon="el-icon-delete" @click="doAction('deletePeople')" plain>删除员工</el-button><el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('modifyNot')" plain>修改网点</el-button><el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" @click="doAction('addNot')" plain>新增网点</el-button><el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('depMain')" plain>部门维护</el-button>
             <el-col class="org-name"> <p>{{form.orgName}}</p></el-col>
             <!--表格功能-->
           </div>
@@ -164,7 +160,7 @@
       </div>
       <AddDot :dotInfo="form" :orgid="getOrgId || otherinfo.orgid" :companyId="otherinfo.companyId" :isModify="isModify" @success="fetchOrg(getOrgId)" :popVisible="addDoTotVisible" @close="closeAddDot" />
        <AddPeople :popVisible.sync="addPeopleVisible" @close="closeAddPeople" :orgid="getOrgId || otherinfo.orgid" @success="fetchOrgId(getOrgId)" />
-      <DepMaintain :popVisible.sync="addDepMaintainisible" :isDepMain="isDepMain" :dotInfo="usersArr" @close="closeDep" :createrId ="otherinfo.id"></DepMaintain>
+      <DepMaintain :popVisible.sync="addDepMaintainisible" :isDepMain="isDepMain" :dotInfo="usersArr" @close="closeDep" :createrId ="otherinfo.orgid"></DepMaintain>
     </div>
     <div class="info_news_footer">共计:{{ total }} <div class="show_pager"> <Pager :total="total" @change="handlePageChange" /></div> </div>
   </div>

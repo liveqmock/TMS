@@ -1,6 +1,6 @@
 <template>
-  <div class="detailTable">
-    <el-form inline v-model="info" label-width="100" class="detailTable_info">
+  <div class="detailTablePop">
+    <el-form inline v-model="info" label-width="100" class="detailTablePop_info">
       <table>
         <tbody>
           <tr>
@@ -68,7 +68,7 @@
           </el-table-column>
           <el-table-column fixed width="50" sortable type="selection"></el-table-column>
           <el-table-column sortable width="120" prop="shipFromOrgName" label="开单网点"></el-table-column>
-          <el-table-column sortable width="120" prop="shipId" label="运单号"></el-table-column>
+          <el-table-column sortable width="120" prop="shipSn" label="运单号"></el-table-column>
           <el-table-column sortable width="120" prop="loadAmount" label="配载件数"></el-table-column>
           <el-table-column sortable width="120" prop="loadWeight" label="配载重量"></el-table-column>
           <el-table-column sortable width="120" prop="loadVolume" label="配载体积"></el-table-column>
@@ -82,7 +82,7 @@
           <el-table-column sortable width="120" prop="shipReceiverName" label="收货人"></el-table-column>
           <el-table-column sortable width="120" prop="shipReceiverMobile" label="收货人电话"></el-table-column>
           <el-table-column sortable width="200" prop="cargoName" label="货品名"></el-table-column>
-          <el-table-column sortable width="120" prop="shipSn" label="货号"></el-table-column>
+          <el-table-column sortable width="120" prop="shipGoodsSn" label="货号"></el-table-column>
           <el-table-column sortable width="120" prop="shipRemarks" label="运单备注"></el-table-column>
         </el-table>
       </div>
@@ -220,7 +220,7 @@ export default {
 
 </script>
 <style lang="scss">
-.detailTable {
+.detailTablePop {
   margin-top: 75px;
   display: flex;
   flex-direction: column;
@@ -228,7 +228,7 @@ export default {
   padding: 0 10px;
   position: relative;
 
-  .detailTable_info {
+  .detailTablePop_info {
     border-bottom: 2px dotted #eee;
     background-color: #fff;
     table {

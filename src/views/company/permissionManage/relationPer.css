@@ -11,7 +11,7 @@
   padding: 20px 20px 0;
   box-sizing: border-box;
 }
-.el-select .el-input__inner{
+.addRelationPop .el-select .el-input__inner{
   padding-right: 15px;
 }
 .relation-per table{
@@ -36,7 +36,7 @@
 .relation-per .popRight-content tbody td:nth-of-type(1) .el-input.is-active .el-input__inner .el-input__inner:focus{
   border-color: #fff;
 }
-.relation-per tbody td:nth-of-type(1) .el-input__inner, tbody td:last-of-type .el-input__inner{
+.relation-per tbody td:nth-of-type(1) .el-input__inner, .addRelationPop tbody td:last-of-type .el-input__inner{
   border-color: #fff;
   height:40px;
 }

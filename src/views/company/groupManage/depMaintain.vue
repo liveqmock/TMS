@@ -5,13 +5,13 @@
         <div ref="ruleForm" class="depmain-div">
           <div class="depmain-content" v-if="showDate">
             <ul>
-              <li v-for="item in getMentInfo">
+              <li :key="item.dictName" v-for="item in getMentInfo">
                 <span>{{item.dictName}}</span>
               </li>
             </ul>
           </div>
 
-          <div class="depmain-add" v-if="hiddenAdd" v-model='resInfo'>
+          <div class="depmain-add" v-if="hiddenAdd" >
             <div class="add-fixed">
               <el-input
                 placeholder="请输入内容"
@@ -25,19 +25,18 @@
             </div>
             <div class="depmain-list">
               <ul>
-                <li v-for="item in getMentInfo">
+                <li :key="item.dictName" v-for="item in getMentInfo">
                   <span>{{item.dictName}}</span>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div class="depmain-edit" v-model='resInfo' v-if="hiddenEdit">
-
-            <div class="depmain-list" v-model="getMentInfo">
-              <ul>
-                <li v-for="item in getMentInfo" >
-                  <span>{{item.dictName}}</span>
+          <div class="depmain-edit"  v-if="hiddenEdit" v-loading="loading">
+            <div class="depmain-list" >
+              <ul :key="theulkey">
+                <li :key="index" v-for="(item, index) in getMentInfo" :class="{'showcurrent': index === currentIndex}" @mouseenter="currentIndex = index">
+                  <span v-once>{{item.dictName}}</span>
                   <div class="edit-hidden">
                     <el-input
                       v-model="item.dictName"
@@ -69,7 +68,7 @@
 
 <script>
     import PopFrame from '@/components/PopFrame/index'
-    import { getSelectDictInfo,postDict,deletePerManage,putDict } from '../../../api/company/groupManage'
+    import { getSelectDictInfo, postDict, deletePerManage, putDict } from '../../../api/company/groupManage'
     export default {
       components: {
         PopFrame
@@ -79,118 +78,124 @@
           type: Boolean,
           default: false
         },
-        dotInfo: [Object,Array],
-        isDepMain:{
-          type:Boolean,
-          default:false
+        dotInfo: [Object, Array],
+        isDepMain: {
+          type: Boolean,
+          default: false
         },
-        createrId: [Number,String]
+        createrId: [Number, String]
       },
       data() {
         return {
+          theulkey: 'theulkey',
+          currentIndex: 0,
           checked1: true,
           popTitle: '部门',
-          loading:false,
-          getMentInfo:[
-            {dictName:'',id:''}
+          loading: false,
+          getMentInfo: [
+            { dictName: '', id: '' }
           ],
-          //首行
+          // 首行
           checked: true,
-          checked2:true,
-          hiddenAdd:false,
-          hiddenEdit:false,
-          showDate:false,
-          dictName: '', //添加
+          checked2: true,
+          hiddenAdd: false,
+          hiddenEdit: false,
+          showDate: false,
+          dictName: '', // 添加
           orderId: '',
-          resInfo:[
+          resInfo: [
             {
-              dictName:''
+              dictName: ''
             }
           ],
-       //首行
+       // 首行
        //   底部按钮
-          addText:'添加',
-          editText:'编辑',
-          remText:'取消',
-          showBotton:false,
-          remBotton:false,
+          addText: '添加',
+          editText: '编辑',
+          remText: '取消',
+          showBotton: false,
+          remBotton: false,
        //   底部按钮
 
-          restaurants: [],
+          restaurants: []
         }
       },
       computed: {
         isShow: {
-          get(){
+          get() {
             return this.popVisible
           },
-          set(){
+          set() {
 
           }
         }
       },
       watch: {
-        isDepMain(){
-          if(this.isDepMain){
-            this.popTitle = '部门';
+        isDepMain() {
+          if (this.isDepMain) {
+            this.popTitle = '部门'
             this.showBotton = true
             this.remBotton = false
             this.hiddenAdd = false
             this.hiddenEdit = false
             this.showDate = true
-          }else{
           }
         },
-        dotInfo (newVal) {
+        dotInfo(newVal) {
           // this.getMentInfo = this.dotInfo
         },
-        popVisible (newVal) {
-          // console.log('popVisible:', newVal)
+        popVisible(newVal) {
+          if (this.popVisible) {
+            this.getSelectDict()
+          }
         },
-        createrId(newVal){
+        createrId(newVal) {
 
         }
       },
       mounted() {
-        this.getSelectDict(this.createrId)
+        //
       },
       methods: {
-        getSelectDict(orgId) {
-
+        resetValue(item, oldvalue) {
+          return () => {
+            item.dictName = oldvalue
+          }
+        },
+        getSelectDict() {
           this.loading = true
           getSelectDictInfo(this.createrId).then(res => {
             this.loading = false
             this.getMentInfo = res
           })
-
         },
         getAddDate() {
           this.loading = true
-          return postDict(this.createrId , this.dictName).then(res => {
+          return postDict(this.createrId, this.dictName).then(res => {
             this.loading = false
             this.dictName = ''
           })
-
         },
-        closeMe(done){
-          if(this.popTitle === '部门'){
+        closeMe(done) {
+          if (this.popTitle === '部门') {
             this.$emit('close')
-            if(typeof done === 'function'){
+            if (typeof done === 'function') {
               done()
             }
           } else {
             this.reset()
           }
         },
-        editMe(){
+        editMe() {
           this.popTitle = '编辑'
           this.remBotton = true
           this.showBotton = false
           this.hiddenAdd = false
           this.hiddenEdit = true
           this.showDate = false
+          this.currentIndex = 0
         },
-        submitForm(ruleForm){
+        submitForm(ruleForm) {
           this.popTitle = '添加'
           this.remBotton = true
           this.hiddenAdd = true
@@ -198,7 +203,7 @@
           this.hiddenEdit = false
           this.showDate = false
         },
-        reset(){
+        reset() {
           this.popTitle = '部门'
           this.remBotton = false
           this.showBotton = true
@@ -206,44 +211,43 @@
           this.hiddenEdit = false
           this.showDate = true
         },
-        addDep(){
-          if(!this.dictName){
+        addDep() {
+          if (!this.dictName) {
             this.$message({
               message: '请输入用户名~',
               type: 'warning'
             })
             return false
           } else {
-            let reqPromise = this.getAddDate()
-            reqPromise.then(res=>{
-              this.$alert('添加成功', '提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.loading = false
-                  this.getSelectDict(this.createrId)
-                }
+            const reqPromise = this.getAddDate()
+            reqPromise.then(res => {
+              this.$message({
+                type: 'success',
+                message: '添加成功!'
               })
+              this.loading = false
+              this.getSelectDict(this.createrId)
             })
           }
         },
-        editDep(item){
-         let id = item.id
+        editDep(item) {
+          this.loading = true
+          const id = item.id
           this.dictName = item.dictName
-          let reqPromise = putDict(this.createrId,this.dictName,id)
-          reqPromise.then(res=>{
-            this.$alert('修改成功', '提示', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.loading = false
-                this.getSelectDict()
-              }
+          const reqPromise = putDict(this.createrId, this.dictName, id)
+          reqPromise.then(res => {
+            this.$message({
+              type: 'success',
+              message: '修改成功!'
             })
+            this.loading = false
+            this.getSelectDict()
+            this.theulkey = (Math.random() + '').substr(2)
           })
         },
-        delDep(item){
-          let _id = item.id
-          console.log(_id)
-          let deleteItem = item.dictName
+        delDep(item) {
+          const _id = item.id
+          const deleteItem = item.dictName
           this.$confirm('确定要删除 ' + deleteItem + ' 部门吗？', '提示', {
             confirmButtonText: '删除',
             cancelButtonText: '取消',
@@ -255,13 +259,12 @@
                 message: '删除成功!'
               })
               this.getSelectDict()
-            }).catch(err=>{
+            }).catch(err => {
               this.$message({
                 type: 'info',
                 message: '删除失败，原因：' + err.errorInfo ? err.errorInfo : err
               })
             })
-
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -288,7 +291,9 @@
   .dep-maintain .el-select .el-input__inner{
     padding-right: 15px;
   }
-
+.depmain-div{
+  margin: 10px 0 0 10px;
+}
   /*添加*/
 /*depmain-add*/
   .add-fixed{
@@ -326,16 +331,17 @@
     height: 35px;
     cursor: pointer;
   }
+
   .depmain-edit .depmain-list li .edit-hidden{
     display: none;
   }
-  .depmain-edit .depmain-list li:hover .edit-hidden{
+  .depmain-edit .depmain-list .showcurrent .edit-hidden{
     display: block;
   }
   .depmain-edit .depmain-list li span{
     display: block;
   }
-  .depmain-edit .depmain-list li:hover span{
+  .depmain-edit .depmain-list .showcurrent span{
     display: none
   }
   .depmain-edit .depmain-list .edit-hidden{

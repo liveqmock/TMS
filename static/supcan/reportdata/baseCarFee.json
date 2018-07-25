@@ -1,0 +1,19 @@
+﻿{
+    "status": 0,
+    "data": {
+        "id": null,
+        "orgId": null,
+        "orgName": "青春物流_模板数据",
+        "companyId": null,
+        "companyName": "青春集团_模板数据",
+        "memberId": 0,
+        "memberIdType": null,
+        "memberCode": null,
+        "memberName": "湘A55655",
+        "memberPerson": "凌梓颖",
+        "memberPersonPhone": "13549896752",
+        "checkBillName": "湘A55655-2018-07-05-2018-07-19"
+    },
+    "text": null,
+    "errorInfo": null
+}

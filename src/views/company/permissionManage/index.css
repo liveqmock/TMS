@@ -77,7 +77,7 @@
   width: 100% !important;
 
 }
-.permManage .el-table th,td{
+.permManage .el-table th, .permManage-top td{
   text-align:center;
 }
 /*表格功能*/
@@ -92,7 +92,5 @@
   background-color: #eee;
 }
 .permManage .info_news .cell{
-  color: #333;
-  font-size: 14px;
 }
 /*表格内容*/

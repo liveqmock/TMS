@@ -119,7 +119,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="deliveryFee"
+            prop="shipFee"
             label="运费"
             width="80"
             sortable
@@ -135,10 +135,14 @@
           <!--创建时间-->
           <el-table-column
             label="创建时间"
-            width="110"
+            prop="createTime"
+            width="160"
             sortable
           >
-            <template slot-scope="scope">{{ scope.row.createTime | parseTime('{y}{m}{d}') }}</template>
+            <!--<template slot-scope="scope">-->
+              <!--{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}') }}-->
+            <!--</template>-->
+            <!--<template slot-scope="scope">{{ scope.row.createTime | parseTime('{y}{m}{d}') }}</template>-->
           </el-table-column>
           <el-table-column
             prop="senderName"
@@ -225,7 +229,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pickupWeight"
+            prop="commissionFee"
             label="代收款手续费"
             width="130"
             sortable
@@ -262,7 +266,7 @@
 </template>
 <script>
 import { getExportExcel } from '@/api/company/customerManage'
-import { getPostlist,putRefuse,deletebatchDelete,putCancel } from '../../../../api/operation/manage'
+import { getPostlist,putRefuse,deletebatchDelete,putCancel,putAccept } from '../../../../api/operation/manage'
 import SearchForm from './components/search'
 import TableSetup from './components/tableSetup'
 import AddCustomer from './components/add'
@@ -319,6 +323,22 @@ export default {
         }
       }
     }
+  },
+  mounted(){
+    this.eventBus.$on('putAcceptOrder', (_ids) => {
+      putAccept(_ids).then(res => {
+        this.$message({
+          type: 'success',
+          message: '操作成功!'
+        })
+        this.fetchData()
+      }).catch(err=>{
+        this.$message({
+          type: 'info',
+          message: '操作失败，原因：' + err.errorInfo ? err.errorInfo : err
+        })
+      })
+    })
   },
   methods: {
     fetchAllList() {
@@ -405,22 +425,32 @@ export default {
               return false
             }
             break;
-          // 修改客户信息
+          // 修改
           case 'modify':
 
-              if(this.selected.length > 1){
+          if(this.selected.length > 1){
                   this.$message({
                       message: '每次只能修改单条数据~',
                       type: 'warning'
                   })
               }
-            else if(this.selected[0].orderStatus === 213){
+            else {
+            if(this.selected[0].orderStatus === 213){
               this.openAddCustomer()
 
               this.isModify = true
               this.isDbclick = false
-            }
               this.selectInfo = this.selected[0]
+            }else{
+              this.$message({
+                message: '未受理才能修改~',
+                type: 'warning'
+              })
+              this.closeAddCustomer()
+            }
+
+          }
+
               break;
         // 作废
         case 'cancel':
@@ -458,6 +488,11 @@ export default {
           }else if(this.selected[0].orderStatus === 214){
             this.$message({
               message: '已受理的订单不可以作废~',
+              type: 'warning'
+            })
+          }else{
+            this.$message({
+              message: '已作废的订单不可以作废~',
               type: 'warning'
             })
           }
@@ -608,6 +643,7 @@ export default {
       this.isModify = false
       this.isDbclick = true
       this.openAddCustomer()
+      this.$refs.multipleTable.clearSelection()
     }
   }
 }

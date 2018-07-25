@@ -2,9 +2,12 @@
   <div class="transferTable">
     <!-- 穿梭框 -->
     <div class="transferTable_header">
-      <transition name="el-zoom-in-bottom">
+     <!--  <transition name="el-zoom-in-bottom">
         <el-button icon="el-icon-refresh" type="primary" v-if="isShowReback" circle size="mini" @click="doAction('showReback')" plain class="transferTable_fresh clearfix"></el-button>
-      </transition>
+      </transition> -->
+      <div class="transferTable_searchs">
+         <slot name="tableSearch"></slot>
+      </div>
       <div class="transferTable_header_btn_direction">
         <el-tooltip effect="dark" content="向左侧拉伸" placement="top-end">
           <el-button icon="el-icon-arrow-right" type="primary" circle :disabled="isShowLeft" size="mini" @click="doAction('showAllLeft')" plain></el-button>
@@ -12,7 +15,9 @@
         <el-tooltip effect="dark" content="向右侧拉伸" placement="top-start">
           <el-button icon="el-icon-arrow-left" type="primary" circle :disabled="isShowRight" size="mini" @click="doAction('showAllRight')" plain></el-button>
         </el-tooltip>
-        
+        <transition name="el-zoom-in-bottom">
+          <el-button icon="el-icon-refresh" type="primary" v-if="isShowReback" circle size="mini" @click="doAction('showReback')" plain ></el-button>
+        </transition>
         <div class="transferTable_header_btn_box clearfix">
           <slot name="btnsBox"></slot>
         </div>
@@ -23,9 +28,6 @@
         <slot name="tableLeft">左边表格区</slot>
       </div>
       <div class="transferTable_content_table" :class="[isShowRight ? 'showTableRight' : '']">
-        <div class="transferTable_search">
-          <slot name="search"></slot>
-        </div>
         <slot name="tableRight">右边表格区</slot>
       </div>
     </div>
@@ -37,7 +39,8 @@ export default {
     return {
       isShowLeft: false,
       isShowRight: false,
-      isShowReback: false
+      isShowReback: false,
+      searchForm: ''
     }
   },
   methods: {
@@ -78,23 +81,38 @@ export default {
 <style lang="scss" scope>
 .transferTable {
   width: 100%;
-  margin-top: -10px;
-  padding: 5px 0 0 0;
-  height: calc(100% - 400px);
+  height: calc(100% - 60px);
   .transferTable_header {
-    margin: 10px 0 10px -5px;
+    margin-top: 10px;
     width: 100%;
+    height: 42px;
+    padding: 6px 0;
     text-align: center;
     position: relative;
+    border: 2px solid #cdf;
+    border-bottom: none;
+    .transferTable_searchs{
+      position:absolute;
+      top: 0px;
+      left:0px;
+      // background-color:gray;
+      display:flex;
+      flex-direction: row;
+    }
+
+    .transferTable_header_btn_direction {
+      text-align: center;
+      margin-left: -7px;
+    }
     .transferTable_fresh {
       position: absolute;
       left: 10px;
-      top: 0px;
+      top: 6px;
     }
     .transferTable_header_btn_box {
       position: absolute;
       right: 10px;
-      top: 0px;
+      top: 6px;
     }
   }
   .transferTable_content {
@@ -123,13 +141,6 @@ export default {
       .el-table th {
         padding: 5px 0;
       }
-      .transferTable_search {
-        background-color: #eee;
-        position: absolute;
-        top: -38px;
-        left: 100px;
-        z-index:2;
-      }
     }
     .showTableLeft {
       width: calc(100% - 90px);
@@ -140,7 +151,7 @@ export default {
       transition: 0.5s;
     }
     .showTableRight {
-      width: calc(100%);
+      width: calc(100% - 112px);
       transition: 0.5s;
     }
   }

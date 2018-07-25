@@ -18,16 +18,16 @@
         <!--</div>-->
 
 
-        <el-form-item prop="accNum">
+        <!-- <el-form-item prop="accNum"> -->
 
           <!--<span class="svg-container svg-container_login">-->
           <!--<icon-svg icon-class="yonghuming" />-->
           <!--</span>-->
 
-         <el-input name="accNum" type="text" v-model="loginForm.accNum" autoComplete="off" :placeholder="holder.accNum" @focus='accNum()'   clearable >
+         <!-- <el-input name="accNum" type="text" v-model="loginForm.accNum" autoComplete="off" :placeholder="holder.accNum" @focus='accNum()'   clearable >
           <template slot="prepend">公司ID</template>
          </el-input>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item prop="username">
           <el-input name="username" type="text" @keyup.enter.native="handleLogin" v-model="loginForm.username" autoComplete="off"
@@ -80,13 +80,13 @@ import { isvalidUsername } from '@/utils/validate'
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的公司ID'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!isvalidUsername(value)) {
+    //     callback(new Error('请输入正确的公司ID'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     // const validateUsername = (rule, value, callback) => {
     //   if (!isvalidUsername(value)) {
     //     callback(new Error('请输入正确的用户名'))
@@ -114,13 +114,13 @@ export default {
       errInfo: false,
       //模拟登陆信息
       loginForm: {
-        accNum: '4',
+        // accNum: '4',
         username: 'fangjian',
         password: '123456'
       },
       loginRules: {
         accNum: [{ required: true, trigger: 'blur' }],
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       }
 

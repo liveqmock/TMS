@@ -171,10 +171,10 @@ export default {
           if (this.formModel.id) {
             console.log('edit')
             this.$confirm('此操作将修改跟踪信息, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
                 this.editTrack()
               })
               .catch(() => {
@@ -183,10 +183,10 @@ export default {
           } else {
             console.log('add')
             this.$confirm('此操作将修改跟踪信息, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
                 this.addTrack()
               })
               .catch(() => {
@@ -197,23 +197,23 @@ export default {
       })
     },
     getDetail() {
-      let loadId = this.id
+      const loadId = this.id
       getLoadDetail(loadId).then(data => {
         this.trackDetail = objectMerge2([], data)
       })
     },
     closeMe(done) {
-      this.$emit('update:popVisible', false);
+      this.$emit('update:popVisible', false)
       if (typeof done === 'function') {
         done()
       }
     },
     deleteTrack(item) {
       this.$confirm('此操作将修改跟踪信息, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
           return deleteTrack(item.id).then(data => {
             this.$message({ type: 'success', message: '删除成功' })
             this.getDetail()
@@ -271,16 +271,16 @@ export default {
     },
     // 取消高亮样式
     offThisActive(e) {
-      let p = closest(e.target, ".el-step")
+      const p = closest(e.target, '.el-step')
       if (p) {
-        p.classList.remove("trackactive")
+        p.classList.remove('trackactive')
       }
     },
     // 设置高亮样式
     setThisActive(e) {
-      let p = closest(e.target, ".el-step")
+      const p = closest(e.target, '.el-step')
       if (p) {
-        p.classList.add("trackactive")
+        p.classList.add('trackactive')
       }
     }
   }
@@ -296,7 +296,7 @@ export default {
   vertical-align: middle;
 }
 
-.popRight {
+.trackInfoPop {
   width: 1000px !important;
 }
 

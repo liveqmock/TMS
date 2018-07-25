@@ -33,9 +33,39 @@ export default {
   },
   props: {
   },
+  mounted() {
+    this.initPage()
+  },
   data() {
     return {
       component: 'Kickback'
+    }
+  },
+  methods: {
+    initPage() {
+      if (this.$route.query.name) {
+        const name = this.$route.query.name
+        switch (name) {
+          case 'Kickback':
+            this.component = 'Kickback'
+            break
+          case 'Transfer':
+            this.component = 'Transfer'
+            break
+          case 'Ticket':
+            this.component = 'Ticket'
+            break
+          case 'Unusual':
+            this.component = 'Unusual'
+            break
+          case 'Abnormal':
+            this.component = 'Abnormal'
+            break
+          case 'Other':
+            this.component = 'Other'
+            break
+        }
+      }
     }
   }
 }

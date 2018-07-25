@@ -50,6 +50,11 @@ module.exports = {
         pathRewrite: {'^/wukunzhi': ''},
         changeOrigin: true
       },
+      '/lingzhiying': {
+        target: "http://192.168.1.41:7010",
+        pathRewrite: {'^/lingzhiying': ''},
+        changeOrigin: true
+      },
       '/huangyuwen': {
         target: "http://192.168.1.23:7010",
         pathRewrite: {'^/huangyuwen': ''},
@@ -63,6 +68,11 @@ module.exports = {
       '/ceshi': {
         target: "http://192.168.1.78:7010",
         pathRewrite: {'^/ceshi': ''},
+        changeOrigin: true
+      },
+      '/chenrongtao': {
+        target: "http://192.168.1.127:7010",
+        pathRewrite: {'^/chenrongtao': ''},
         changeOrigin: true
       }
     },

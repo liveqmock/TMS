@@ -67,13 +67,13 @@
 <script>
 // 请求接口
 import orderManage from '@/api/operation/orderManage'
-import {closest, objectMerge2} from '@/utils/'
+import { closest, objectMerge2, parseTime } from '@/utils/'
 
 export default {
   props: {
     orderid: [String, Number]
   },
-  data () {
+  data() {
     return {
       loading: false,
       trackDetail: [],
@@ -85,33 +85,33 @@ export default {
         trackInfo: [{ required: true, trigger: 'blur', message: '不能为空' }]
       },
       formModel: {
-        "createTime": "",
+        'createTime': '',
         // 修改时需要带上
         // "id": 0,
-        "orgid": '',
-        "shipId": '',
-        "trackDetailed": "",
-        "trackInfo": "",
-        "trackNode": "",
-        "trackType": ''
+        'orgid': '',
+        'shipId': '',
+        'trackDetailed': '',
+        'trackInfo': '',
+        'trackNode': '',
+        'trackType': ''
       }
     }
   },
   watch: {
-    orderid (newVal) {
-      if(newVal !== '') {
+    orderid(newVal) {
+      if (newVal !== '') {
         this.init()
       } else {
         this.reset()
       }
     }
   },
-  mounted(){
+  mounted() {
     this.init()
   },
-  methods:{
+  methods: {
     // 初始化
-    init(){
+    init() {
       this.reset()
       this.loading = true
       return Promise.all([
@@ -125,7 +125,7 @@ export default {
       })
     },
     // 获取系统时间
-    getSystemTime () {
+    getSystemTime() {
       return orderManage.getCreateOrderDate().then(data => {
         this.nowTime = new Date(data)
         return data
@@ -140,7 +140,7 @@ export default {
     },
     // 删除跟踪信息
     deleteTrack(item) {
-      let data = item.id
+      const data = item.id
       this.$confirm('此操作将删除跟踪信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -158,7 +158,7 @@ export default {
     editItem(item) {
       this.isModify = true
       this.itemid = item.id
-      for(let i in this.formModel){
+      for (const i in this.formModel) {
         this.formModel[i] = item[i]
       }
     },
@@ -166,14 +166,16 @@ export default {
     submitForm() {
       this.$refs['formModel'].validate((valid) => {
         if (valid) {
-          let data = objectMerge2({}, this.formModel)
+          const data = objectMerge2({}, this.formModel)
+          data.createTime = +new Date(data.createTime)
           let promObj
-          if(!this.isModify){
+          if (!this.isModify) {
             promObj = orderManage.postTrackinfo(data)
           } else {
             data.id = this.itemid
             promObj = orderManage.putTrackinfo(data)
           }
+
           promObj.then(res => {
             this.$message.success('操作成功')
             this.reset()
@@ -185,7 +187,7 @@ export default {
       })
     },
     // 重置表单
-    reset () {
+    reset() {
       this.$refs['formModel'].resetFields()
       this.isModify = false
       this.itemid = ''
@@ -200,17 +202,17 @@ export default {
       delete this.formModel.id
     },
     // 取消高亮样式
-    offThisActive(e){
-      let p = closest(e.target,".el-step")
-      if(p){
-        p.classList.remove("trackactive")
+    offThisActive(e) {
+      const p = closest(e.target, '.el-step')
+      if (p) {
+        p.classList.remove('trackactive')
       }
     },
     // 设置高亮样式
-    setThisActive(e){
-      let p = closest(e.target,".el-step")
-      if(p){
-        p.classList.add("trackactive")
+    setThisActive(e) {
+      const p = closest(e.target, '.el-step')
+      if (p) {
+        p.classList.add('trackactive')
       }
     }
   }

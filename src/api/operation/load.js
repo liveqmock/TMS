@@ -76,3 +76,11 @@ export function putLoadDepart(params) {
     }
   })
 }
+/**
+ * 获取车牌号/司机名称/司机电话
+ */
+export function getTrucK () {
+  return fetch.get('/api-system/system/trunk/v1/findCarAndDriver/').then(data => {
+    return data
+  })
+}

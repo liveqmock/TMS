@@ -25,7 +25,7 @@ export default {
     TopNavSearch,
     TopNavCreateOrder
   },
-  data () {
+  data() {
     return {
     }
   }
@@ -70,8 +70,8 @@ export default {
       }
       
       img{
-        height: 37px;
-        width: 112px;
+        height: 33px;
+        width: 97px;
         vertical-align: middle;
       }
     }

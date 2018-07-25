@@ -33,9 +33,35 @@ export default {
   },
   props: {
   },
+  mounted() {
+    this.initPage()
+  },
   data() {
     return {
       component: 'All'
+    }
+  },
+  methods: {
+    initPage() {
+      if (this.$route.query.name) {
+        const name = this.$route.query.name
+        switch (name) {
+          case 'Cash':
+            this.component = 'Cash'
+            break
+          case 'Arrive':
+            this.component = 'Arrive'
+            break
+          case 'Receipt':
+            this.component = 'Receipt'
+            break
+          case 'Month':
+            this.component = 'Month'
+            break
+          case 'Abnormal':
+            this.component = 'Abnormal'
+        }
+      }
     }
   }
 }

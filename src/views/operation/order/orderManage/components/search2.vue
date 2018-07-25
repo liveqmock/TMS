@@ -8,7 +8,7 @@
             type="daterange"
             align="right"
             :size="btnsize"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
             start-placeholder="开始日期"
             :picker-options="pickerOptions2"
             end-placeholder="结束日期">
@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       searchCreatTime: [],
-      defaultTime: [parseTime(+new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
+      defaultTime: [parseTime(+new Date() - 60 * 24 * 60 * 60 * 1000, '{y}-{m}-{d}'), parseTime(new Date(), '{y}-{m}-{d}')],
       searchForm: {
         orgid: '',
         shipSn: '',
@@ -100,8 +100,8 @@ export default {
       const searchObj = {}
       searchObj.shipFromOrgid = this.searchForm.orgid
       searchObj.shipFormCityName = this.searchForm.shipFormCityName
-      searchObj.startTime = this.searchCreatTime[0]
-      searchObj.endTime = this.searchCreatTime[1]
+      searchObj.startTime = this.searchCreatTime ? this.searchCreatTime[0] + ' 00:00:00' : ''
+      searchObj.endTime = this.searchCreatTime ? this.searchCreatTime[1] + ' 23:59:59' : ''
       searchObj.shipSn = this.searchForm.shipSn
 
       this.$emit('change', searchObj)

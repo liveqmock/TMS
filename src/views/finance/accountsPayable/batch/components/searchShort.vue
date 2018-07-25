@@ -31,7 +31,7 @@
 import { REGEX } from '@/utils/validate'
 import SelectTree from '@/components/selectTree/index'
 import querySelect from '@/components/querySelect/index'
-import { objectMerge2, parseTime } from '@/utils/index'
+import { objectMerge2, parseTime, pickerOptions2 } from '@/utils/index'
 export default {
   components: {
     SelectTree,
@@ -60,8 +60,8 @@ export default {
     return {
       searchForm: {
         // sign: 2,
-        orgid: 0,
-        ascriptionOrgid: 0,
+        orgid: '',
+        ascriptionOrgid: '',
         status: 'NOSETTLEMENT,PARTSETTLEMENT,ALLSETTLEMENT'
         // loadStartTime: '',
         // loadEndTime: '',
@@ -76,31 +76,7 @@ export default {
       },
       searchTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
       pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近两个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 60);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
+        shortcuts: pickerOptions2
       }
     }
   },
@@ -113,8 +89,8 @@ export default {
     onSubmit() {
       let searchObj = Object.assign({}, this.searchForm)
       if (this.searchTime) {
-        this.$set(searchObj, 'departureStartTime', this.searchTime[0])
-        this.$set(searchObj, 'departureEndTime', this.searchTime[1])
+        this.$set(searchObj, 'departureStartTime', parseTime(this.searchTime[0], '{y}-{m}-{d} ') + '00:00:00')
+        this.$set(searchObj, 'departureEndTime', parseTime(this.searchTime[1], '{y}-{m}-{d} ') + '23:59:59')
       }
       this.$emit('change', searchObj)
     },
@@ -122,6 +98,8 @@ export default {
       this.$nextTick(() => {
         Object.assign(this.$data, this.$options.data())
         this.$refs[formName].resetFields()
+        this.searchForm.orgid = this.otherinfo.orgid
+        this.searchForm.ascriptionOrgid = this.otherinfo.orgid
       })
     }
   }

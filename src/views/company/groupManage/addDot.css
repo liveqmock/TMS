@@ -16,7 +16,7 @@
 .add-dot .el-form--inline .el-form-item{
   margin-right: 0;
 }
-.el-select-dropdown{
+.add-dot .el-select-dropdown{
   min-width: 140px !important;
 }
 .add-dot .el-input__suffix{

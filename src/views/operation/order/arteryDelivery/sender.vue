@@ -1,6 +1,5 @@
 <template>
-  <!--v-loading="loading"-->
-  <div class="tab-content" >
+  <div class="tab-content" v-loading="loading">
     <SearchForm :orgid="otherinfo.orgid" :issender="true" @change="getSearchParam" :btnsize="btnsize" />
     <div class="tab_info">
       <div class="btns_box">
@@ -74,12 +73,13 @@
           </el-table-column>
           <el-table-column
             label="发车时间"
+            prop="loadTime"
             width="160"
             sortable
             >
-            <template slot-scope="scope">
-              {{ scope.row.loadTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}') }}
-            </template>
+            <!--<template slot-scope="scope">-->
+              <!--{{ scope.row.loadTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}') }}-->
+            <!--</template>-->
 
           </el-table-column>
           <!--<el-table-column-->
@@ -245,12 +245,13 @@
           </el-table-column>
           <el-table-column
             label="配载时间"
+            prop="requireArrivedTime"
             width="160"
             sortable
           >
-            <template slot-scope="scope">
-              {{ scope.row.requireArrivedTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}') }}
-            </template>
+            <!--<template slot-scope="scope">-->
+              <!--{{ scope.row.requireArrivedTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}') }}-->
+            <!--</template>-->
           </el-table-column>
           <el-table-column
             prop="username"
@@ -277,7 +278,7 @@
       </div>
       <div class="info_tab_footer">共计:{{ total }} <div class="show_pager"> <Pager :total="total" @change="handlePageChange" /></div> </div>
     </div>
-    <AddCustomer :issender="true" :isModify="isModify" :info="selectInfo" :orgid="orgid" :popVisible.sync="AddCustomerVisible" @close="closeAddCustomer" @success="fetchData"  />
+    <AddCustomer :issender="true" :isModify.sync="isModify" :info="selectInfo" :orgid="orgid" :popVisible.sync="AddCustomerVisible" @close="closeAddCustomer" @success="fetchData"  />
     <TableSetup :issender="true" :popVisible="setupTableVisible" @close="closeSetupTable" @success="fetchData"  />
   </div>
 </template>
@@ -289,7 +290,7 @@ import TableSetup from './components/tableSetup'
 import AddCustomer from './components/storages'
 import { mapGetters } from 'vuex'
 import Pager from '@/components/Pagination/index'
-
+import { objectMerge2 } from '@/utils/index'
 export default {
   components: {
     SearchForm,
@@ -307,17 +308,15 @@ export default {
   },
   mounted () {
     this.searchQuery.vo.arriveOrgid = this.otherinfo.orgid
-    this.fetchAllCustomer()
+    //this.fetchAllCustomer()
   },
   data () {
     return {
-      loading: false,
+      loading: true,
       btnsize: 'mini',
       usersArr: [],
       total: 0,
       batchTypeId:'',//批次状态
-      //加载状态
-      // loading: true,
       setupTableVisible: false,
       AddCustomerVisible: false,
       isModify: false,
@@ -356,12 +355,16 @@ export default {
       this.fetchAllCustomer()
     },
     handlePageChange (obj) {
-      Object.assign(this.searchQuery, obj)
-      this.fetchData()
+      // Object.assign(this.searchQuery, obj)
+      // this.fetchData()
+      this.searchQuery.currentPage = obj.pageNum
+      this.searchQuery.pageSize = obj.pageSize
     },
     getSearchParam (obj) {
-      this.searchQuery.vo = Object.assign(this.searchQuery.vo, obj)
-      this.fetchAllCustomer()
+      // this.searchQuery.vo = Object.assign(this.searchQuery.vo, obj)
+      this.searchQuery.vo = objectMerge2(this.searchQuery.vo, obj)
+      // this.fetchAllCustomer()
+      this.fetchData()
     },
     showImport () {
       // 显示导入窗口
@@ -586,20 +589,28 @@ export default {
       // this.selectInfo = row
       // this.isModify = true
       // this.openAddCustomer()
-      console.log(row.bathStatusName);
       if(row.bathStatusName === '在途中'){
         this.selectInfo = row
-        this.isModify = true
         this.openAddCustomer()
-      }else {
-        let bathStatusName = row.bathStatusName
-        this.$message({
-          message: '批次状态为：' + bathStatusName + '不允许做到车确定~',
-          type: 'warning'
-        })
-        this.closeAddCustomer()
-        return false
+        this.isModify = true
+
       }
+      else {
+        this.selectInfo = row
+        this.openAddCustomer()
+        this.isModify = false
+
+      }
+      // else {
+      //   let bathStatusName = row.bathStatusName
+      //   this.$message({
+      //     message: '批次状态为：' + bathStatusName + '不允许做到车确定~',
+      //     type: 'warning'
+      //   })
+      //   this.closeAddCustomer()
+      //   return false
+      // }
+      this.$refs.multipleTable.clearSelection()
     }
   }
 }

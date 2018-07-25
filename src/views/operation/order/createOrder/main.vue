@@ -40,7 +40,7 @@
           <div class="order-form-item">
             <span class="order-form-label required">出发城市</span>
             <el-form-item prop="tmsOrderShip.shipFromCityCode">
-              <querySelect search="longAddr" @change="selectFromCity" :name="fromCityName" type="city"  v-model="form.tmsOrderShip.shipFromCityCode" :remote="true" />
+              <querySelect :getinput="true" search="longAddr" @change="selectFromCity" :name="fromCityName" type="city"  v-model="form.tmsOrderShip.shipFromCityCode" :remote="true" />
             </el-form-item>
           </div>
         </el-col>
@@ -48,7 +48,7 @@
           <div class="order-form-item">
             <span class="order-form-label required">到达城市</span>
             <el-form-item prop="tmsOrderShip.shipToCityCode">
-              <querySelect @change="selectToCity" search="longAddr" :name="toCityName" type="city"  v-model="form.tmsOrderShip.shipToCityCode" :remote="true" />
+              <querySelect :getinput="true" @change="selectToCity" search="longAddr" :name="toCityName" type="city"  v-model="form.tmsOrderShip.shipToCityCode" :remote="true" />
             </el-form-item>
           </div>
         </el-col>
@@ -149,7 +149,7 @@
           <el-table-column v-for="(item, index) in theFeeConfig" :key="index" :width="item.fieldProperty.indexOf('cargoName')!==-1 ? 120 : 'auto'" class="addButtonTh" :fixed="item.isfixed !== 0" :class="{'required': item.fieldProperty.indexOf('cargoName')!==-1 ||  item.fieldProperty.indexOf('cargoAmount')!==-1}" :label="item.fieldName">
             <template slot-scope="scope">
               <template v-if="item.fieldProperty.indexOf('cargoName')!==-1">
-                  <el-form-item :prop="'cargoList.'+scope.$index + '.cargoName'" required :rules="{ validator: validateIsEmpty('货品名不能为空！'), trigger: 'blur' }">
+                  <el-form-item :prop="'cargoList.'+scope.$index + '.cargoName'" :required="scope.$index === 0 ? true : false" :rules="{ validator: scope.$index === 0 ? validateIsEmpty('货品名不能为空！') : '', trigger: 'blur' }">
                     <querySelect size="mini" search="value" type="cargoName" valuekey="value" v-model="form.cargoList[scope.$index].cargoName" />
                   </el-form-item>
                 </template>
@@ -157,9 +157,15 @@
                   <querySelect size="mini" search="value" type="cargoPack" valuekey="value" v-model="form.cargoList[scope.$index].cargoPack" />
                 </template>
                 <template v-else-if="item.fieldProperty.indexOf('cargoAmount')!==-1">
-                  <el-form-item :prop="'cargoList.'+scope.$index + '.cargoAmount'" required :rules="{ validator: validateIsEmpty('货品件数不能为空！'), trigger: 'blur' }">
+                  <el-form-item :prop="'cargoList.'+scope.$index + '.cargoAmount'" :rules="{ validator: scope.$index === 0 ?  validateIsEmpty('货品件数不能为空！') : '', trigger: 'blur' }">
                   <el-input size="mini" maxlength="20"
                   v-model="form.cargoList[scope.$index].cargoAmount" @change="detectCargoNumChange" />
+                  </el-form-item>
+                </template>
+                <template v-else-if="/(cargoWeight|cargoVolume)/.test(item.fieldProperty)">
+                  <el-form-item :prop="'cargoList.'+scope.$index + '.'+item.fieldProperty" :rules="{ validator: scope.$index === 0 ?  validateWeightAndVolume(item.fieldProperty, scope.$index) : '', trigger: 'blur' }">
+                  <el-input size="mini" maxlength="20"
+                  v-model="form.cargoList[scope.$index][item.fieldProperty]" />
                   </el-form-item>
                 </template>
                 <template v-else>
@@ -293,7 +299,7 @@
             <div class="order-form-item">
               <span class="order-form-label">提货批次</span>
               <el-form-item prop="tmsOrderShip.shipBatchId">
-                <querySelect :filterable="false"  size="mini" search="batchNumber" placeholder="请选择" type="batch" show="select" valuekey="bathId" @change="getBatch" v-model="form.tmsOrderShip.shipBatchId" />
+                <querySelect key="batchid" :filterable="false"  size="mini" search="batchNumber" placeholder="请选择" type="batch" show="select" valuekey="bathId" @change="getBatch" v-model="form.tmsOrderShip.shipBatchId" />
               </el-form-item>
             </div>
           </el-col>
@@ -377,7 +383,7 @@
                   </td>
                   <td>
                     <querySelect  size="mini" search="carrierName" type="carrier" valuekey="carrierId" @change="getCarrier"
-                    :filterable="false" show="select" v-model="form.tmsOrderTransfer.carrierId" />
+                    :filterable="true" show="select" v-model="form.tmsOrderTransfer.carrierId" />
                   </td>
                   <td>
                     <el-input size="mini" maxlength="20"  v-numberOnly v-model="form.tmsOrderTransfer.carrierMobile" />
@@ -418,7 +424,7 @@
     <!-- 弹窗 -->
     <FeeDialog :dialogVisible.sync="dialogVisible" />
     <PersonDialog @success="getKeySetup" :dialogVisiblePerson.sync="dialogVisiblePerson" />
-    <ManageRemarks :popVisible.sync="popVisible" />
+    <ManageRemarks @success="setRemark" :popVisible.sync="popVisible" />
     </div>
   </div>
 </template>
@@ -468,14 +474,18 @@ export default {
   data() {
     const _this = this
     const validateOrderNum = (rule, value, callback) => {
-      _this.detectOrderNum().then(isDulip => {
-        if (isDulip) {
-          this.$message.error('重复的订单号')
-          callback(new Error())
-        } else {
-          callback()
-        }
-      })
+      if (this.output.ismodify) {
+        callback()
+      } else {
+        _this.detectOrderNum().then(isDulip => {
+          if (isDulip) {
+            this.$message.error('重复的订单号')
+            callback(new Error())
+          } else {
+            callback()
+          }
+        })
+      }
     }
 
     const validateMobile = (rule, value, callback) => {
@@ -544,6 +554,8 @@ export default {
           { validator: validateOnlyNumberAndLetter, message: '只能输入数字跟字母', trigger: ['change'] }
         ]
       },
+      // 用来判断是否有填体积或者重量
+      inputWOrV: {},
       // 付款方式禁用
       shipNowpayFeeDisabled: false,
       shipArrivepayFeeDisabled: false,
@@ -727,7 +739,7 @@ export default {
           'shipToCityCode': '',
           'shipToCityName': '',
           'shipToOrgid': '',
-          'shipTotalFee': 0,
+          'shipTotalFee': '0.00',
           'shipTruckIdNumber': '',
           'shipUserid': ''
         },
@@ -831,7 +843,7 @@ export default {
     'form.tmsOrderShip.shipReceiptRequire': {
       handler(newVal) {
         let num = 1
-        if (newVal === 80) {
+        if (newVal === 80 || newVal === '80') {
           num = 0
         }
         this.form.tmsOrderShip.shipReceiptNum = num
@@ -841,7 +853,7 @@ export default {
     'form.tmsOrderShip.shipTotalFee': {
       handler(newVal) {
         if (newVal === '') {
-          this.form.tmsOrderShip.shipTotalFee = 0
+          this.form.tmsOrderShip.shipTotalFee = '0.00'
         }
         this.setShipFee()
       },
@@ -873,6 +885,17 @@ export default {
           callback(new Error())
         } else {
           callback()
+        }
+      }
+    },
+    validateWeightAndVolume(prop, index) {
+      return (rule, value, callback) => {
+        if (this.form.cargoList[index].cargoWeight || this.form.cargoList[index].cargoVolume) {
+          callback()
+        } else {
+          console.log('index：', this.form.cargoList[index].cargoWeight, this.form.cargoList[index].cargoVolume)
+          this.$message.error('体积跟重量必填其一')
+          callback(new Error())
         }
       }
     },
@@ -986,6 +1009,7 @@ export default {
       }
     },
     // 绑定左右按键
+    // todo: 增加enter移到下一个
     bindTabWithArrow() {
       this.isbindtab = true
       // closest(ele, '.order-main')
@@ -1047,7 +1071,7 @@ export default {
               "cargoAmount": 4
             }
           ] */
-        if (!this.output.isOrder) {
+        if (!this.output.isOrder &&　this.form.tmsOrderShip.shipSn) {
           orderManage.postGenerateGoodsSn({
             'tmsOrderShip': {
               'shipSn': this.form.tmsOrderShip.shipSn
@@ -1084,6 +1108,7 @@ export default {
       if (item) {
         this.form.tmsOrderShip.shipFromCityName = item.longAddr
       } else {
+        this.form.tmsOrderShip.shipFromCityCode = city || ''
         this.form.tmsOrderShip.shipFromCityName = city || ''
       }
     },
@@ -1092,6 +1117,7 @@ export default {
       if (item) {
         this.form.tmsOrderShip.shipToCityName = item.longAddr
       } else {
+        this.form.tmsOrderShip.shipToCityCode = city || ''
         this.form.tmsOrderShip.shipToCityName = city || ''
       }
     },
@@ -1117,6 +1143,12 @@ export default {
         this.$set(this.form.cargoList, 1, objectMerge2(this.cargoList[1], this.cargoObject))
         console.log('theFeeConfig:', this.cargoObject, this.cargoList)
       }
+    },
+    // 从弹窗设置备注
+    setRemark(remarks) {
+      console.log('remarks:', remarks)
+      const remark = this.form.tmsOrderShip.shipRemarks
+      this.form.tmsOrderShip.shipRemarks = remark ? remark + ', ' + remarks : remarks
     },
     // 设置中转表单
     setOrderTransfer() {
@@ -1272,7 +1304,7 @@ export default {
         }
         this.loading = false
       }).catch(err => {
-        errFn()
+        errFn(err)
       })
     },
     // 从提货创建运单
@@ -1467,7 +1499,7 @@ export default {
     },
     // 回填运单信息
     setOrderData(data) {
-      data.tmsOrderShip = data.tmsOrderShip || {}
+      data.tmsOrderShip = data.tmsOrderShipInfo || data.tmsOrderShip || {}
       // 设置运单信息
       for (const i in this.form.tmsOrderShip) {
         this.form.tmsOrderShip[i] = data.tmsOrderShip[i]
@@ -1482,14 +1514,19 @@ export default {
       // 设置收发货人信息
       if (data.customerList[0]) {
         for (const i in this.form.sender) {
+          this.sender[i] = data.customerList[0][i]
           this.form.sender[i] = data.customerList[0][i]
         }
       }
       if (data.customerList[1]) {
         for (const i in this.form.receiver) {
+          this.receiver[i] = data.customerList[1][i]
           this.form.receiver[i] = data.customerList[1][i]
         }
       }
+      // 回显控货
+      this.shipOther = this.form.tmsOrderShip.shipOther.split(',') || []
+      console.log('回显控货:', this.shipOther)
 
       this.form.customerList = data.customerList || []
       console.log('setOrderInfo:', data, this.form)
@@ -1617,10 +1654,10 @@ export default {
       this.shipReceiptpayFeeDisabled = true
       this.shipMonthpayFeeDisabled = true
 
-      this.form.tmsOrderShip.shipNowpayFee = 0
-      this.form.tmsOrderShip.shipArrivepayFee = 0
-      this.form.tmsOrderShip.shipMonthpayFee = 0
-      this.form.tmsOrderShip.shipReceiptpayFee = 0
+      this.form.tmsOrderShip.shipNowpayFee = '0.00'
+      this.form.tmsOrderShip.shipArrivepayFee = '0.00'
+      this.form.tmsOrderShip.shipMonthpayFee = '0.00'
+      this.form.tmsOrderShip.shipReceiptpayFee = '0.00'
 
       switch (key) {
         // 现付
@@ -1645,7 +1682,7 @@ export default {
           break
         // 免费
         case 103:
-          this.form.tmsOrderShip.shipTotalFee = 0
+          this.form.tmsOrderShip.shipTotalFee = '0.00'
           break
         // 多笔付
         case 104:
@@ -1691,7 +1728,7 @@ export default {
       this.form.tmsOrderShip.shipIsSeparate = 0
       this.form.tmsOrderShip.shipIsTransfer = 0
       this.form.tmsOrderShip.shipIsUpdate = 0
-      this.form.tmsOrderShip.shipTotalFee = 0
+      this.form.tmsOrderShip.shipTotalFee = '0.00'
       this.form.tmsOrderTransfer = this.resetObj(this.form.tmsOrderTransfer)
 
       this.currentBatch = 1
@@ -1759,7 +1796,10 @@ export default {
               data.tmsOrderShip.shipReceiverId = data.customerList[1].customerId
             }
             data.customerList[1].customerType = 2
-            data.tmsOrderCargoList = this.form.cargoList.map(el => {
+            // 处理货物
+            data.tmsOrderCargoList = this.form.cargoList.filter(el => {
+              return !!el.cargoName
+            }).map(el => {
               const b = {}
               for (const i in el) {
                 if (el[i] === '') {
@@ -1786,6 +1826,7 @@ export default {
                 }
                 return */
               data.tmsOrderShip.id = this.orderData.tmsOrderShip.id
+              data.tmsOrderShip.shipStatus = this.orderData.tmsOrderShip.shipStatus
               console.log('change Order:', data)
               orderManage.putChangeOrder(data).then(res => {
                 this.$message.success('成功修改运单！')
@@ -1824,6 +1865,9 @@ export default {
                 data.tmsOrderShip.id = res.data
                 // 当为批次列表过来的，不作处理
                 if (!this.output.isbatch) {
+                  if (this.output.isPreOrder) {
+                    this.eventBus.$emit('putAcceptOrder', this.output.preId)
+                  }
                   if (this.ispop) {
                     this.eventBus.$emit('hideCreateOrder')
                     this.eventBus.$on('showOrderDetail', res.data)
@@ -1905,7 +1949,7 @@ $backgroundcolor: #cbe1f7;
     padding-right: 26px;
     padding-bottom: 58px;
     font-size: 12px;
-    max-height: 100%;
+    // max-height: 100%;
     min-width: 1316px;
     display: flex;
     position: relative;

@@ -148,11 +148,10 @@ export default {
       this.searchForm.shipToCityName = city.longAddr
     },
     onSubmit() {
-      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
-      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
-      // this.searchForm.startTime = this.searchCreatTime[0]
-      // this.searchForm.endTime = this.searchCreatTime[1]
-      this.searchForm[this.status] = this.thestatus
+      // this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0]) : ''
+      // this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1]) : ''
+      this.searchForm.startTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0], '{y}-{m}-{d} ') + '00:00:00' : ''
+      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1], '{y}-{m}-{d} ') + '23:59:59' : ''
       this.$emit('change', this.searchForm)
     },
     clearForm() {
@@ -172,7 +171,7 @@ export default {
 <style lang="scss">
 .tab-content{
     .receipt_searchinfo{
-        padding:15px 20px;
+        padding:10px 0;
         border-bottom:1px dashed #999;
         .el-form-item{
             margin-bottom: 0;
@@ -196,8 +195,10 @@ export default {
       }
   }
 }
-.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner{
-  width:200px;
+.receipt_searchinfo{
+  .el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner{
+    width:200px;
+  }
 }
 </style>
 

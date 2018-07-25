@@ -270,8 +270,8 @@
           }
           else{
             let _this = this
-            console.log(this.selected[0].id);
-            console.log(this.selected[0].shipId);
+            // console.log(this.selected[0].id);
+            // console.log(this.selected[0].shipId);
             let promiseObj = putRremoveShip(this.selected[0].id,this.selected[0].shipId)
             promiseObj.then(res => {
               this.loading = false

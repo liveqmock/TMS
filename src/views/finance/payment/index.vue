@@ -14,27 +14,46 @@
 </template>
 
 <script>
-import Send from './send'//寄出
-import Recycle from './recycle'//回收
-import Grant from './grant'//发放
-import Accept from './accept'//接收
+import Send from './send'// 寄出
+import Recycle from './recycle'// 回收
+import Grant from './grant'// 发放
+import Accept from './accept'// 接收
 // import Flow from './flow'
 export default {
-    components: {
-        Send,
-        Recycle,
-        Grant,
-        Accept
-    },
-    mounted () {
-        },
-        data() {
-            return {
-                component: 'Recycle'
-            }
-        },
-        methods: {
-        }
-    
+  components: {
+    Send,
+    Recycle,
+    Grant,
+    Accept
+  },
+  mounted() {
+    this.initPage()
+  },
+  data() {
+    return {
+      component: 'Recycle'
     }
+  },
+  methods: {
+    initPage() {
+      if (this.$route.query.name) {
+        const name = this.$route.query.name
+        switch (name) {
+          case 'Recycle':
+            this.component = 'Recycle'
+            break
+          case 'Send':
+            this.component = 'Send'
+            break
+          case 'Accept':
+            this.component = 'Accept'
+            break
+          case 'Grant':
+            this.component = 'Grant'
+            break
+        }
+      }
+    }
+  }
+}
 </script>

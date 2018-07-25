@@ -100,7 +100,7 @@ export function deleteFeeInfo(shipId) {
 }
  */
 export function getFeeList(data) {
-  return fetch.post('/api-finance/finance/employeeaccount/v1/getEmployeeList').then(res => {
+  return fetch.post('/api-finance/finance/employeeaccount/v1/getEmployeeList', data).then(res => {
     return res.data || { list: [], totalCount: 0 }
   })
 }

@@ -125,7 +125,34 @@
               </el-form-item>
               <el-form-item>
                 <el-checkbox true-label="1" false-label="0" v-model="form.shipPageFunc.shipFieldSign">运单字段设置</el-checkbox>
-                <el-input :disabled="form.shipPageFunc.shipFieldSign !== '1'" v-model="form.shipPageFunc.shipFieldValue" placeholder=""></el-input>
+                <!-- <el-select :disabled="form.shipPageFunc.shipFieldSign !== '1'" v-model="value" multiple placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in shipField"
+                    :key="item.key"
+                    :label="item.name"
+                    :class="{theSelectfirst: index === 0}"
+                    :value="item.value">
+                    <div class="selectHeader" v-if="index === 0"><span style="float: left">字典名称</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">必填</span></div>
+                    <span style="float: left">{{ item.name }}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">
+                      <el-checkbox true-label="1" false-label="0" v-model="shipField[index][item.key]"></el-checkbox>
+                    </span>
+                  </el-option>
+                </el-select> -->
+                <el-select :disabled="form.shipPageFunc.shipFieldSign !== '1'" v-model="fieldSetup" collapse-tags multiple placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in shipField"
+                    :key="item.key"
+                    :label="item.name"
+                    :class="{theSelectfirst: index === 0}"
+                    :value="item.key">
+                    <div class="selectHeader" @click.prevent.stop v-if="index === 0"><span style="float: left">字典名称</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">必填</span></div>
+                    <span style="float: left">{{ item.name }}</span>
+                  </el-option>
+                </el-select>
+                <!-- shipField -->
               </el-form-item>
               <el-form-item>
                 开单时间规则
@@ -193,88 +220,232 @@ export default {
     SelectType
   },
   computed: {
-      ...mapGetters([
-          'otherinfo'
-      ])
+    ...mapGetters([
+      'otherinfo'
+    ])
   },
-  data () {
+  data() {
     return {
-      //表单项
+      // 表单项
       shipNo: '',
       cargoNo: '',
       nochange: true,
       tooltip1: false,
       tooltip2: false,
       tooltip3: false,
-      activeNames: ['setup1','setup2','setup3','setup4'],
+      fieldSetup: [],
+      activeNames: ['setup1', 'setup2', 'setup3', 'setup4'],
+      shipField: [
+        {
+          key: 'shipFromCityName',
+          value: '0',
+          name: '出发城市'
+        },
+        {
+          key: 'shipToOrgid',
+          value: '0',
+          name: '目的网点'
+        },
+        {
+          key: 'shipGoodsSn',
+          value: '0',
+          name: '货号'
+        },
+        {
+          key: 'shipSenderId',
+          value: '0',
+          name: '发货方'
+        },
+        {
+          key: 'shipSenderAddress',
+          value: '0',
+          name: '发货地址'
+        },
+        {
+          key: 'shipReceiverId',
+          value: '0',
+          name: '收货方'
+        },
+        {
+          key: 'shipReceiverAddress',
+          value: '0',
+          name: '收货地址'
+        },
+        {
+          key: 'cargoWeight',
+          value: '0',
+          name: '重量'
+        },
+        {
+          key: 'cargoVolume',
+          value: '0',
+          name: '体积'
+        },
+        {
+          key: 'cargoPack',
+          value: '0',
+          name: '包装'
+        },
+        {
+          key: 'brokerageFee',
+          value: '0',
+          name: '回扣'
+        },
+        {
+          key: 'deliveryFee',
+          value: '0',
+          name: '送货费'
+        },
+
+        {
+          key: 'productPrice',
+          value: '0',
+          name: '声明价值'
+        },
+        {
+          key: 'insuranceFee',
+          value: '0',
+          name: '保险费'
+        },
+        {
+          key: 'handlingFee',
+          value: '0',
+          name: '装卸费'
+        },
+        {
+          key: 'packageFee',
+          value: '0',
+          name: '包装费'
+        },
+        {
+          key: 'pickupFee',
+          value: '0',
+          name: '提货费'
+        },
+        {
+          key: 'amountFee',
+          value: '0',
+          name: '件数单价'
+        },
+        {
+          key: 'weightFee',
+          value: '0',
+          name: '重量单价'
+        },
+        {
+          key: 'volumeFee',
+          value: '0',
+          name: '体积单价'
+        },
+        {
+          key: 'shipReceiptSn',
+          value: '0',
+          name: '回单号'
+        },
+        {
+          key: 'shipCustomerNumber',
+          value: '0',
+          name: '客户单号'
+        },
+        {
+          key: 'shipUserid',
+          value: '0',
+          name: '制单员'
+        }
+      ],
       form: {
-        "printSetting": {
-            "ship": "0",
-            "label": "0",
-            "inventory": "0"
+        'printSetting': {
+          'ship': '0',
+          'label': '0',
+          'inventory': '0'
         },
-        "shipNo": {
-            "manualInput": "0",
-            "companyNumberAutoIncrementSign": "0",
-            "companyNumberAutoIncrementByTwoYMSign": "1",
-            "companyNumberAutoIncrementByTwoYMDSign": "0",
-            "systemNumberImmutable": "0",
-            "companyNumberAutoIncrementValue": "",
-            "companyNumberAutoIncrementByTwoYMValue": "",
-            "companyNumberAutoIncrementByTwoYMDValue": ""
+        'shipNo': {
+          'manualInput': '0',
+          'companyNumberAutoIncrementSign': '0',
+          'companyNumberAutoIncrementByTwoYMSign': '1',
+          'companyNumberAutoIncrementByTwoYMDSign': '0',
+          'systemNumberImmutable': '0',
+          'companyNumberAutoIncrementValue': '',
+          'companyNumberAutoIncrementByTwoYMValue': '',
+          'companyNumberAutoIncrementByTwoYMDValue': ''
         },
-        "shipPermission": {
-            "onlyInvalidOwnShip": "0",
-            "onlyUpdateOwnShip": "0",
-            "onlyDeleteOwnShip": "0"
+        'shipPermission': {
+          'onlyInvalidOwnShip': '0',
+          'onlyUpdateOwnShip': '0',
+          'onlyDeleteOwnShip': '0'
         },
-        "module": "order",
-        "cargoNo": {
-            "orgIdAndShipNoAndNumberOfUnitsSign": "0",
-            "manualInput": "0",
-            "systemNumberNotAllowUpdate": "0",
-            "orgIdAndShipNoAndNumberOfUnitsValue": "",
-            "shipNoAndNumberOfUnits": "1"
+        'module': 'order',
+        'cargoNo': {
+          'orgIdAndShipNoAndNumberOfUnitsSign': '0',
+          'manualInput': '0',
+          'systemNumberNotAllowUpdate': '0',
+          'orgIdAndShipNoAndNumberOfUnitsValue': '',
+          'shipNoAndNumberOfUnits': '1'
         },
-        "shipFee": {
-            "customsFee": "0",
-            "commissionFee": "0",
-            "handlingFee": "1",
-            "otherFee": "0",
-            "brokerageFee": "1",
-            "goupstairsFee": "0",
-            "taxes": "0",
-            "shipFee": "1",
-            "housingFee": "0",
-            "deliveryFee": "1",
-            "insuranceFee": "0",
-            "forkliftCharge": "1",
-            "pickupFee": "1",
-            "stampTax": "0",
-            "productPrice": "0",
-            "packageFee": "0"
+        'shipFee': {
+          'customsFee': '0',
+          'commissionFee': '0',
+          'handlingFee': '1',
+          'otherFee': '0',
+          'brokerageFee': '1',
+          'goupstairsFee': '0',
+          'taxes': '0',
+          'shipFee': '1',
+          'housingFee': '0',
+          'deliveryFee': '1',
+          'insuranceFee': '0',
+          'forkliftCharge': '1',
+          'pickupFee': '1',
+          'stampTax': '0',
+          'productPrice': '0',
+          'packageFee': '0'
         },
-        "shipPageFunc": {
-            "shipFieldValue": "",
-            "toCityByAdministrativeRegion": "0",
-            "notifyCargoRule": "",
-            "shipTimeRule": "",
-            "shipFieldSign": "0"
+        'shipPageFunc': {
+          'shipFieldValue': {
+            'cargoPack': '0',
+            'shipReceiptSn': '0',
+            'shipGoodsSn': '0',
+            'amountFee': '0',
+            'shipToOrgid': '0',
+            'handlingFee': '0',
+            'brokerageFee': '0',
+            'volumeFee': '0',
+            'weightFee': '0',
+            'shipFromCityName': '0',
+            'cargoVolume': '0',
+            'shipCustomerNumber': '0',
+            'shipSenderId': '0',
+            'shipSenderAddress': '0',
+            'shipUserid': '0',
+            'deliveryFee': '0',
+            'insuranceFee': '0',
+            'shipReceiverId': '0',
+            'cargoWeight': '0',
+            'pickupFee': '0',
+            'shipReceiverAddress': '0',
+            'productPrice': '0',
+            'packageFee': '0'
+          },
+          'toCityByAdministrativeRegion': '0',
+          'notifyCargoRule': '',
+          'shipTimeRule': '',
+          'shipFieldSign': '0'
         },
-        "orgid": 1
+        'orgid': 1
       }
     }
   },
-  mounted () {
-    this.getInfo('order').then(()=>{
+  mounted() {
+    this.getInfo('order').then(() => {
       this.setShipNo()
       this.setCargoNo()
+      this.initField()
       // 加载好后才可以提交数据
       this.nochange = false
     })
   },
   methods: {
-    getInfo (module, type = '') {
+    getInfo(module, type = '') {
       return getAllSetting({
         orgid: this.otherinfo.orgid,
         type,
@@ -285,83 +456,102 @@ export default {
         this.form.shipPageFunc.notifyCargoRule = parseInt(this.form.shipPageFunc.notifyCargoRule, 10)
       })
     },
-    setShipNo () {
-      if(this.form.shipNo.manualInput === '1'){
-        this.shipNo = "1"
+    setShipNo() {
+      if (this.form.shipNo.manualInput === '1') {
+        this.shipNo = '1'
       }
-      if(this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign === '1'){
-        this.shipNo = "2"
+      if (this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign === '1') {
+        this.shipNo = '2'
       }
-      if(this.form.shipNo.companyNumberAutoIncrementByTwoYMSign === '1'){
-        this.shipNo = "3"
+      if (this.form.shipNo.companyNumberAutoIncrementByTwoYMSign === '1') {
+        this.shipNo = '3'
       }
-      if(this.form.shipNo.companyNumberAutoIncrementSign === '1'){
-        this.shipNo = "4"
-      }
-    },
-    setCargoNo () {
-      if(this.form.cargoNo.manualInput === '1'){
-        this.cargoNo = "1"
-      }
-      if(this.form.cargoNo.shipNoAndNumberOfUnits === '1'){
-        this.cargoNo = "2"
-      }
-      if(this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign === '1'){
-        this.cargoNo = "3"
+      if (this.form.shipNo.companyNumberAutoIncrementSign === '1') {
+        this.shipNo = '4'
       }
     },
-    resetShipNo () {
-      this.form.shipNo.manualInput = "0"
-      this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign = "0"
-      this.form.shipNo.companyNumberAutoIncrementByTwoYMSign = "0"
-      this.form.shipNo.companyNumberAutoIncrementSign = "0"
+    setCargoNo() {
+      if (this.form.cargoNo.manualInput === '1') {
+        this.cargoNo = '1'
+      }
+      if (this.form.cargoNo.shipNoAndNumberOfUnits === '1') {
+        this.cargoNo = '2'
+      }
+      if (this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign === '1') {
+        this.cargoNo = '3'
+      }
     },
-    resetCargoNo () {
-      this.form.cargoNo.manualInput = "0"
-      this.form.cargoNo.shipNoAndNumberOfUnits = "0"
-      this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign = "0"
+    resetShipNo() {
+      this.form.shipNo.manualInput = '0'
+      this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign = '0'
+      this.form.shipNo.companyNumberAutoIncrementByTwoYMSign = '0'
+      this.form.shipNo.companyNumberAutoIncrementSign = '0'
     },
-    saveData () {
+    resetCargoNo() {
+      this.form.cargoNo.manualInput = '0'
+      this.form.cargoNo.shipNoAndNumberOfUnits = '0'
+      this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign = '0'
+    },
+    saveData() {
       return putSetting(this.form).then(res => {
         this.$message({
           message: '保存成功',
           type: 'success'
         })
       })
+    },
+    initField() {
+      for (const i in this.form.shipPageFunc.shipFieldValue) {
+        if (this.form.shipPageFunc.shipFieldValue[i] === '1') {
+          this.fieldSetup.push(i)
+        }
+      }
+    },
+    setField() {
+      for (const i in this.form.shipPageFunc.shipFieldValue) {
+        if (this.fieldSetup.indexOf(i) !== -1) {
+          this.form.shipPageFunc.shipFieldValue[i] = '1'
+        } else {
+          this.form.shipPageFunc.shipFieldValue[i] = '0'
+        }
+      }
     }
   },
   watch: {
-    shipNo (newVal) {
+    fieldSetup(newVal) {
+      this.setField()
+    },
+    shipNo(newVal) {
       // 先重置
       this.resetShipNo()
-      switch(newVal){
+      switch (newVal) {
         case '1':
-          this.form.shipNo.manualInput = "1"
-          break;
+          this.form.shipNo.manualInput = '1'
+          break
         case '2':
-          this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign = "1"
-          break;
+          this.form.shipNo.companyNumberAutoIncrementByTwoYMDSign = '1'
+          break
         case '3':
-          this.form.shipNo.companyNumberAutoIncrementByTwoYMSign = "1"
-          break;
+          this.form.shipNo.companyNumberAutoIncrementByTwoYMSign = '1'
+          break
         case '4':
-          this.form.shipNo.companyNumberAutoIncrementSign = "1"
-          break;
+          this.form.shipNo.companyNumberAutoIncrementSign = '1'
+          break
       }
     },
-    cargoNo (newVal) {
+    cargoNo(newVal) {
       // 先重置
       this.resetCargoNo()
-      switch(newVal){
+      switch (newVal) {
         case '1':
-          this.form.cargoNo.manualInput = "1"
-          break;
+          this.form.cargoNo.manualInput = '1'
+          break
         case '2':
-          this.form.cargoNo.shipNoAndNumberOfUnits = "1"
-          break;
+          this.form.cargoNo.shipNoAndNumberOfUnits = '1'
+          break
         case '3':
-          this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign = "1"
-          break;
+          this.form.cargoNo.orgIdAndShipNoAndNumberOfUnitsSign = '1'
+          break
       }
     }
   }
@@ -439,5 +629,22 @@ export default {
       height: 70px;
       text-align: center;
     }
+
+    
+}
+.theSelectfirst{
+  height: 70px;
+}
+.selectHeader{
+  color: #999;
+  clear: both;
+  border-bottom: 1px solid #999;
+  margin-bottom: 10px;
+  height: 34px;
+}
+.el-select-dropdown__item.selected{
+  .selectHeader{
+    font-weight: normal;
+  }
 }
 </style>

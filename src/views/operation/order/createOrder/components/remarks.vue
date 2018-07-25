@@ -11,30 +11,42 @@
     @open="getRemarkSetup"
     width="300px"
     :before-close="close">
+    <div class="dialog-title" slot="title">
+      <el-button type="primary" size="mini" icon="el-icon-plus" @click="canAdd" circle></el-button>
+      常用备注
+    </div>
     <div class="setup-info-remark">
       <div class="addNew" v-if="isAdd">
         <el-input size="mini" v-model.trim="newItem" /><el-button size="mini" icon="el-icon-check" @click="addItem" class="add-btn"></el-button><el-button @click="reset" size="mini" icon="el-icon-close" class="delete-btn"></el-button>
       </div>
+      <el-checkbox-group v-model="checkList">
       <ul>
         <li v-for="(item, index) in remarksData" :key="index">
-          <div class="remark-info" :title="item.value" v-if="!isedit">{{ item.value }}</div>
-          <div class="remarks-edit" v-else>
-            <el-input size="mini" :value="item.value" @change="(val)=>{changeItem(item.id, val)}" />
-              <el-button size="mini" icon="el-icon-check" @click="modifyItem(item.id)" class="add-btn"></el-button>
-              <el-button @click="deleteItem(item.id)" size="mini" icon="el-icon-close" class="delete-btn"></el-button>
+          <div class="remarks-edit" >
+            <!-- 勾选展示框 -->
+            <el-checkbox :label="item.value" v-if="!item.isedit"><span @dblclick.prevent.stop="doPost([item.value])" class="remark-info">{{ item.value }}</span></el-checkbox>
+            <!-- 输入编辑框 -->
+            <el-input size="mini" :title="item.value" v-if="item.isedit" :value="item.value" @change="(val)=>{changeItem(item.id, val)}" />
+            <!-- 操作按钮 -->
+            <el-button size="mini" class="toeditbtn" icon="el-icon-edit" @click="item.isedit = true" v-if="!item.isedit" ></el-button>
+            <el-button @click="deleteItem(item.id)" v-if="!item.isedit" size="mini" icon="el-icon-delete" class="toeditbtn"></el-button>
+            <!-- 编辑操作按钮框 -->
+            <el-button size="mini" v-if="item.isedit" icon="el-icon-check" @click="modifyItem(item.id)" class="add-btn"></el-button>
+            <el-button @click="item.isedit = false" v-if="item.isedit" size="mini" icon="el-icon-close" class="delete-btn"></el-button>
           </div>
         </li>
       </ul>
+      </el-checkbox-group>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button size="mini" v-if="!isAdd" @click="canAdd">添 加</el-button>
-      <el-button size="mini" type="primary" v-if="!isedit" @click="canEdit">编 辑</el-button>
-      <el-button size="mini" type="info" v-if="isedit || isAdd" @click="reset">返 回</el-button>
+      
+      <el-button size="mini" type="info"  @click="close">取 消</el-button>
+      <el-button size="mini" type="primary" :disabled="!checkList.length" @click="doPost(checkList)">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 <script>
-import OrderApi from  '@/api/operation/orderManage'
+import OrderApi from '@/api/operation/orderManage'
 
 export default {
   props: {
@@ -45,9 +57,9 @@ export default {
   },
   computed: {
     // 搜索项不参与拖拉排序
-    searchList () {
-      if(this.query){
-        return this.remarksData.filter(el=>{
+    searchList() {
+      if (this.query) {
+        return this.remarksData.filter(el => {
           return el.name.indexOf(this.query) !== -1
         })
       } else {
@@ -55,38 +67,40 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       remarksData: [],
       // 用来搜索项
-      query: "",
+      query: '',
       loading: false,
       isedit: false,
       newItem: '',
       modifyObj: {},
-      isAdd: false
+      isAdd: false,
+      checkList: []
     }
   },
   methods: {
-    close(done){
+    close(done) {
       this.reset()
       this.$emit('update:popVisible', false)
       this.$emit('close')
-      if(typeof done === 'function'){
+      if (typeof done === 'function') {
         done()
       }
     },
-    reset(){
-      if(this.isedit){
+    reset() {
+      if (this.isedit) {
         this.getRemarkSetup()
       }
       this.isedit = false
       this.isAdd = false
       this.newItem = ''
+      this.checkList = []
     },
     // 新增
-    addItem (val) {
-      if(this.newItem !== ''){
+    addItem(val) {
+      if (this.newItem !== '') {
         OrderApi.postRemark({
           type: 3,
           userId: this.otherinfo.id,
@@ -103,11 +117,11 @@ export default {
       }
     },
      // 修改
-    changeItem (id, val) {
+    changeItem(id, val) {
       this.modifyObj[id] = val
     },
-    modifyItem (id) {
-      if(this.modifyObj[id]){
+    modifyItem(id) {
+      if (this.modifyObj[id]) {
         OrderApi.putRemark(id, {
           value: this.modifyObj[id]
         }).then(res => {
@@ -120,48 +134,55 @@ export default {
       }
     },
     // 删除
-    deleteItem (id) {
+    deleteItem(id) {
       this.$confirm('确定要删除id: ' + id + ' 这条吗？', '提示', {
-          confirmButtonText: '删除',
-          cancelButtonText: '取消',
-          type: 'warning'
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning'
       }).then(() => {
-          OrderApi.deleteRemark(id).then(res => {
-              this.$message({
-                  type: 'success',
-                  message: '删除成功!'
-              })
-              this.getRemarkSetup()
-          }).catch(err=>{
-              this.$message({
-                type: 'info',
-                message: '删除失败，原因：' + (err.text ? err.text : err)
-              })  
+        OrderApi.deleteRemark(id).then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
           })
-          
+          this.getRemarkSetup()
+        }).catch(err => {
+          this.$message({
+            type: 'info',
+            message: '删除失败，原因：' + (err.text ? err.text : err)
+          })
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        })          
+        })
       })
     },
     // 当打开设置窗口时，从后台获取最新的设置
     getRemarkSetup() {
       this.loading = true
       return OrderApi.getRemarkList().then(res => {
-        this.remarksData = res.list
+        this.remarksData = res.list.map(el => {
+          el.ischeck = false
+          el.isedit = false
+          return el
+        })
         res.list.forEach(el => {
           this.modifyObj[el.id] = el.value
         })
         this.loading = false
       })
     },
-    canEdit(){
+    doPost(item) {
+      this.$emit('success', item.join(','))
+      this.close()
+    },
+    canEdit() {
       this.isedit = true
       this.isAdd = false
     },
-    canAdd(){
+    canAdd() {
       this.isAdd = true
       this.isedit = false
     }
@@ -185,9 +206,13 @@ export default {
   .el-dialog__title{
     font-size: 14px;
   }
+  .dialog-title{
+    .el-button{
+      padding: 2px;
+    }
+  }
   .el-input{
     width: 180px;
-    margin-left: 5px;
     .el-input__inner{
       border-color: #cce1f9;
     }
@@ -200,6 +225,9 @@ export default {
     i{
       font-weight: bold;
     }
+  }
+  .remarks-edit{
+    padding-left: 10px;
   }
   .add-btn{
     color: #3b95ee;
@@ -214,12 +242,20 @@ export default {
     overflow: auto;
 
     li{
+      .toeditbtn{
+        display: none;
+      }
+      &:hover .toeditbtn{
+        display: inline-block;
+      }
       border-bottom: 1px solid #ccc;
       line-height: 30px;
     }
 
-    .remark-info{
-      padding-left: 10px;
+    .el-checkbox__label{
+      vertical-align: middle;
+      display: inline-block;
+      width: 166px;
       color:#666;
       white-space: nowrap;
       overflow: hidden;

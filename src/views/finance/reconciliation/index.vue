@@ -1,3 +1,3 @@
 <template>
-  <div>财务对账</div>
+  <router-view></router-view>
 </template>

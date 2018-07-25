@@ -114,8 +114,8 @@ background-color: rgb(195,232,255);
   display: flex;
 }
 .company .side_right_bottom .btns_box_lrl{
-  margin:10px 0 10px 14px;
-  height: 32px;
+  margin:10px 0 10px 0;
+  height: 28px;
 }
 
 .org-name{
@@ -191,8 +191,6 @@ background-color: rgb(195,232,255);
   background-color: #eee;
 }
 .company .info_news .cell{
-  color: #333;
-  font-size: 14px;
 }
 /*表格内容*/
 

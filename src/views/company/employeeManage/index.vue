@@ -3,11 +3,7 @@
         <SearchForm :groups="groupsArr" :orgid="otherinfo.orgid" @change="getSearchParam" :btnsize="btnsize" />
         <div class="staff_info">
             <div class="btns_box">
-                <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('add')">新增员工</el-button>
-                <el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('auth')" plain>员工授权</el-button>
-                <el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('modify')" plain>修改</el-button>
-                <el-button type="danger" :size="btnsize" icon="el-icon-delete" @click="doAction('delete')" plain>删除</el-button>
-                <el-button type="primary" :size="btnsize" icon="el-icon-setting" plain @click="setTable" class="table_setup">表格设置</el-button>
+                <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('add')">新增员工</el-button><el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('auth')" plain>员工授权</el-button><el-button type="primary" :size="btnsize" icon="el-icon-edit" @click="doAction('modify')" plain>修改</el-button><el-button type="danger" :size="btnsize" icon="el-icon-delete" @click="doAction('delete')" plain>删除</el-button><el-button type="primary" :size="btnsize" icon="el-icon-setting" plain @click="setTable" class="table_setup">表格设置</el-button>
             </div>
             <div class="info_news">
                 <el-table
@@ -149,7 +145,7 @@ export default{
             // 保存要修改的用户
       theUser: {},
             // 按钮大小
-      btnsize: 'small',
+      btnsize: 'mini',
             // 各个弹窗状态更改
       setupTableVisible: false,
       AddEmployeerVisible: false,
@@ -330,7 +326,6 @@ export default{
         .btns_box{
             margin-bottom:10px;
             .el-button{
-                margin-right:10px;
             }
             .table_setup{
                 float: right;
@@ -351,9 +346,6 @@ export default{
                 .unauth{
                     color: #f00;
                 }
-            }
-            .el-table td, .el-table th{
-                padding: 5px 0;
             }
         }
     }

@@ -7,16 +7,19 @@
             <!-- <el-select v-model="form.shipSn" filterable multiple  placeholder="请输入关键词">
             </el-select> -->
           <el-form-item label="运单号" prop="shipSn">
-              <querySelect valuekey="shipSn" search="shipSn" type="order"  @change="fetchShipInfo('shipSn')"  placeholder="请输入运单号" v-model="form.shipSn"/>
+            <!-- <el-input v-if="this.isDbClick" v-model="form.shipSn"  maxlength="20" auto-complete="off" :disabled="true"></el-input> -->
+              <querySelect valuekey="shipSn" search="shipSn" :disabled="this.isDbClick"  type="order" :key="querykey"  @change="fetchShipInfo"  placeholder="请输入运单号" v-model="form.shipSn">
+              </querySelect>
+              <!-- <querySelect valuekey="shipSn" search="shipSn" type="order"  @change="fetchShipInfo"  v-model="form.shipSn" :disabled="isDbClick ? true : false" /> -->
           </el-form-item>
           <el-form-item label="开单时间" prop="createTime">
             <el-input :value="form.createTime|parseTime('{y}-{m}-{d} {h}:{i}:{s}')" maxlength="20" auto-complete="off"  :disabled=" true"></el-input>
           </el-form-item>
-          <el-form-item label="出发城市" prop="shipFromCityCode">
-            <el-input v-model="form.shipFromCityCode"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="出发城市" prop="shipFromCityName">
+            <el-input v-model="form.shipFromCityName"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="到达城市" prop="shipToCityCode">
-            <el-input v-model="form.shipToCityCode"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="到达城市" prop="shipToCityName">
+            <el-input v-model="form.shipToCityName"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="货品名" prop="cargoName">
             <el-input v-model="form.cargoName" maxlength="18" auto-complete="off" :disabled="true" ></el-input>
@@ -30,31 +33,31 @@
           <el-form-item label="体积" prop="cargoVolume">
             <el-input v-model="form.cargoVolume"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="运费合计" prop="shipGoodsSn">
-            <el-input v-model="form.shipGoodsSn"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="运费合计" prop="shipFee">
+            <el-input v-model="form.shipFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="付款方式" prop="shipPayWay">
-            <el-input v-model="form.shipPayWay"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="付款方式" prop="shipPayWayName">
+            <el-input v-model="form.shipPayWayName"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="现付" prop="nowPayFee">
-            <el-input v-model="form.nowPayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="现付" prop="shipNowpayFee">
+            <el-input v-model="form.shipNowpayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="到付" prop="arrivePayFee">
-            <el-input v-model="form.arrivePayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="到付" prop="shipArrivepayFee">
+            <el-input v-model="form.shipArrivepayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="月结" prop="monthPayFee">
-            <el-input v-model="form.monthPayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="月结" prop="shipMonthpayFee">
+            <el-input v-model="form.shipMonthpayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="回单付" prop="receiptPayFee">
-            <el-input v-model="form.receiptPayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
+          <el-form-item label="回单付" prop="shipReceiptpayFee">
+            <el-input v-model="form.shipReceiptpayFee"  maxlength="20" auto-complete="off" :disabled="true"></el-input>
           </el-form-item>
   
         </div>
         <!--异动费用-->
         <div class="box1">
           <div class="titles">异动费用</div>
-          <el-form-item label="异动费用" v-number-only:point prop="changeFee" >
-            <el-input v-model="form.changeFee" maxlength="6" auto-complete="off" placeholder="请输入异动费用"></el-input>
+          <el-form-item label="异动费用" prop="fee" >
+            <el-input v-model="form.fee" v-number-only:point maxlength="6" auto-complete="off" placeholder="请输入异动费用"></el-input>
           </el-form-item>
           <!-- <el-form-item label="费用类型" prop="value">
             <el-select v-model="form.feeTypeId" placeholder="请选择费用类型">
@@ -66,10 +69,10 @@
               </el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item label="费用类型:">
-            <el-select v-model="form.feeStatus">
-              <el-option label="异动增款" :value="0"></el-option>
-              <el-option label="异动减款" :value="1"></el-option>
+          <el-form-item label="费用类型:" prop="incomePayType">
+            <el-select v-model="form.incomePayType">
+              <el-option label="异动增款" value="RECEIVABLE"></el-option>
+              <el-option label="异动减款" value="PAYABLE"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="异动时间:" prop="createTime">
@@ -89,17 +92,27 @@
         </div>
       </el-form>
     </template>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitForm('ruleForm')" :disabled="isCheck ? true : false">保 存</el-button>
+    <div slot="footer" class="dialog-footer" v-if="isDbClick">
+      <el-button @click="closeMe">关 闭</el-button>
+    </div>
+    <div slot="footer" class="dialog-footer" v-else>
+      <el-button type="primary" v-if="isModify" @click="submitForm('ruleForm')" >修改</el-button>
+      <el-button type="primary" v-else @click="submitForm('ruleForm')" >保 存</el-button>
       <el-button @click="closeMe">取 消</el-button>
     </div>
+    <!-- <div slot="footer" class="dialog-footer">
+      <el-button type="primary" v-if="isModify" @click="submitForm('ruleForm')" :disabled="isCheck ? true : false">修改</el-button>
+      <el-button type="primary" v-else @click="submitForm('ruleForm')" :disabled="isCheck ? true : false">保 存</el-button>
+      <el-button @click="closeMe">取 消</el-button>
+    </div> -->
   </pop-right>
 </template>
 <script>
 // import { REGEX } from '@/utils/validate'
-import { GetAbnormalNo, PostNewAbnormal, PutXiuGai, GetLook } from '@/api/operation/dashboard'
+// import { GetAbnormalNo, PostNewAbnormal, putXiugai, GetLook } from '@/api/operation/dashboard'
+import { postInsertAbnormal, putXiugai } from '@/api/finance/unusual'
 import { getAllUser } from '@/api/company/employeeManage'
-import orderManage from '@/api/operation/orderManage'
+// import orderManage from '@/api/operation/orderManage'
 import popRight from '@/components/PopRight/index'
 import Upload from '@/components/Upload/singleImage'
 import SelectTree from '@/components/selectTree/index'
@@ -135,6 +148,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isDbClick: {
+      type: Boolean,
+      default: false
+    },
     id: {
       type: [Number, String]
     },
@@ -148,10 +165,6 @@ export default {
     licenseTypes: {
       type: Array,
       default: () => []
-    },
-    isDbclick: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {
@@ -161,45 +174,54 @@ export default {
   },
   data() {
     return {
+      querykey: '11',
       searchCreatTime: +new Date(),
-
+      incomePayType: 'RECEIVABLE',
       form: {
         // 异动费用
-        feeStatus: 0,
-        fee: 400,
-        shipLoadId: 1016875003519434752,
-        incomePayType: '',
+        incomePayType: 'RECEIVABLE',
+        fee: '',
+        shipLoadId: '',
         remark: '',
-        changeFee: '',
         // 运单信息
         shipSn: '',
         createTime: '',
-        shipFromCityCode: '',
-        shipToCityCode: '',
+        shipFromCityName: '',
+        shipToCityName: '',
         cargoName: '',
         cargoAmount: '',
         cargoWeight: '',
         cargoVolume: '',
-        shipGoodsSn: '',
+        shipFee: '',
         shipPayWay: '',
-        nowPayFee: '',
-        arrivePayFee: '',
-        monthPayFee: '',
-        receiptPayFee: ''
-      },
+        shipNowpayFee: '',
+        shipArrivepayFee: '',
+        shipMonthpayFee: '',
+        shipReceiptpayFee: '',
+        shipPayWayName: ''
 
+      },
+      obj: {
+        fee: '',
+        shipLoadId: '',
+        incomePayType: '',
+        remark: ''
+      },
       formLabelWidth: '80px',
       tooltip: false,
       rules: {
-        changeFee: [
-          { required: true, message: '必填只能输入数字', trigger: 'change' }
+        fee: [
+          { required: true, message: '必填只能输入数字', trigger: 'blur' }
         ],
         remark: [
-          { required: true, message: '请输入异动备注', trigger: 'change' }
+          { required: true, message: '请输入异动备注', trigger: 'blur' }
         ],
         shipSn: [
           // { required: true, trigger: 'blur', validator: validateshipSn}
           { required: true, message: '请输入运单号', trigger: 'change' }
+        ],
+        incomePayType: [
+          { required: true, message: '请选择费用类型', trigger: 'change' }
         ]
       },
       // fileList2:[],
@@ -241,50 +263,62 @@ export default {
     orgid(newVal) {
       this.form.orgid = newVal
     },
-    isModify: {
-      handler(newVal) {
-        this.setTitle()
-      },
-      immediate: true
-    },
-    isCheck: {
-      handler(newVal) {
-        this.setTitle()
-      },
-      immediate: true
-    },
+    // isModify: {
+    //   handler(newVal) {
+    //     this.setTitle()
+    //   },
+    //   immediate: true
+    // },
+    // isDbClick: {
+    //   handler(newVal) {
+    //     this.setTitle()
+    //   },
+    //   immediate: true
+    // },
 
-    isDeal: {
-      handler(newVal) {
-        this.setTitle()
-        // if(this.isDeal){
-        //   this.popTitle = '异常处理'
-        //   GetLook(this.id).then(res => {
-        //     this.form = res;
-        //     this.form.disposeTime = new Date();
-        //   })
-        // }
-      },
-      immediate: true
+    info() {
+      // this.setTitle()
+
+      // if(this.isModify){
+      //   this.popTitle = '异常修改'
+      //   let data = Object.assign({},this.info)
+      //   for(let i in this.form){
+      //     this.form[i] = data[i]
+      //   }
+      //   this.form.id = data.id
+      // } else {
+      //   this.popTitle = '异常登记'
+      //   for(let i in this.form){
+      //     this.form[i] = ''
+      //   }
+      //   delete this.form.id
+      //   this.form.orgid = this.orgid
+      // }
+      for (const i in this.form) {
+        this.form[i] = ''
+      }
+      this.querykey = +new Date()
+
+      if (this.isModify) {
+        this.popTitle = '异动修改'
+        this.fetchShipInfo(this.info)
+        console.log(this.id + 'ppp')
+      } else if (this.isDbClick) {
+        this.popTitle = '异动查看'
+        this.fetchShipInfo(this.info)
+
+        // console.log(this.info.nowPayFee)
+      } else {
+        this.popTitle = '异动登记'
+        this.form.orgId = this.orgid
+
+        // this.fetchShipInfo(this.info)
+        this.form.incomePayType = this.incomePayType
+        this.form.shipSn = ''
+        // this.form.createTime = new Date()
+        // this.dengji()
+      }
     }
-
-    // info () {
-    //   if(this.isModify){
-    //     this.popTitle = '异常修改'
-    //     let data = Object.assign({},this.info)
-    //     for(let i in this.form){
-    //       this.form[i] = data[i]
-    //     }
-    //     this.form.id = data.id
-    //   } else {
-    //     this.popTitle = '异常登记'
-    //     for(let i in this.form){
-    //       this.form[i] = ''
-    //     }
-    //     delete this.form.id
-    //     this.form.orgid = this.orgid
-    //   }
-    // }
   },
   methods: {
     // handleRemove(file, fileList) {
@@ -293,19 +327,26 @@ export default {
     // handlePreview(file) {
     //   console.log(file);
     // },
-    setTitle() {
-      if (this.isModify) {
-        this.popTitle = '异动修改'
-        GetLook(this.id).then(res => {
-          this.form = res
-        })
-      } else {
-        this.popTitle = '异动登记'
-        this.form.orgId = this.orgid
-        // this.form.createTime = new Date()
-        // this.dengji()
-      }
-    },
+
+    // setTitle() {
+    //   if (this.isModify) {
+    //     this.popTitle = '异动修改'
+    //     this.fetchShipInfo(this.info)
+    //   } else if (this.isDbClick) {
+    //     this.popTitle = '异动查看'
+    //     this.fetchShipInfo(this.info)
+    //     console.log(this.isDbClick)
+    //   } else {
+    //     this.popTitle = '异动登记'
+    //     this.form.orgId = this.orgid
+    //     for (const i in this.form) {
+    //       this.form[i] = ''
+    //     }
+    //     this.form.incomePayType = this.incomePayType
+    //     // this.form.createTime = new Date()
+    //     // this.dengji()
+    //   }
+    // },
     // dengji() {
     //   return GetAbnormalNo().then(res => {
     //       // this.form = res;
@@ -314,7 +355,7 @@ export default {
     //   })
     // },
     querySearch(queryString, cb) {
-      var restaurants = this.resInfo
+      var restaurants = this.resInfo0
       var results = queryString ? restaurants.filter(item => {
         return item.name ? item.name.indexOf(queryString) !== -1 : false
       }) : restaurants
@@ -338,30 +379,68 @@ export default {
     getOrgid(id) {
       this.form.orgid = id
     },
-    // getShipSn(data){
-        // if(data){
-          // this.formInline.shipGoodsSn = order.shipGoodsSn
-          // this.sendId.pickupId = order.id
+    fetchShipInfo(data) {
+      // const oldVal = this.form[type]
 
-        //   this.form.shipSn = data.shipSn
-        //   this.form.shipGoodsSn = data.shipGoodsSn
-        //   this.form.createTime = data.createTime
-        //   this.form.cargoName = data.cargoName
-        //   this.form.cargoPack = data.cargoPack
-        //   this.form.cargoAmount = data.cargoAmount
-        // }else{
-        //   this.$message({
-        //       message: '查无此信息~',
-        //       type: 'warning'
-        //     })
-        // }
-      // },
-    fetchShipInfo(type) {
-      const oldVal = this.form[type]
-      orderManage.getFindByShipSnOrGoodSn({
+      if (data) {
+        console.log('ship data:', data)
+        if (this.isModify || this.isDbClick) {
+          this.form.shipSn = data.shipSn
+          this.form.shipFee = data.shipFee
+          this.form.createTime = data.createTime
+          this.form.cargoName = data.cargoName
+          this.form.cargoPack = data.cargoPack
+          this.form.cargoAmount = data.cargoAmount
+          this.form.shipLoadId = data.shipId
+          this.form.shipFromCityName = data.shipFromCityName
+          this.form.shipToCityName = data.shipToCityName
+          this.form.shipMonthpayFee = data.monthPayFee
+          this.form.shipReceiptpayFee = data.receiptPayFee
+          this.form.shipArrivepayFee = data.arrivePayFee
+
+          this.form.shipNowpayFee = data.nowPayFee
+          this.form.shipPayWayName = data.shipPayWay
+          this.form.cargoWeight = data.cargoWeight
+          this.form.cargoVolume = data.cargoVolume
+          // this.form.shipFee = data.shipFee
+          this.form.nowPayFee = data.nowPayFee
+
+          this.form.fee = data.changeFee
+          this.form.incomePayType = data.incomePayType
+          this.form.shipCreateTime = data.shipCreateTime
+          this.form.remark = data.remark
+          this.form.shipLoadId = data.id
+          this.form.shipPayWayName = data.shipPayWay
+
+          this.form.shipPayWay = data.shipPayWay
+        } else {
+          this.form = Object.assign(this.form, data)
+          this.form.shipLoadId = data.id
+          this.form.shipNowpayFee = data.shipNowpayFee
+          this.form.shipPayWayName = data.shipPayWayName
+        }
+      }
+      //  else {
+        // this.$message({
+        //   message: '查无此信息~',
+        //   type: 'warning'
+        // })
+        // this.form.shipSn = ''
+        // this.form.shipGoodsSn = ''
+        // this.form.createTime = ''
+        // this.form.cargoName = ''
+        // this.form.cargoPack = ''
+        // this.form.cargoAmount = ''
+        //   // this.form[type] = oldVal
+        // this.form.shipLoadId = ''
+      // }
+
+      // return
+      /* orderManage.getFindByShipSnOrGoodSn({
         [type]: this.form[type]
       }).then(res => {
         const data = res.data
+        console.log(res.data.shipSn)
         if (data) {
           this.form.shipSn = data.shipSn
           this.form.shipGoodsSn = data.shipGoodsSn
@@ -382,20 +461,29 @@ export default {
           this.form.cargoAmount = ''
           this.form[type] = oldVal
         }
-      })
+      }) */
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm(ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          this.loading = true
-          const data = objectMerge2({}, this.form)
+          // this.loading = true
+          this.obj.shipSn = this.form.shipSn
+          this.obj.fee = this.form.fee
+          this.obj.incomePayType = this.form.incomePayType
+          this.obj.remark = this.form.remark
+          this.obj.shipLoadId = this.form.shipLoadId
+          this.obj.createTime = new Date(this.form.createTime).getTime()
+          // this.obj.createTime = new Date(data.createTime).getTime()
+          const data = objectMerge2({}, this.obj)
+          // console.log(this.obj, this.form.createTime)
+
           // data.fixPhone = this.fixPhone
           let promiseObj
           // 判断操作，调用对应的函数
           if (this.isModify) {
-            promiseObj = PutXiuGai(data)
+            promiseObj = putXiugai(this.id, data) // 修改
           } else {
-            promiseObj = PostNewAbnormal(data)
+            promiseObj = postInsertAbnormal(data) // 登记
           }
 
           promiseObj.then(res => {
@@ -409,7 +497,7 @@ export default {
           }).catch(res => {
             this.loading = false
             this.$message.warning(res.text)
-            this.closeMe()
+            // this.closeMe()
           })
         } else {
           return false
@@ -417,15 +505,17 @@ export default {
       })
     },
     reset() {
-      const oldVal = this.form.abnormalNo
+      // const oldVal = this.form.abnormalNo
       this.$refs['ruleForm'].resetFields()
-      if (!this.isModify) {
-        this.form.abnormalNo = oldVal
-      }
+      // if (!this.isModify) {
+      //   this.form.abnormalNo = oldVal
+      // }
+      // this.form.shipSn = ''
     },
     closeMe(done) {
       this.reset()
       this.$emit('update:popVisible', false)
+      this.$emit('close')
       if (typeof done === 'function') {
         done()
       }
@@ -447,6 +537,7 @@ export default {
     .el-upload{
       display: none;
     }
+
   }
 .Addunusual{
   left: auto;
@@ -468,6 +559,8 @@ export default {
         margin-right: -17px;
       }
     }
+
+    
     .ms{
       width:100%;
       min-width:703px;
@@ -542,7 +635,7 @@ export default {
       padding-left:15px;
       border-top:2px solid #333333;
       border-bottom:1px solid #C6E2FF;
-      margin-bottom:5px;
+      margin-bottom:20px;
       color:black;
       position: relative;
       background: #e9f3fa;
@@ -558,12 +651,15 @@ export default {
         right:0px;
       }
     }
+    .el-input--mini .el-input__inner{
+      color:#2ca3f1;
+    }
     .el-input--prefix .el-input__inner {
         padding-right: 3px;
     }
     .el-textarea__inner{
         // width: 207%;
-        min-width: 703px;
+        min-width: 725px;
         height: 50%;
         line-height: 1.5;
     }

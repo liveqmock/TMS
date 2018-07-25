@@ -142,16 +142,44 @@
     <pre class="code">&lt;querySelect search=&quot;cargoName&quot; type=&quot;repertory&quot; :name=&quot;city&quot; @change=&quot;getcity&quot; /&gt;</pre>
 
     <h4>获取批次列表</h4>
-    <querySelect search="batchNumber" keyvalue="bathId" show="select" type="batch" :name="city" @change="getcity" />
-    <pre class="code">&lt;querySelect search=&quot;batchNumber&quot; keyvalue=&quot;bathId&quot; show=&quot;select&quot; type=&quot;batch&quot; :name=&quot;city&quot; @change=&quot;getcity&quot; /&gt;</pre>
+    <querySelect search="batchNumber" valuekey="bathId" show="select" type="batch" :name="city" @change="getcity" />
+    <pre class="code">&lt;querySelect search=&quot;batchNumber&quot; valuekey=&quot;bathId&quot; show=&quot;select&quot; type=&quot;batch&quot; :name=&quot;city&quot; @change=&quot;getcity&quot; /&gt;</pre>
 
     <h4>获取货品名称</h4>
-    <querySelect search="value" :remote="true" keyvalue="value" type="cargoName" />
-    <pre class="code">&lt;querySelect search=&quot;value&quot; keyvalue=&quot;value&quot; type=&quot;cargoName&quot;  /&gt;</pre>
+    <querySelect search="value" :remote="true" valuekey="value" type="cargoName" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;cargoName&quot;  /&gt;</pre>
 
     <h4>获取货品包装</h4>
-    <querySelect search="value" keyvalue="value" type="cargoPack" @change="getcity" />
-    <pre class="code">&lt;querySelect search=&quot;value&quot; keyvalue=&quot;value&quot; type=&quot;cargoPack&quot; @change=&quot;getcity&quot; /&gt;</pre>
+    <querySelect search="value" valuekey="value" type="cargoPack" @change="getcity" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;cargoPack&quot; @change=&quot;getcity&quot; /&gt;</pre>
+
+    <h4>获取备注列表</h4>
+    <querySelect search="value" valuekey="value" type="remark" @change="getcity" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;remark&quot; @change=&quot;getcity&quot; /&gt;</pre>
+
+    <h4>获取收支方式</h4>
+    <querySelect search="financialWay" valuekey="financialWay" type="payway" @change="getcity" />
+    <pre class="code">&lt;querySelect search=&quot;financialWay&quot; valuekey=&quot;financialWay&quot; type=&quot;payway&quot; @change=&quot;getcity&quot; /&gt;</pre>
+
+    <h4>获取最近出发城市</h4>
+    <querySelect search="value" :remote="true" valuekey="value" type="fromcity" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;fromcity&quot;  /&gt;</pre>
+
+    <h4>获取最近到达城市</h4>
+    <querySelect search="value" :remote="true" valuekey="value" type="tocity" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;tocity&quot;  /&gt;</pre>
+
+
+    <hr>
+    <h2>带初始值的示例</h2>
+    <querySelect search="value" v-model="city2" :remote="true" valuekey="value" type="tocity" />
+    <pre class="code">&lt;querySelect search=&quot;value&quot; valuekey=&quot;value&quot; type=&quot;tocity&quot;  /&gt;</pre>
+    <h4>valuekey跟显示字段不一致的回显</h4>
+    <querySelect search="driverName" type="driver" v-model="driver" @change="getdriver" :remote="true" />
+  <br>
+    <querySelect search="driverName" type="driver" name="张晓吉" v-model="driver2" @change="getdriver" :remote="true" />
+    <br>
+    <querySelect search="longAddr" @change="selectFromCity" :name="fromCityName" type="city" :getinput="true"  v-model="city3" :remote="true" />
 
 
     <h3>prop</h3>
@@ -170,6 +198,8 @@
       <li>param<div class="type">  Object</div>额外的请求参数，用来合并到vo中</li>
       <li>searchFn<div class="type">  Function</div>自定义的搜索函数，传入的参数为当前项，函数执行需返回true/false</li>
       <li>nochangeparam<div class="type">  Boolean</div>是否需要处理参数，默认false</li>
+      <li>filterable<div class="type">  Boolean</div>select是否开启搜索，默认为true</li>
+      <li>popClass<div class="type">  String</div>弹窗的自定义样式类名，方便控制下拉框里的样式</li>
     </ul>
 
     <h3>event</h3>
@@ -198,6 +228,10 @@
       <li>batch 获取批次列表</li>
       <li>cargoName 获取货品名称</li>
       <li>cargoPack 获取货品包装</li>
+      <li>fromcity 获取最近出发城市</li>
+      <li>tocity 获取最近到达城市</li>
+      <li>remark 获取备注列表</li>
+      <li>payway 获取收支方式</li>
     </ul>
   </div>
 </template>
@@ -207,15 +241,39 @@ export default {
   components: {
     querySelect
   },
-  data () {
+  data() {
     return {
-      city: '方',
+      city: '',
+      city2: '',
       val: '',
-      receiver: ''
+      receiver: '',
+      driver: 4,
+      driver2: '',
+      city3: '',
+      fromCityName: ''
     }
   },
+  watch: {
+    city3(ne) {
+      console.log('city3 change:', ne)
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      // this.city2 = '广州'
+      this.driver = 5
+    }, 5000)
+  },
   methods: {
-    getcity (obj) {
+    selectFromCity(item, city) {
+      console.log('selectFromCity:', item, city)
+      console.log('this.city3:', this.city3)
+    },
+    getdriver(obj) {
+      console.log('driver:', obj)
+      console.log('driver2:', this.driver2)
+    },
+    getcity(obj) {
       // {
       //   pageNum: 1,
       //   pageSize: 100
@@ -223,7 +281,7 @@ export default {
       console.log('pagenation', obj)
       this.city = obj.longAddr
     },
-    findId (el,query) {
+    findId(el, query) {
       return el.customerId.toString() === query
     }
   }

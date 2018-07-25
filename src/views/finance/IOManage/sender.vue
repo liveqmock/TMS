@@ -74,7 +74,7 @@
           <el-table-column
             prop="alipayAccount"
             label="支付宝账号"
-            width="150"
+            width="160"
             sortable
             >
           </el-table-column>
@@ -122,7 +122,7 @@
       </div>
       <div class="info_tab_footer">共计:{{ total }} <div class="show_pager"> <Pager :total="total" @change="handlePageChange" /></div> </div>
     </div>
-    <AddCustomer :issender="true" :isModify="isModify" :info="selectInfo" :orgid="orgid" :id='trackId' :popVisible.sync="AddCustomerVisible" @close="closeAddCustomer" @success="fetchData"  />
+    <AddCustomer :issender="true" :isModify="isModify" :isDbclick="isDbclick" :info="selectInfo" :orgid="orgid" :id='trackId' :popVisible.sync="AddCustomerVisible" @close="closeAddCustomer" @success="fetchData"  />
     <TableSetup :issender="true" :popVisible="setupTableVisible" @close="closeSetupTable" @success="fetchData"  />
   </div>
 </template>
@@ -148,7 +148,6 @@ export default {
           'otherinfo'
       ]),
       orgid () {
-        //要不你先去健身，差不多
         // console.log(this.selectInfo.orgid , this.searchQuery.vo.orgid , this.otherinfo.orgid)
         // return this.isModify ? this.selectInfo.arriveOrgid : this.searchQuery.vo.arriveOrgid || this.otherinfo.orgid
       }
@@ -174,6 +173,7 @@ export default {
       setupTableVisible: false,
       AddCustomerVisible: false,
       isModify: false,
+      isDbclick: false,
       selectInfo: {},
       // 选中的行
       selected: [],
@@ -201,10 +201,10 @@ export default {
       this.fetchAllCustomer()
     },
     handlePageChange (obj) {
-      Object.assign(this.searchQuery, obj)
-      this.fetchData()
-      // this.searchQuery.currentPage = obj.pageNum
-      // this.searchQuery.pageSize = obj.pageSize
+      // Object.assign(this.searchQuery, obj)
+      // this.fetchData()
+      this.searchQuery.currentPage = obj.pageNum
+      this.searchQuery.pageSize = obj.pageSize
     },
     getSearchParam (obj) {
       this.searchQuery.vo = Object.assign(this.searchQuery.vo, obj)
@@ -233,6 +233,7 @@ export default {
         // 新增
           case 'storage':
             this.isModify = false
+            this.isDbclick = false
             this.openAddCustomer()
             break;
           //  修改
@@ -248,12 +249,14 @@ export default {
           }else{
             this.selectInfo = this.selected[0]
             this.isModify = true
+            this.isDbclick = false
             this.openAddCustomer()
           }
 
             break;
           // 停用
           case 'stop':
+            this.closeAddCustomer()
             if(this.selected.length > 1){
               this.$message({
                 message: '只能选择一条数据进行跟踪设置~',
@@ -320,6 +323,7 @@ export default {
     getDbClick(row, event){
       this.selectInfo = row
       this.isModify = false
+      this.isDbclick = true
       this.openAddCustomer()
     }
   }

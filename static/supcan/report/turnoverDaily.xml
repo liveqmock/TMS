@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!--By Supcan Report -->
+<Report>
+	<WorkSheet name="营业额日报表">
+		<Properties>
+			<BackGround bgColor="#FFFFFF"/>
+			<DefaultTD>
+				<TD fontIndex="0" textColor="#000000" transparent="true" leftBorder="2" topBorder="2" leftBorderColor="#C0C0C0" leftBorderStyle="solid" topBorderColor="#C0C0C0" topBorderStyle="solid" decimal="2" align="center" vAlign="middle" isProtected="false" isThousandSeparat="true" datatype="0" isRound="true" isPrint="true"/>
+			</DefaultTD>
+			<Other isShowZero="true" isRefOri="true" LineDistance="0" isRowHeightAutoExtendAble="true"/>
+		</Properties>
+		<Fonts>
+			<Font faceName="Microsoft YaHei UI" charSet="134" height="-14" weight="400" pitchAndFamily="34" quality="1" outPrecision="3" clipPrecision="2"/>
+			<Font faceName="Microsoft YaHei UI" charSet="134" height="-19" weight="700" pitchAndFamily="34" quality="1" outPrecision="3" clipPrecision="2"/>
+			<Font faceName="Microsoft YaHei UI" charSet="134" height="-14" weight="700" pitchAndFamily="34" quality="1" outPrecision="3" clipPrecision="2"/>
+		</Fonts>
+		<Table>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="140"/>
+			<Col width="45"/>
+			<TR height="25" sequence="0">
+				<TD fontIndex="1" charSpace="2">营业额日报表</TD>
+				<TD fontIndex="1" charSpace="2">营业额日报表</TD>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD/>
+			</TR>
+			<TR height="25" sequence="1">
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD leftBorder="1" topBorder="1"/>
+				<TD/>
+			</TR>
+			<TR height="26" sequence="2">
+				<TD fontIndex="2">序号</TD>
+				<TD fontIndex="2">开单网点</TD>
+				<TD fontIndex="2">签收网点</TD>
+				<TD fontIndex="2">到达城市</TD>
+				<TD fontIndex="2">发货人</TD>
+				<TD fontIndex="2">货品名</TD>
+				<TD fontIndex="2">现付</TD>
+				<TD fontIndex="2">到付</TD>
+				<TD fontIndex="2">回单付</TD>
+				<TD fontIndex="2">月结</TD>
+				<TD fontIndex="2">运费合计</TD>
+				<TD fontIndex="2">回扣</TD>
+				<TD fontIndex="2">实收金额</TD>
+				<TD fontIndex="2"/>
+			</TR>
+			<TR height="24" sequence="3">
+				<TD datatype="1" formula="=dataRowNumber()"/>
+				<TD datatype="1" formula="=datarow(&apos;营业额日报表\data\list\jsonobject&apos;)"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD/>
+			</TR>
+			<TR height="24" sequence="4">
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD datatype="6"/>
+				<TD/>
+			</TR>
+			<TR height="24" sequence="5">
+				<TD datatype="1"/>
+				<TD datatype="1">合计</TD>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="6" formula="=Sum(G4:G5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(H4:H5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(I4:I5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(J4:J5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(K4:K5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(L4:L5,0.0001)">0.0001</TD>
+				<TD datatype="6" formula="=Sum(M4:M5,0.0001)">0.0001</TD>
+				<TD/>
+			</TR>
+			<TR height="24" sequence="6">
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD datatype="1"/>
+				<TD/>
+			</TR>
+		</Table>
+		<Merges>
+			<Range row1="0" col1="0" row2="1" col2="12"/>
+		</Merges>
+		<PrintPage>
+			<Paper>
+				<Margin left="19" top="25" right="19" bottom="25"/>
+			</Paper>
+			<Page isIgnoreValidBorder="false">
+				<PageCode>
+					<Font faceName="Microsoft YaHei UI" charSet="134" height="-14" weight="400"/>
+				</PageCode>
+			</Page>
+		</PrintPage>
+	</WorkSheet>
+	<DataSources Version="255" isAutoCalculateWhenOpen="false" isSaveCalculateResult="false">
+		<DataSource type="4"><!-- Desc: Supcan Report Component DataSource Specification -->
+<Data>
+	<ID>营业额日报表</ID>
+	<Version>2</Version>
+	<Type>4</Type>
+	<TypeMeaning>JSON</TypeMeaning>
+	<Source>http://localhost:7010/api-finance/finance/report/v1/dateReport?currentPage=1&amp;pageSize=1000&amp;shipFromOrgid=1&amp;senderCustomerName=&amp;createTimeStart=2018-07-07&amp;createTimeEnd=2018-10-10&amp;access_token=dc43710f-c91e-4e3f-aaa8-73303fbc6854</Source>
+	<XML_RecordAble_Nodes>
+		<Node>
+			<name/>
+		</Node>
+		<Node>
+			<name>data</name>
+		</Node>
+		<Node>
+			<name>data\list\jsonobject</name>
+		</Node>
+		<Node>
+			<name>data\navigatepageNums</name>
+		</Node>
+	</XML_RecordAble_Nodes>
+	<Columns>
+		<Column>
+			<name>status</name>
+			<text>status</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+		<Column>
+			<name>text</name>
+			<text>text</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>2</sequence>
+		</Column>
+		<Column>
+			<name>errorInfo</name>
+			<text>errorInfo</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>3</sequence>
+		</Column>
+		<Column>
+			<name>data\pageNum</name>
+			<text>pageNum</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>6</sequence>
+		</Column>
+		<Column>
+			<name>data\pageSize</name>
+			<text>pageSize</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>7</sequence>
+		</Column>
+		<Column>
+			<name>data\size</name>
+			<text>size</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>11</sequence>
+		</Column>
+		<Column>
+			<name>data\startRow</name>
+			<text>startRow</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>12</sequence>
+		</Column>
+		<Column>
+			<name>data\endRow</name>
+			<text>学习版限制</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>13</sequence>
+		</Column>
+		<Column>
+			<name>data\nextPage</name>
+			<text>nextPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+		<Column>
+			<name>data\isFirstPage</name>
+			<text>isFirstPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>2</sequence>
+		</Column>
+		<Column>
+			<name>data\isLastPage</name>
+			<text>isLastPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>3</sequence>
+		</Column>
+		<Column>
+			<name>data\hasPreviousPage</name>
+			<text>hasPreviousPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>4</sequence>
+		</Column>
+		<Column>
+			<name>data\hasNextPage</name>
+			<text>hasNextPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>5</sequence>
+		</Column>
+		<Column>
+			<name>data\navigatePages</name>
+			<text>navigatePages</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>8</sequence>
+		</Column>
+		<Column>
+			<name>data\navigateFirstPage</name>
+			<text>navigateFirstPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>9</sequence>
+		</Column>
+		<Column>
+			<name>data\navigateLastPage</name>
+			<text>navigateLastPage</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>10</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\orgidName</name>
+			<text>orgidName</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\signOrgidName</name>
+			<text>signOrgidName</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>2</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\shipToCityName</name>
+			<text>shipToCityName</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>3</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\senderCustomerName</name>
+			<text>senderCustomerName</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>4</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\cargoName</name>
+			<text>cargoName</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>5</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\shipNowpayFee</name>
+			<text>shipNowpayFee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>6</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\shipArrivepayFee</name>
+			<text>shipArrivepayFee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>7</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\shipReceiptpayFee</name>
+			<text>shipReceiptpayFee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>8</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\shipMonthpayFee</name>
+			<text>shipMonthpayFee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>9</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\totalfee</name>
+			<text>totalfee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>10</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\brokerageFee</name>
+			<text>brokerageFee</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>11</sequence>
+		</Column>
+		<Column>
+			<name>data\list\jsonobject\amountCollected</name>
+			<text>amountCollected</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>12</sequence>
+		</Column>
+		<Column>
+			<name>data\navigatepageNums\tempiteminarray</name>
+			<text>tempiteminarray</text>
+			<type>string</type>
+			<visible>true</visible>
+			<sequence>1</sequence>
+		</Column>
+	</Columns>
+</Data>
+
+		</DataSource>
+	</DataSources>
+</Report>

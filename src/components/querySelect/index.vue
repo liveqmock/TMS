@@ -2,7 +2,7 @@
 <span class="autocomplete-input">
 <el-autocomplete
   v-if="show === 'input'"
-  :popper-class="'query-input-autocomplete ' + customCss"
+  :popper-class="'query-input-autocomplete ' + setCustomCss"
   v-model="handlevalue"
   :fetch-suggestions="querySearch"
   :value-key="showkey"
@@ -10,7 +10,6 @@
   :placeholder="place"
   ref="myautocomplete"
   @select="handleSelect"
-  select-when-unmatched
   v-bind="$attrs"
   >
   <template slot-scope="{ item }">
@@ -25,7 +24,7 @@
         </div>
       </template>
       <template v-else>
-        {{ item[showkey] }}
+        <span v-html="highLight(item, showkey)"></span>
       </template>
 
     </slot>
@@ -34,7 +33,7 @@
 <el-select
     v-if="show === 'select' && remote"
     v-model="handlevalue"
-    popper-class="query-select-autocomplete"
+    :popper-class="'query-input-autocomplete ' + setCustomCss"
     :filterable="filterable"
     @change="handleSelect"
     @focus="initData"
@@ -63,7 +62,7 @@
     @change="handleSelect"
     @focus="initData"
     :value-key="showkey"
-    popper-class="query-select-autocomplete"
+    :popper-class="'query-input-autocomplete ' + setCustomCss"
     :filterable="filterable"
     :placeholder="place"
     ref="myautocomplete"
@@ -109,6 +108,8 @@ import { fetchPostlist } from '@/api/operation/pickup'
 import { postReceipt } from '@/api/operation/receipt'
 // 获取库存列表
 import { postAllOrderRepertory } from '@/api/operation/repertory'
+// 获取收支方式列表
+import { postTmsFfinancialwayList } from '@/api/finance/financefinancialway'
 
 export default {
   props: {
@@ -185,41 +186,57 @@ export default {
     filterable: {
       type: Boolean,
       default: true
+    },
+    popClass: {
+      type: String,
+      default: ''
+    },
+    getinput: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
     name: {
       handler(newVal) {
-        // 转成字符串格式
-        if (newVal) {
-          this.handlevalue = newVal + ''
-        } else {
-          this.handlevalue = ''
+        if (!this.inited) {
+          this.findName(newVal)
         }
       },
-      immediate: true
+      immediate: false
     },
     value: {
       handler(newVal) {
         // 当绑定值跟搜索字段一致时，响应绑定值的变化
         // 当被清空时
         // 转成字符串格式
-        newVal = newVal ? newVal + '' : ''
+        /* newVal = newVal ? newVal + '' : ''
         if (this.search === this.valuekey || !newVal) {
           this.handlevalue = newVal
-          console.log('handkler: value')
+          console.log('handkler: ', newVal)
         }
+        console.log('handkler2: ', newVal) */
+        // if (!this.inited) {
+        this.findValue(newVal)
+        // }
       },
-      immediate: true
+      immediate: false
     },
     handlevalue(newVal) {
+      console.log('handkler3: ', newVal, this.search === this.valuekey, this.search, this.valuekey)
       if (this.search === this.valuekey) {
         this.$emit('input', this.handlevalue)
       }
-      this.$emit('change', '', this.handlevalue)
+      if (this.getinput) {
+       // this.$emit('change', '', this.handlevalue)
+      }
+        //
     }
   },
   computed: {
+    setCustomCss() {
+      return this.popClass + ' ' + this.customCss
+    },
     place() {
       return this.show === 'select' ? '请选择' : this.placeholder
     },
@@ -308,11 +325,28 @@ export default {
           this.queryParam = '2'
           fn = orderManageApi.getRecently
           break
+        case 'fromcity':
+          this.canchangeparam = false
+          this.lastQuery = ''
+          this.queryParam = '4'
+          fn = orderManageApi.getRecently
+          break
+        case 'tocity':
+          this.canchangeparam = false
+          this.lastQuery = ''
+          this.queryParam = '5'
+          fn = orderManageApi.getRecently
+          break
         case 'remark':
           this.canchangeparam = false
           this.lastQuery = ''
-          this.queryParam = ''
+          this.queryParam = '3'
           fn = orderManageApi.getRemarkList
+          break
+        case 'payway':
+          this.queryParam.vo.orgid = this.getOrgid
+          this.queryParam.vo.status = 0
+          fn = postTmsFfinancialwayList
           break
       }
       // 设定pageSize参数
@@ -362,6 +396,11 @@ export default {
     this.canchangeparam = !this.nochangeparam
     this.remoteFn = this.queryFn
 
+    console.log('init value:', this.value)
+    if (this.value || this.name) {
+      this.initFindItem()
+    }
+
     this.initEvent()
   },
   methods: {
@@ -371,17 +410,52 @@ export default {
         this.$refs.myautocomplete.close ? this.$refs.myautocomplete.close() : this.$refs.myautocomplete.handleClose()
       })
     },
+    initFindItem() {
+      this.initData().then(res => {
+        console.log('get dATA:', this.allData)
+        if (this.value) {
+          // 遍历已有的数据
+          // 假如请求的数据没有包含这个数据呢？
+          this.findValue(this.value)
+        }
+        if (this.name) {
+          this.findName(this.name)
+        }
+      })
+    },
+    findItem(value, name) {
+      if (this.inited) {
+        let isfind = false
+        this.allData.map(el => {
+          if (el[name] === value) {
+            console.log('find name:', value, this.showkey)
+            this.handlevalue = el[this.showkey]
+            isfind = true
+          }
+        })
+        // 当查找不到时，回显到输入框
+        this.handlevalue = !isfind ? value + '' : this.handlevalue
+      } else {
+        this.initFindItem()
+      }
+    },
+    findName(value) {
+      this.findItem(value, this.showkey)
+    },
+    findValue(value) {
+      this.findItem(value, this.valuekey)
+    },
     initData() {
       if (!this.inited) {
         this.inited = true
         // 判断是否需要每次都请求
-        if (!this.remote) {
-          this.fetchFn().then(data => {
-            this.allData = data
-            this.searchData = data
-          })
-        }
+        return this.fetchFn().then(data => {
+          this.allData = data
+          this.searchData = data
+          console.log('this.allData:', this.allData)
+        })
       }
+      return Promise.resolve([])
     },
     // 高亮城市选择项
     highLightCity(item, ishightlight) {
@@ -481,7 +555,7 @@ export default {
         info = info[0] || old
       }
 
-      this.$emit('input', info[this.valuekey] || info || '')
+      this.$emit('input', info ? (info[this.valuekey] || info.value || info) : '')
 
       this.$emit('change', info)
     }
@@ -489,6 +563,12 @@ export default {
 }
 </script>
 <style lang="scss">
+.query-input-autocomplete{
+  .highlight{
+    font-style: normal;
+    color: #f00;
+  }
+}
 .query-input-customer, .query-input-city{
   min-width: 400px !important;
   li{
@@ -503,10 +583,7 @@ export default {
       text-overflow: ellipsis;
       min-height: 28px;
     }
-    .highlight{
-      font-style: normal;
-      color: #f00;
-    }
+    
   }
   .query-input-customer-org{
     width: 60px;

@@ -376,14 +376,14 @@
     bottom: auto;
     min-width: 600px;
     max-width:  600px;
+    .popRight-content{
+      padding: 20px 20px 0;
+      box-sizing: border-box;
+    }
+    .el-select .el-input__inner{
+      padding-right: 15px;
+    }
+  }
 
-  }
-  .popRight-content{
-    padding: 20px 20px 0;
-    box-sizing: border-box;
-  }
-  .el-select .el-input__inner{
-    padding-right: 15px;
-  }
 </style>
 

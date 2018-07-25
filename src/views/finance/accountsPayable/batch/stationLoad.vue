@@ -6,7 +6,7 @@
     <!-- 操作按钮 -->
     <div class="tab_info">
       <div class="btns_box">
-        <el-button type="success" :size="btnsize" icon="el-icon-sort" @click="doAction('count')" plain>结算</el-button>
+        <el-button type="primary" :size="btnsize" icon="el-icon-sort" @click="doAction('count')" plain>结算</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-printer" @click="doAction('print')" plain>打印</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-download" @click="doAction('export')" plain>导出</el-button>
         <el-button type="primary" :size="btnsize" icon="el-icon-setting" @click="setTable" class="table_setup" plain>表格设置</el-button>
@@ -82,6 +82,7 @@ export default {
       tablekey: 0,
       total: 0,
       dataList: [],
+      selectListBatchNos: [],
       loading: false,
       setupTableVisible: false,
       tableColumn: [
@@ -196,9 +197,6 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.fetchList()
-  },
   methods: {
     getSearchParam(obj) {
       this.$set(this.searchQuery.vo, 'feeTypeId', this.feeTypeId)
@@ -208,10 +206,9 @@ export default {
     handlePageChange(obj) {
       this.searchQuery.currentPage = obj.pageNum
       this.searchQuery.pageSize = obj.pageSize
+      this.fetchList()
     },
     fetchList() {
-      this.$set(this.searchQuery.vo, 'orgid', this.otherinfo.orgid)
-      this.$set(this.searchQuery.vo, 'ascriptionOrgid', this.otherinfo.orgid)
       this.$set(this.searchQuery.vo, 'feeTypeId', this.feeTypeId)
       return postPayListByOne(this.searchQuery).then(data => {
         this.dataList = data.list
@@ -230,13 +227,27 @@ export default {
       }
     },
     count() {
-      this.$router.push({ path: '../accountsLoad' })
-      console.log('router', this.$router)
+      this.$router.push({
+        path: '../accountsLoad',
+        query: {
+          currentPage: 'batchStationLoad', // 本页面标识符
+          searchQuery: this.searchQuery, // 搜索项
+          selectListBatchNos: this.selectListBatchNos // 列表选择项的批次号batchNo
+        }
+      })
     },
-    clickDetails(row) {},
-    getSelection(list) {},
+    clickDetails(row) {
+      this.$refs.multipleTable.toggleRowSelection(row)
+    },
+    getSelection(list) {
+      this.selectListBatchNos = []
+      list.forEach((e, index) => {
+        this.selectListBatchNos.push(e.batchNo)
+      })
+      console.log(this.selectListBatchNos)
+    },
     showDetail(order) {
-      this.eventBus.$emit('showOrderDetail', order.id)
+      // this.eventBus.$emit('showOrderDetail', order.id)
     },
     setTable() {
       this.setupTableVisible = true

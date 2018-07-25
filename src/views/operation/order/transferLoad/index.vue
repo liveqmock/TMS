@@ -40,8 +40,11 @@
         <!-- <el-button size="mini" icon="el-icon-delete" plain type="warning" @click="doAction('reset')">全部清空</el-button> -->
         <el-button size="mini" icon="el-icon-sort" plain type="primary" @click="doAction('finish')">完成中转</el-button>
       </div>
-      <!-- 穿梭框 -->
+      <div class="load_btn_transferTable">
+        <!-- 穿梭框 -->
       <dataTable :leftData="leftData" :rightData="rightData"  @loadTable="getLoadTable"></dataTable>
+      </div>
+      
     </div>
     <!-- 添加承运商信息 -->
       <addCraieer :orgid="otherinfo.orgid" :popVisible.sync="addCarrierVisible"></addCraieer>
@@ -264,7 +267,9 @@ export default {
     },
     // 获取选中的承运商
     getCarrier(item) {
-      this.formModel.carrierMobile = item.carrierMobile
+      if (item) {
+        this.formModel.carrierMobile = item.carrierMobile
+      }
     },
     // 显示新增承运商
     addCarrier() {
@@ -280,20 +285,28 @@ export default {
 </script>
 <style lang="scss">
 .transferload-steup {
-  height: calc(100%);
-  display: flex;
-  flex-direction: column;
+  height: 100%;
   position: relative;
 
-  .transferTable{
-    flex:1;
-    display: flex;
+  // .transferTable{
+  //   flex:1;
+  //   display: flex;
+  //   flex-direction: column;
+  //   height: auto;
+  //   margin-top: 0;
+  // }
+  // 
+  .load_btn_transferTable{
+    display:flex;
     flex-direction: column;
+    flex: 1;
+    height:100%;
   }
 
-  .transferTable .transferTable_content{
-
-  }
+  // .transferTable .transferTable_content{
+  //   height: auto;
+  //   flex: 1;
+  // }
 
   .el-collapse{
   }
@@ -307,9 +320,7 @@ export default {
     }
 
   .transferload-steup-form {
-    flex-grow: 1;
     overflow-x: hidden;
-    overflow-y: auto;
     padding: 10px 10px 0 10px;
     height: 100%;
     position: relative;

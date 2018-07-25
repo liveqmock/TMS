@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=GB2312" />
+  <link rel="stylesheet" type="text/css" href="untils/common.css" />
+  <script src="binary/dynaload.js"></script>
+  <script src="untils/common.js"></script>
+  <script>
+  var query = getUrlParams()
+
+  function OnReady(id) {
+
+    AF.func("Build", "report/turnoverDaily.xml");
+    AF.func("SelectCell", "0\r\n0");
+    //指定ds1数据源取数的URL地址 
+    // var currentPage = 1;
+    // var pageSize = 1000;
+    // var access_token = "3471ea1a-8dcd-4c9f-95e9-258dbcf564cb";
+    // var createTimeStart = "2018-07-07"; //开单时间
+    // var createTimeEnd = "2018-10-10"; //开单时间
+    // var shipFromOrgid = 1; //网点
+    // var senderCustomerName = ""; //发货人\
+
+    // AF.func("SetSource", "营业额日报表 \r\n http://192.168.1.157:7010/api-finance/finance/report/v1/dateReport?currentPage=" + currentPage + "&pageSize=" + pageSize + "&shipFromOrgid=" + shipFromOrgid + "&senderCustomerName=" + senderCustomerName + "&createTimeStart=" + createTimeStart + "&createTimeEnd=" + createTimeEnd + "&access_token=" + access_token);
+    AF.func("SetSource", "营业额日报表 \r\n http://192.168.1.157:7010/api-finance/finance/report/v1/dateReport" + query);
+    console.log("http://192.168.1.157:7010/api-finance/finance/report/v1/dateReport" + query)
+    //需要重新计算， 因为SetSource仅仅是相当于更改一个属性 
+    AF.func("Calc", "");
+  }
+
+  </script>
+</head>
+
+<body>
+  <div id="main" style="position:relative;width:100%;height:380px">
+    <script>
+    insertReport('AF', 'FullScreen; Rebar=Print; print=11, 216,18;Border=none;LeftRulerWidthPercent=0')
+    </script>
+  </div>
+</body>
+
+</html>

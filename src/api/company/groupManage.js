@@ -99,11 +99,11 @@ export function putDict(orgid, dictName, id) {
  * 营业网点 0
  * 分拨中心 1
  */
-export function getNetWorkTypeInfo(orgid) {
+export function getNetWorkTypeInfo(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'network_type',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []
@@ -116,11 +116,11 @@ export function getNetWorkTypeInfo(orgid) {
  * 自营 0
  * 加盟 1
  */
-export function getManageTypeInfo(orgid) {
+export function getManageTypeInfo(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'manage_type',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []
@@ -132,11 +132,11 @@ export function getManageTypeInfo(orgid) {
  * 无效   0
  * 有效   1
  */
-export function getNetworkStatusInfo(orgid) {
+export function getNetworkStatusInfo(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'network_status',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []

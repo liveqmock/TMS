@@ -14,6 +14,8 @@
 <script>
 import AbReg from './abReg'// 登记
 import AbDeal from './abDeal'// 处理
+// import AbReg from './abdj'
+// import AbDeal from './abcl'
 export default {
   components: {
     AbReg,

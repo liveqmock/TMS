@@ -20,22 +20,30 @@ export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
   }
-
   if (!time) {
     return ''
   }
-
-  if ((time + '').length === 10) {
-    time = +time * 1000
-  }
-
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
   if (typeof time === 'object') {
     date = time
   } else {
+    // 判断时毫秒还是字符串
     time = typeof time === 'number' ? time : ('' + time).trim()
+    // 如果是秒级单位则转成毫秒
+    if (('' + time).length === 10) {
+      time = parseInt(time) * 1000
+    } else if (/(\d){4}-(\d){2}-(\d){2}\s+(\d){2}:(\d){2}:(\d){2}/.test(time)) {
+      // IE需要标准格式
+      time = time.replace(/-/g, '/')
+      // time = time.replace(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/, '$1-$2-$3T$4:$5:$6Z')
+    }
+
     date = new Date(time)
+  }
+  // 如果不能正确转换，则返回原有的数据
+  if (date.toString().indexOf('Invalid') !== -1) {
+    return time
   }
   const formatObj = {
     y: date.getFullYear(),
@@ -106,4 +114,30 @@ export function html2Text(val) {
 
 export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+}
+
+export function smalltoBIG(n, convert) {
+  var fraction = ['角', '分']
+  var digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+  var unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']]
+  var head = n < 0 ? '欠' : ''
+  n = Math.abs(n)
+
+  var s = ''
+
+  for (let i = 0; i < fraction.length; i++) {
+    s += (digit[Math.floor(n * 10 * Math.pow(10, i)) % 10] + fraction[i]).replace(/零./, '')
+  }
+  s = s || '整'
+  n = Math.floor(n)
+
+  for (let i = 0; i < unit[0].length && n > 0; i++) {
+    var p = ''
+    for (var j = 0; j < unit[1].length && n > 0; j++) {
+      p = digit[n % 10] + unit[1][j] + p
+      n = Math.floor(n / 10)
+    }
+    s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s
+  }
+  return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整').replace('元整', convert ? '' : '元整')
 }

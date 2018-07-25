@@ -14,9 +14,22 @@ export function parseTime(time, cFormat) {
   if (typeof time === 'object') {
     date = time
   } else {
+    // 判断时毫秒还是字符串
     time = typeof time === 'number' ? time : ('' + time).trim()
-    if (('' + time).length === 10) time = parseInt(time) * 1000
+    // 如果是秒级单位则转成毫秒
+    if (/^\d{10}$/.test(time)) {
+      time = parseInt(time) * 1000
+    } else if (/(\d){4}-(\d){2}-(\d){2}\s+(\d){2}:(\d){2}:(\d){2}/.test(time)) {
+      // IE需要标准格式
+      // time = time.replace(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/, '$1-$2-$3T$4:$5:$6Z')
+      time = time.replace(/-/g, '/')
+    }
+
     date = new Date(time)
+  }
+  // 如果不能正确转换，则返回原有的数据
+  if (date.toString().indexOf('Invalid') !== -1) {
+    return time
   }
   const formatObj = {
     y: date.getFullYear(),

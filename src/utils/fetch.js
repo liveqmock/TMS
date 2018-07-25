@@ -5,7 +5,7 @@ import { getToken } from './auth'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  baseURL: process.env.BASE_API, // api的base_ur
   timeout: 15000                  // 请求超时时间
 })
 
@@ -38,6 +38,7 @@ service.interceptors.request.use(config => {
       // config.url = '/huangyuwen' + config.url
       // config.url = '/dingfei' + config.url
       // config.url = '/ceshi' + config.url
+      // config.url = '/chenrongtao' + config.url
     }
   }
 
@@ -115,7 +116,7 @@ service.interceptors.response.use(
 )
 
 export function checkStatus(res) {
-  if (res.status !== 100 && res.status !== -1 && res.status !== 40001) {
+  if (res.status !== 100 && res.status !== -1 && res.status !== 40001 && res.status !== 0) {
     return res
   } else {
     return Promise.reject(res)

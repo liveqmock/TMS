@@ -6,7 +6,7 @@
         type="daterange"
         align="right"
         unlink-panels
-        range-separator="至"
+
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         >
@@ -161,17 +161,23 @@ export default {
   },
   mounted () {
     this.searchForm.arriveOrgid = this.otherinfo.orgid
+    this.onSubmit()
   },
   methods: {
     getOrgid (id){
 
     },
     onSubmit () {
-      this.searchForm.beginTime = this.searchCreatTime ? +this.searchCreatTime[0] : ''
-      this.searchForm.endTime = this.searchCreatTime ? +this.searchCreatTime[1] : ''
-      this.searchForm.arrivedbeginDate = this.searchEndTime ? +this.searchEndTime[0] : ''
-      this.searchForm.arrivedEndDate = this.searchEndTime ? +this.searchEndTime[1] : ''
+      // this.searchForm.beginTime = this.searchCreatTime ? +this.searchCreatTime[0] : ''
+      // this.searchForm.endTime = this.searchCreatTime ? +this.searchCreatTime[1] : ''
+      // this.searchForm.arrivedbeginDate = this.searchEndTime ? +this.searchEndTime[0] : ''
+      // this.searchForm.arrivedEndDate = this.searchEndTime ? +this.searchEndTime[1] : ''
       // this.searchForm.batchTypeId = this.searchForm.batchTypeId === 51 ? '' : this.searchForm.batchTypeId
+
+      this.searchForm.beginTime = this.searchCreatTime ? parseTime(this.searchCreatTime[0],'{y}-{m}-{d} ') + '00:00:00' : ''
+      this.searchForm.endTime = this.searchCreatTime ? parseTime(this.searchCreatTime[1], '{y}-{m}-{d} ') + '23:59:59' : ''
+      this.searchForm.arrivedbeginDate = this.searchEndTime ? parseTime(this.searchEndTime[0],'{y}-{m}-{d} ') + '00:00:00' : ''
+      this.searchForm.arrivedEndDate = this.searchEndTime ? parseTime(this.searchEndTime[1], '{y}-{m}-{d} ') + '23:59:59' : ''
       this.$emit('change', this.searchForm)
     },
     clearForm () {

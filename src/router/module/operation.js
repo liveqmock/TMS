@@ -11,46 +11,46 @@ export default {
   children: [{
     path: '/operation/index', icon: 'QQ', hidden: true, name: '运营管理', component: _import('operation/index'), meta: { role: ['admin'], title: '运营管理', noCache: false }
   }, {
-    path: '/operation/order/createOrder/', icon: 'QQ', name: '创建运单', component: _import('operation/order/createOrder/index'), meta: { role: ['admin'], title: '创建运单', noCache: false }
+    path: '/operation/order/createOrder/', hidden: true, icon: 'yygl0_chuangjian', name: '创建运单', component: _import('operation/order/createOrder/index'), meta: { role: ['admin'], title: '创建运单', noCache: false }
   },
   {
-    path: '/operation/order/orderManage', icon: 'QQ', name: '运单管理', component: _import('operation/order/orderManage/index'), meta: { role: ['admin'], title: '运单管理', noCache: true }
+    path: '/operation/order/orderManage', icon: 'yygl2_yundan', name: '运单管理', component: _import('operation/order/orderManage/index'), meta: { role: ['admin'], title: '运单管理', noCache: true }
   },
   {
-    path: '/operation/order/manage', icon: 'QQ', name: '订单管理', component: _import('operation/order/manage/index'), meta: { role: ['admin'], title: '订单管理', noCache: true }
+    path: '/operation/order/manage', icon: 'yygl1_dingdan', name: '订单管理', component: _import('operation/order/manage/index'), meta: { role: ['admin'], title: '订单管理', noCache: true }
   },
   {
-    path: '/operation/order/receipt', icon: 'QQ', name: '回单管理', component: _import('operation/order/receipt/index'), meta: { role: ['admin'], title: '回单管理', noCache: true }
+    path: '/operation/order/receipt', icon: 'yygl11_huidandan', name: '回单管理', component: _import('operation/order/receipt/index'), meta: { role: ['admin'], title: '回单管理', noCache: true }
   },
   {
-    path: '/operation/order/pickUp', icon: 'QQ', name: '提货管理', component: _import('operation/order/pickUp/index'), meta: { role: ['admin'], title: '提货管理', noCache: true }
+    path: '/operation/order/pickUp', icon: 'yygl4_tihuo', name: '提货管理', component: _import('operation/order/pickUp/index'), meta: { role: ['admin'], title: '提货管理', noCache: true }
   },
   {
-    path: '/operation/order/repertory', icon: 'QQ', name: '库存管理', component: _import('operation/order/repertory/index'), meta: { role: ['admin'], title: '库存管理', noCache: true }
+    path: '/operation/order/repertory', icon: 'yygl3_kucun', name: '库存管理', component: _import('operation/order/repertory/index'), meta: { role: ['admin'], title: '库存管理', noCache: true }
   },
   {
-    path: '/operation/order/shortDepart', icon: 'QQ', name: '短驳管理', component: _import('operation/order/shortDepart/index'), meta: { role: ['admin'], title: '短驳管理', noCache: true }
+    path: '/operation/order/shortDepart', icon: 'yygl5_duanbo', name: '短驳管理', component: _import('operation/order/shortDepart/index'), meta: { role: ['admin'], title: '短驳管理', noCache: true }
   },
   {
     path: '/operation/order/load', icon: 'QQ', hidden: true, name: '新增配载', component: _import('operation/order/load/index'), meta: { role: ['admin'], title: '新增配载', noCache: true }
   },
   {
-    path: '/operation/order/arteryDepart', icon: 'QQ', name: '干线发车', component: _import('operation/order/arteryDepart/index'), meta: { role: ['admin'], title: '干线发车', noCache: true }
+    path: '/operation/order/arteryDepart', icon: 'yygl6_fache', name: '干线发车', component: _import('operation/order/arteryDepart/index'), meta: { role: ['admin'], title: '干线发车', noCache: true }
   },
   {
-    path: '/operation/order/arteryDelivery', icon: 'QQ', name: '干线到车', component: _import('operation/order/arteryDelivery/index'), meta: { role: ['admin'], title: '干线到车', noCache: true }
+    path: '/operation/order/arteryDelivery', icon: 'yygl7_daoche', name: '干线到车', component: _import('operation/order/arteryDelivery/index'), meta: { role: ['admin'], title: '干线到车', noCache: true }
   },
   {
-    path: '/operation/order/deliverManage', icon: 'QQ', name: '送货管理', component: _import('operation/order/deliverManage/index'), meta: { role: ['admin'], title: '送货管理', noCache: true }
+    path: '/operation/order/deliverManage', icon: 'yygl8_songhuo', name: '送货管理', component: _import('operation/order/deliverManage/index'), meta: { role: ['admin'], title: '送货管理', noCache: true }
   },
   {
-    path: '/operation/order/track', icon: 'QQ', name: '在途跟踪', component: _import('operation/order/track/index'), meta: { role: ['admin'], title: '在途跟踪', noCache: true }
+    path: '/operation/order/track', icon: 'yygl12_genzong', name: '在途跟踪', component: _import('operation/order/track/index'), meta: { role: ['admin'], title: '在途跟踪', noCache: true }
   },
   {
-    path: '/operation/order/sign', icon: 'QQ', name: '签收管理', component: _import('operation/order/sign/index'), meta: { role: ['admin'], title: '签收管理', noCache: true }
+    path: '/operation/order/sign', icon: 'yygl10_qianshou', name: '签收管理', component: _import('operation/order/sign/index'), meta: { role: ['admin'], title: '签收管理', noCache: true }
   },
   {
-    path: '/operation/order/transfer', icon: 'QQ', name: '中转管理', component: _import('operation/order/transfer/index'), meta: { role: ['admin'], title: '中转管理', noCache: true }
+    path: '/operation/order/transfer', icon: 'yygl9_zhongzhuan', name: '中转管理', component: _import('operation/order/transfer/index'), meta: { role: ['admin'], title: '中转管理', noCache: true }
   },
   {
     path: '/operation/order/transferLoad/', icon: 'QQ', hidden: true, name: '中转外发', component: _import('operation/order/transferLoad/index'), meta: { role: ['admin'], title: '中转外发', noCache: true }
@@ -65,7 +65,7 @@ export default {
     path: '/operation/service',
     redirect: '/operation/service/abnormal',
     component: _import('operation/service/index'),
-    icon: 'QQ', name: '客服中心', meta: { role: ['admin'], title: '客服中心', noCache: true, stitle: '客服' },
+    icon: 'yygl13_kefu', name: '客服中心', meta: { role: ['admin'], title: '客服中心', noCache: true, stitle: '客服' },
     children: [{
       path: '/operation/service/abnormal', icon: 'QQ', name: '异常管理', component: _import('operation/service/abnormal/index'), meta: { role: ['admin'], title: '异常管理', noCache: true }
     },

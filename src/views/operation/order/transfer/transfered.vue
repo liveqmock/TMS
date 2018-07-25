@@ -250,21 +250,21 @@ export default {
         'prop': 'shipToCityName',
         'width': '150',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[0]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[0] : ''
         }
       }, {
         'label': '到达市',
         'prop': 'shipToCityName',
         'width': '150',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[1]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[1] : ''
         }
       }, {
         'label': '到达县区',
         'prop': 'shipToCityName',
         'width': '150',
         slot: function(scope) {
-          return scope.row.shipToCityName.split(',')[2]
+          return scope.row.shipToCityName ? scope.row.shipToCityName.split(',')[2] : ''
         }
       }, {
         'label': '发货方',
@@ -464,9 +464,9 @@ export default {
           this.isModify = true
           if (this.selected.length > 1) {
             this.$message({
-                  message: '每次只能修改单条数据~',
-                  type: 'warning'
-                })
+              message: '每次只能修改单条数据~',
+              type: 'warning'
+            })
           }
           this.selectInfo = this.selected[0]
           this.$router.push({ path: '/operation/order/transferLoad', query: {
@@ -478,11 +478,11 @@ export default {
         case 'track':
           if (this.selected.length > 1) {
             this.$message({
-                      message: '每次只能操作单条数据~',
-                      type: 'warning'
-                    })
+              message: '每次只能操作单条数据~',
+              type: 'warning'
+            })
           }
-          const id = this.selected[0].id
+          var id = this.selected[0].id
 
           this.$router.push({ path: '/operation/order/track', query: {
             transfer: id
@@ -490,58 +490,59 @@ export default {
           break
           // 取消中转
         case 'cancel':
-          const avaiableItem = this.selected.filter(el => {
+          var avaiableItem = this.selected.filter(el => {
             return el.ship_status !== 67
           })
           if (!avaiableItem.length) {
             this.$message.warning('已签收运单不能被取消~')
           } else {
                   // 获取批次
-            const transferBatchNos = avaiableItem.map(el => {
-                    return el.transferBatchNo
-                  })
+            var transferBatchNos = avaiableItem.map(el => {
+              return el.transferBatchNo
+            })
                   // 获取运单号
             const shipSns = avaiableItem.map(el => {
-                    return el.id
-                  })
+              return el.shipId
+            })
 
             this.$confirm('确定要取消 ' + avaiableItem.length + ' 条运单吗？', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  }).then(() => {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
                       // 提交前先进行去重
-                  transferManageApi.deleteTransfer(this.otherinfo.orgid, uniqArray(transferBatchNos).join(','), uniqArray(shipSns).join(',')).then(res => {
-                        this.$message({
-                          type: 'success',
-                          message: '取消成功!'
-                        })
-                        this.fetchData()
-                      }).catch(err => {
-                        this.$message({
-                          type: 'info',
-                          message: '取消失败，原因：' + (err.errorInfo ? err.errorInfo : err.text)
-                        })
-                      })
-                }).catch((err) => {
-                      this.$message({
-                        type: 'info',
-                        message: '已取消:' + JSON.stringify(err)
-                      })
-                    })
+              // transferManageApi.deleteTransfer(this.otherinfo.orgid, uniqArray(transferBatchNos).join(','), uniqArray(shipSns).join(',')).then(res => {
+              transferManageApi.deleteTransfer(this.otherinfo.orgid, transferBatchNos.join(','), shipSns.join(',')).then(res => {
+                this.$message({
+                  type: 'success',
+                  message: '取消成功!'
+                })
+                this.fetchData()
+              }).catch(err => {
+                this.$message({
+                  type: 'info',
+                  message: '取消失败，原因：' + (err.errorInfo ? err.errorInfo : err.text)
+                })
+              })
+            }).catch((err) => {
+              this.$message({
+                type: 'info',
+                message: '已取消:' + JSON.stringify(err)
+              })
+            })
           }
 
           break
           // 导出数据
         case 'export':
-          const ids2 = this.selected.map(el => {
+          var ids2 = this.selected.map(el => {
             return el.customerId
           })
           transferManageApi.getExportExcel(ids2.join(',')).then(res => {
             this.$message({
-                  type: 'success',
-                  message: '即将自动下载!'
-                })
+              type: 'success',
+              message: '即将自动下载!'
+            })
           })
           break
       }

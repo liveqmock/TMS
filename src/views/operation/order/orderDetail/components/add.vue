@@ -1,6 +1,6 @@
 <template>
-  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="addCustomerPop" v-loading="loading">
-    <template class="addCustomerPop-content" slot="content">
+  <pop-right :title="popTitle" :isShow="popVisible" @close="closeMe" class="addOrderDetailPop" v-loading="loading">
+    <template class="addOrderDetailPop-content" slot="content">
       <el-form :model="form" :rules="rules" ref="ruleForm" :label-width="formLabelWidth" :inline="true" label-position="right" size="mini">
         <el-form-item  v-if="!isModify" class="clearfix">
           <div class="selectType" :class="{checked: form.companyType === 2}" @click.stop="form.companyType=2">
@@ -80,7 +80,7 @@
   </pop-right>
 </template>
 <script>
-import { REGEX }  from '@/utils/validate'
+import { REGEX } from '@/utils/validate'
 import { postCustomer, putCustomer } from '@/api/company/customerManage'
 import popRight from '@/components/PopRight/index'
 import Upload from '@/components/Upload/singleImage'
@@ -115,17 +115,17 @@ export default {
     }
   },
   computed: {
-      ...mapGetters([
-          'otherinfo'
+    ...mapGetters([
+        'otherinfo'
       ]),
-      "fixPhone": {
-        get(){
-          return this.phoneshort+'-'+this.phonelong
+    'fixPhone': {
+        get() {
+          return this.phoneshort + '-' + this.phonelong
         },
-        set (val){
-          //let names = val.match(/(.*)(.{7})$/)
-          let names = val ?　val.split('-')　: ''
-          if(names){
+        set(val) {
+          // let names = val.match(/(.*)(.{7})$/)
+          const names = val ?　val.split('-')　: ''
+          if (names) {
             this.phoneshort = names[1] ? names[0] : ''
             this.phonelong = names[1] ? names[1] : names[0]
           } else {
@@ -135,28 +135,28 @@ export default {
         }
       }
   },
-  data () {
+  data() {
     const _this = this
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
         if (this.ruleForm2.checkPass !== '') {
-          this.$refs.ruleForm2.validateField('checkPass');
+          this.$refs.ruleForm2.validateField('checkPass')
         }
-        callback();
+        callback()
       }
     }
 
-    const validateFormMobile = function (rule, value, callback) {
-      if(REGEX.MOBILE.test(value)){
+    const validateFormMobile = function(rule, value, callback) {
+      if (REGEX.MOBILE.test(value)) {
         callback()
       } else {
         callback(new Error('请输入有效的手机号码'))
       }
     }
 
-    const validateFormNumber = function (rule, value, callback) {
+    const validateFormNumber = function(rule, value, callback) {
       _this.form.customerMobile = value.replace(REGEX.NO_NUMBER, '')
       callback()
     }
@@ -164,28 +164,28 @@ export default {
     return {
       phoneshort: '', // 固话区号
       phonelong: '', // 固话号码
-      //fixPhone: '',
+      // fixPhone: '',
       form: {
-        "bankCardNumber": "", //"银行卡号" 20
-        "bankName":  "", //"银行名称", 20
-        "companyName": "", // "公司名称", 25
-        "companyType": 2, // 公司类型 1：自然人 2：企业
+        'bankCardNumber': '', // "银行卡号" 20
+        'bankName': '', // "银行名称", 20
+        'companyName': '', // "公司名称", 25
+        'companyType': 2, // 公司类型 1：自然人 2：企业
         // "customerId": 0, // 当新增时，不传
-        "customerMobile": "", // 手机号码 11
-        "customerName": "", // 客户名称 25
+        'customerMobile': '', // 手机号码 11
+        'customerName': '', // 客户名称 25
         // "customerNum": "", // 客户编号 25
-        "customerType": this.issender ? 1 : 2, // 客户类型 1:发货人2:收货人
-        "customerUnit": "", // 客户单位 50
-        "detailedAddress": "", // 详细地址 50
-        "fixPhone": "", // 固话 11
-        "idCardPositive": "", // 身份证正面图片地址
-        "idCardVerso": "", // 身份证反面图片地址
-        "idcard": "", // 身份证号码 18
-        "legalPersonname": "", // 公司法人 25
-        "licensePicture": "", // 营业执照图片地址
-        "openBank": "", // 开户行 20
-        "orgid": 0, // 所属机构ID
-        "vipNum": "" // VIP号 11
+        'customerType': this.issender ? 1 : 2, // 客户类型 1:发货人2:收货人
+        'customerUnit': '', // 客户单位 50
+        'detailedAddress': '', // 详细地址 50
+        'fixPhone': '', // 固话 11
+        'idCardPositive': '', // 身份证正面图片地址
+        'idCardVerso': '', // 身份证反面图片地址
+        'idcard': '', // 身份证号码 18
+        'legalPersonname': '', // 公司法人 25
+        'licensePicture': '', // 营业执照图片地址
+        'openBank': '', // 开户行 20
+        'orgid': 0, // 所属机构ID
+        'vipNum': '' // VIP号 11
       },
       formLabelWidth: '90px',
       tooltip: false,
@@ -218,36 +218,36 @@ export default {
 
     }
   },
-  mounted () {
+  mounted() {
     this.form.orgid = this.orgid
-    if(!this.inited){
+    if (!this.inited) {
       this.inited = true
       this.initInfo()
     }
   },
   watch: {
-    popVisible (newVal, oldVal) {
-      if(!this.inited){
+    popVisible(newVal, oldVal) {
+      if (!this.inited) {
         this.inited = true
         this.initInfo()
       }
     },
-    orgid (newVal) {
+    orgid(newVal) {
       this.form.orgid = newVal
     },
-    info () {
-      if(this.isModify){
-        this.popTitle = '修改'+(this.issender ? '发' : '收')+'货人'
-        let data = Object.assign({},this.info)
-        for(let i in this.form){
+    info() {
+      if (this.isModify) {
+        this.popTitle = '修改' + (this.issender ? '发' : '收') + '货人'
+        const data = Object.assign({}, this.info)
+        for (const i in this.form) {
           this.form[i] = data[i]
         }
         this.form.customerId = data.customerId
         console.log('this.fixphone', this.fixPhone, this.form.fixPhone, data)
         this.fixPhone = this.form.fixPhone
       } else {
-        this.popTitle = '新增'+(this.issender ? '发' : '收')+'货人'
-        for(let i in this.form){
+        this.popTitle = '新增' + (this.issender ? '发' : '收') + '货人'
+        for (const i in this.form) {
           this.form[i] = ''
         }
         delete this.form.customerId
@@ -259,21 +259,21 @@ export default {
     }
   },
   methods: {
-    initInfo () {
+    initInfo() {
       this.loading = false
     },
-    getOrgid (id) {
+    getOrgid(id) {
       this.form.orgid = id
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
-          let data = Object.assign({},this.form)
+          const data = Object.assign({}, this.form)
           data.fixPhone = this.fixPhone
           let promiseObj
           // 判断操作，调用对应的函数
-          if(this.isModify){
+          if (this.isModify) {
             promiseObj = putCustomer(data)
           } else {
             promiseObj = postCustomer(data)
@@ -287,33 +287,33 @@ export default {
                 this.closeMe()
                 this.$emit('success')
               }
-            });
+            })
           }).catch(err => {
             this.loading = false
           })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
-    reset () {
+    reset() {
       this.$refs['ruleForm'].resetFields()
       this.form.licensePicture = ''
       this.form.idCardPositive = ''
       this.form.idCardVerso = ''
     },
-    closeMe (done) {
+    closeMe(done) {
       this.reset()
-      this.$emit('update:popVisible', false);
-      if(typeof done === 'function'){
+      this.$emit('update:popVisible', false)
+      if (typeof done === 'function') {
         done()
       }
-    },
+    }
   }
 }
 </script>
 <style lang="scss">
-.addCustomerPop{
+.addOrderDetailPop{
   left: auto;
   top: 50px;
   bottom: auto;

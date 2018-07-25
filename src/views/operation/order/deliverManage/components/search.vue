@@ -127,8 +127,8 @@ export default {
   methods: {
     onSubmit() {
       if (this.searchTime) {
-        this.searchForm.loadStartTime = this.searchTime[0]
-        this.searchForm.loadEndTime = this.searchTime[1]
+        this.searchForm.loadStartTime =  parseTime(this.searchTime[0], '{y}-{m}-{d} ') + '00:00:00'
+        this.searchForm.loadEndTime = parseTime(this.searchTime[1], '{y}-{m}-{d} ') + '23:59:59'
       }
       if (this.searchForm.batchTypeId === 56) {
         this.searchForm.batchTypeId = undefined

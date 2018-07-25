@@ -164,6 +164,9 @@
             width="120"
             sortable
           >
+          <template slot-scope="scope">
+            <div v-html="parseShipStatus(scope.row.shipIdentifying)"></div>
+          </template>
           </el-table-column>
           <el-table-column
             prop="signStatusName"
@@ -544,6 +547,7 @@ import Pager from '@/components/Pagination/index'
 import Addsign from './components/add'
 import Addbatch from './components/batch'
 import { objectMerge2 } from '@/utils/index'
+import { parseShipStatus } from '@/utils/dict'
 export default {
   components: {
     SearchForm,
@@ -602,6 +606,9 @@ export default {
     }
   },
   methods: {
+     parseShipStatus(id){
+      return parseShipStatus(id)
+    },
     fetchAllreceipt() {
       this.loading = true
       return postTransferList(this.searchQuery).then(data => {
@@ -706,6 +713,7 @@ export default {
                 message: '取消签收成功~',
                 type: 'success'
               })
+              // this.$emit('success')
               this.fetchAllreceipt()
               return false
             }).catch(res => {

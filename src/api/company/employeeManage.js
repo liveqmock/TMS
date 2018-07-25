@@ -48,8 +48,14 @@ export function getGroupName(orgid) {
  */
 const LocalAllOrgInfo = {}
 export function getAllOrgInfo(orgId, isRefresh) {
+  return fetch.get('/api-system/system/org/v1/tree/' + orgId).then(res => {
+    const data = res.data || []
+    LocalAllOrgInfo[orgId] = data
+    return data
+  })
+
   // 如果是强制刷新或者无本地缓存则请求服务器
-  if (isRefresh || (!LocalAllOrgInfo[orgId])) {
+  /* if (isRefresh || (!LocalAllOrgInfo[orgId])) {
     return fetch.get('/api-system/system/org/v1/tree/' + orgId).then(res => {
       const data = res.data || []
       LocalAllOrgInfo[orgId] = data
@@ -59,7 +65,7 @@ export function getAllOrgInfo(orgId, isRefresh) {
     return new Promise(resolve => {
       resolve(LocalAllOrgInfo[orgId])
     })
-  }
+  }*/
 
   /* return fetch.get('/api-system/system/org/v1/tree').then(res => {
     let data = res.data
@@ -73,11 +79,11 @@ export function getAllOrgInfo(orgId, isRefresh) {
  * 获取指定网点的部门信息
  * @param {*} orgid 网点id
  */
-export function getDepartmentInfo(orgid) {
+export function getDepartmentInfo(orgId) {
   return fetch.get('/api-system/system/dict/v1/selectDictInfo', {
     params: {
       dictType: 'department_type',
-      orgid
+      orgId
     }
   }).then(res => {
     return res.data || []

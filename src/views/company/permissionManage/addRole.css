@@ -6,11 +6,11 @@
   max-width:  820px;
 
 }
-.popRight-content{
+.add-role-pop-content .popRight-content{
   padding: 20px 20px 0;
   box-sizing: border-box;
 }
-.el-select .el-input__inner{
+.add-role-pop-content .el-select .el-input__inner{
   padding-right: 15px;
 }
 /*头部输入框*/
@@ -48,7 +48,7 @@
   background: rgb(195,232,255);
 }
 
-.el-tree-node__content:hover {
+.add-role-tree .el-tree-node__content:hover {
   background-color: rgb(195,232,255);
 }
 /*.add-role-tree .el-tree .el-tree-node:first-of-type > div.el-tree-node__content{*/

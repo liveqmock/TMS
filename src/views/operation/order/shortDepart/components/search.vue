@@ -9,7 +9,7 @@
             align="right"
             value-format="yyyy-MM-dd HH:mm:ss"
             start-placeholder="开始日期"
-            :picker-options="pickerOptions"
+            :picker-options="pickerOptions2"
             end-placeholder="结束日期">
           </el-date-picker>
     </el-form-item>
@@ -86,7 +86,7 @@ export default {
         orgid: [{ validator: orgidIdentifier, tigger: 'blur' }]
       },
       defaultTime: [parseTime(new Date() - 60 * 24 * 60 * 60 * 1000), parseTime(new Date())],
-      pickerOptions: {
+      pickerOptions2: {
         shortcuts: pickerOptions2
       }
     }
@@ -94,8 +94,8 @@ export default {
   methods: {
     onSubmit() {
       if (this.searchTime) {
-        this.searchForm.loadStartTime = this.searchTime[0]
-        this.searchForm.loadEndTime = this.searchTime[1]
+        this.searchForm.loadStartTime = parseTime(this.searchTime[0], '{y}-{m}-{d} ') + '00:00:00'
+        this.searchForm.loadEndTime = parseTime(this.searchTime[1], '{y}-{m}-{d} ') + '23:59:59'
       }
       if (this.searchForm.batchTypeId === 46) {
         this.searchForm.batchTypeId = undefined

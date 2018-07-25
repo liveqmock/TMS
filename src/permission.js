@@ -38,7 +38,8 @@ router.beforeEach((to, from, next) => {
         })
       } else {
         const title = to.meta.title || to.name || ''
-        window.document.title = (title ? title + ' - ' : '') + '安发TMS管理系统'
+        // window.document.title = (title ? title + ' - ' : '') + '安发TMS管理系统'
+        window.document.title = '安发TMS管理系统'
         next()
       }
     }

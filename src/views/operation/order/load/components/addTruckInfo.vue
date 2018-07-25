@@ -67,7 +67,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="司机电话" prop="driverMobile">
-          <el-input maxlength="20" v-numberOnly v-model="form.driverMobile" auto-complete="off"></el-input>
+          <el-input maxlength="20" v-numberOnly v-model="form.dirverMobile" auto-complete="off"></el-input>
         </el-form-item>
         <div class="hr"></div>
         <el-form-item class="clearfix uploadcard">
@@ -156,7 +156,7 @@ export default {
     }
     return {
       form: {
-        "driverMobile": "", // 司机电话 11
+        "dirverMobile": "", // 司机电话 11
         "driverId": '', // 司机ID
         "orgid": '', // 所属机构
         "truckBrand": "", // 车辆品牌 20

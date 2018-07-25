@@ -17,6 +17,7 @@ import { eventBus } from '@/eventBus'
 import { getSelectType } from '@/api/common'
 import { mapGetters } from 'vuex'
 import CACHE from '@/utils/cache'
+import DICT from '@/utils/dict'
 
 /**
  * 可选的type值
@@ -97,16 +98,6 @@ export default {
       val: '',
       types: [],
       dataCache: {
-        'fee_status': [{
-          id: 'NOSETTLEMENT',
-          dictName: '未交账'
-        }, {
-          id: 'PARTSETTLEMENT',
-          dictName: '部分交账'
-        }, {
-          id: 'ALLSETTLEMENT',
-          dictName: '已交账'
-        }]
       }
     }
   },
@@ -148,8 +139,8 @@ export default {
         // debugger
         CACHE.set(this.type, data)
       }
-      if (this.dataCache[this.type]) {
-        cb(this.dataCache[this.type])
+      if (DICT[this.type]) {
+        cb(DICT[this.type])
       } else {
         getSelectType(this.type, this.orgid || this.otherinfo.companyId).then(cb)
       }

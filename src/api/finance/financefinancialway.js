@@ -24,12 +24,13 @@ export function postAdd(params) {
 }
 
 /**
- * 根据ID修改收支方式管理信息
+ * 根据ID修改收支方式管理信息updateFinancialWay
+ 根据ID修改收支方式管理信息
  * @param params
  * @returns {*|PromiseLike<T>|Promise<T>}
  */
 export function putUpdate(params) {
-  return fetch.put('/api-finance/finance/tmsfinancefinancialway/v1/update', params).then(res => {
+  return fetch.put('/api-finance/finance/tmsfinancefinancialway/v1/updateFinancialWay', params).then(res => {
     return res.data || {}
   })
 }

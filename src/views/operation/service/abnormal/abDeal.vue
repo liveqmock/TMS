@@ -154,7 +154,7 @@
             <template slot-scope="scope">{{ scope.row.disposeTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</template>
           </el-table-column>
           <el-table-column
-            prop="disposeResult"
+            prop="disposeResultName"
             label="处理结果"
             width="120"
             sortable
@@ -206,12 +206,12 @@ export default {
       'otherinfo'
     ]),
     orgid() {
-      console.log(this.selectInfo.orgid, this.searchQuery.vo.orgid, this.otherinfo.orgid)
-      return this.isModify ? this.selectInfo.orgid : this.searchQuery.vo.orgId || this.otherinfo.orgid
+      // console.log(this.selectInfo.orgid, this.searchQuery.vo.orgid, this.otherinfo.orgid)
+      return this.isModify ? this.selectInfo.disposeOrgId : this.searchQuery.vo.disposeOrgId || this.otherinfo.orgid
     }
   },
   mounted() {
-    this.searchQuery.vo.orgId = this.otherinfo.orgid
+    this.searchQuery.vo.disposeOrgId = this.otherinfo.orgid
     Promise.all([this.fetchAllreceipt(this.otherinfo.orgid)]).then(resArr => {
       this.loading = false
       this.licenseTypes = resArr[1]
@@ -289,10 +289,11 @@ export default {
               type: 'warning'
             })
           } else {
-            this.isModify = true
+            this.isModify = false
             this.isCheck = false
             this.isDeal = true
-            this.id = this.selected[0].id
+            // this.id = this.selected[0].id
+            this.selectInfo = Object.assign({}, this.selected[0])
             this.openAddAbnormal()
           }
           break
@@ -308,6 +309,8 @@ export default {
             this.isCheck = true
             this.isDeal = true
             this.id = this.selected[0].id
+            // this.selectInfo = this.selected[0]
+            this.selectInfo = Object.assign({}, this.selected[0])
             this.openAddAbnormal()
           }
           break
@@ -334,8 +337,10 @@ export default {
       this.setupTableVisible = false
     },
     getDbClick(row, event) {
-      this.repertoryId = row
+      this.selectInfo = row
+      // this.id = row.id
       this.isCheck = true
+      this.isDeal = true
       this.isModify = false
           // this.isDbclick = true
       this.openAddAbnormal()

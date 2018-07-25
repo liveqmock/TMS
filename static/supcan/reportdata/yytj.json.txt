@@ -1,0 +1,1 @@
+﻿{"status":200,"data":[{"time":"2018-05","shipAmount":20,"shipWeight":20.0,"shipVolume":20.0,"shipFee":20,"childShipIds":null},{"time":"2018-06","shipAmount":10,"shipWeight":10.0,"shipVolume":10.0,"shipFee":10,"childShipIds":null},{"time":"2018-07","shipAmount":10,"shipWeight":10.0,"shipVolume":10.0,"shipFee":10,"childShipIds":null}],"text":"请求成功","errorInfo":null}

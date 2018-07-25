@@ -19,8 +19,8 @@ function getPopZindex() {
     window.tmsPopZindex = 1000
   } else {
     window.tmsPopZindex += 1
-    return window.tmsPopZindex
   }
+  return window.tmsPopZindex
 }
 export default {
   props: {

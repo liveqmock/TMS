@@ -1,0 +1,58 @@
+{
+    "status": 200,
+    "data": {
+        "pageNum": 1,
+        "pageSize": 2000,
+        "size": 2,
+        "startRow": 1,
+        "endRow": 2,
+        "total": 2,
+        "pages": 1,
+        "list": [
+            {
+                "orgidName": "",
+                "signOrgidName": "",
+                "shipToCityName": "",
+                "senderCustomerName": "",
+                "cargoName": "",
+                "shipNowpayFee": 0,
+                "shipArrivepayFee": 0,
+                "shipReceiptpayFee": 0,
+                "shipMonthpayFee": 0,
+                "totalfee": 0,
+                "brokerageFee": 0,
+                "amountCollected": 0
+            },
+            {
+                "orgidName": "",
+                "signOrgidName": "",
+                "shipToCityName": "",
+                "senderCustomerName": "",
+                "cargoName": "",
+                "shipNowpayFee": 0,
+                "shipArrivepayFee": 0,
+                "shipReceiptpayFee": 0,
+                "shipMonthpayFee": 0,
+                "totalfee": 0,
+                "brokerageFee": 0,
+                "amountCollected": 0
+            }
+        ],
+        "prePage": 0,
+        "nextPage": 0,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "hasPreviousPage": false,
+        "hasNextPage": false,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 1,
+        "firstPage": 1,
+        "lastPage": 1
+    },
+    "text": "请求成功",
+    "errorInfo": null
+}

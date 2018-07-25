@@ -7,7 +7,7 @@
       <div class="storagesInfoPop_content">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="tab-card">
           <el-tab-pane label="批次详情" name="first">
-            <div class="tabs-content" v-loading="loading">
+            <div class="tabs-cont" v-loading="loading">
               <div class="info_form">
                 <!--<el-form-item label="网点">-->
                 <!--<SelectTree v-model="otherinfo.orgid" />-->
@@ -55,8 +55,8 @@
                   </el-form-item>
                 </el-form>
               </div>
-              <div class="infos_table">
-                <el-form :inline="true" :size="btnsize" label-position="right" label-width="80px" class="sta_searchinfo clearfix">
+              <div class="infos_table_">
+                <el-form :inline="true"  :size="btnsize" label-position="right" label-width="80px" class="sta_searchinfo clearfix" :model="formModel" :rules="ruleData">
                   <ul>
                     <li>
                       <p>现付运费</p>
@@ -73,7 +73,7 @@
                     <li>
                       <p>回付运费</p>
                       <el-form-item prop="nowpayCarriage">
-                        <el-input maxlength="10" v-model="formModel.nowpayCarriage" disabled></el-input>
+                        <el-input maxlength="10" v-model="formModel.backpayCarriage" disabled></el-input>
                       </el-form-item>
                     </li>
                     <li>
@@ -113,15 +113,15 @@
                       </el-form-item>
                     </li>
                     <li>
-                      <p>到站装卸费</p>
-                      <el-form-item prop="nowpayCarriage">
-                        <el-input maxlength="10" v-model="formModel.arriveHandlingFee" disabled></el-input>
+                      <p><i>*</i> 到站装卸费</p>
+                      <el-form-item prop="arriveHandlingFee">
+                        <el-input maxlength="10" v-model="formModel.arriveHandlingFee" :disabled="isModify" ></el-input>
                       </el-form-item>
                     </li>
                     <li>
-                      <p>到站其他费</p>
-                      <el-form-item prop="nowpayCarriage">
-                        <el-input maxlength="10" v-model="formModel.arriveOtherFee" disabled></el-input>
+                      <p><i>*</i> 到站其他费</p>
+                      <el-form-item prop="arriveOtherFee">
+                        <el-input maxlength="10" v-model="formModel.arriveOtherFee" :disabled="isModify" v-numberOnly></el-input>
                       </el-form-item>
                     </li>
                   </ul>
@@ -129,59 +129,62 @@
               </div>
               <!--<SearchForm :orgid="otherinfo.orgid" :issender="true" @change="getSearchParam" :btnsize="btnsize" />-->
               <div class="tab_info">
-                <div class="btns_box">
-                  <div v-if="isHiddenBtn===true">
+                <div class="_btns_box">
+                  <!--<div v-if="isHiddenBtn===true">-->
                     <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('sure')" v-if="isModify">{{popTitle}}</el-button>
-                  </div>
-                    <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('sure')" v-else="!isModify">{{popTitle}}</el-button >
+                  <!--</div>-->
+                  <!--<div v-if="isHiddenBtn===false">-->
+                    <el-button type="primary" :size="btnsize" icon="el-icon-circle-plus" plain @click="doAction('sure')" v-if="!isModify">{{popTitle}}</el-button >
+                  <!--</div>-->
+
 
                   <el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('export')" plain class="table_export">导出</el-button>
                   <el-button type="primary" :size="btnsize" icon="el-icon-edit-outline" @click="doAction('export')" plain class="table_import">批量导入</el-button>
                   <el-button type="primary" :size="btnsize" icon="el-icon-setting" plain @click="setTable" class="table_setup">表格设置</el-button>
                 </div>
                 <div class="infos_tab">
-                  <el-table ref="multipleTable" :data="usersArr" stripe border @row-click="clickDetails" @selection-change="getSelection" height="100%" tooltip-effect="dark" :default-sort="{prop: 'id', order: 'ascending'}" style="height: 80%">
+                  <el-table ref="multipleTable" :key="tablekey" :data="detailList" stripe border @row-click="clickDetails" @selection-change="getSelection" height="80%" tooltip-effect="dark" :default-sort="{prop: 'id', order: 'ascending'}">
                     <el-table-column fixed sortable type="selection" width="40">
                     </el-table-column>
-                    <!--<el-table-column-->
-                    <!--fixed-->
-                    <!--sortable-->
-                    <!--prop=""-->
-                    <!--label="序号"-->
-                    <!--width="80">-->
-                    <!--</el-table-column>-->
+                    <el-table-column
+                    fixed
+                    sortable
+                    label="序号"
+                    width="80">
+                      <template slot-scope="scope">{{  scope.$index + 1 }}</template>
+                    </el-table-column>
                     <el-table-column fixed sortable prop="shipFromOrgName" width="120" label="开单网点">
                     </el-table-column>
-                    <el-table-column prop="shipSn" width="160" sortable label="运单号">
+                    <el-table-column prop="shipSn" width="150" sortable label="运单号">
                     </el-table-column>
                     <el-table-column prop="childShipSn" sortable width="120" label="子运单号">
                     </el-table-column>
-                    <div v-if="isModify">
-                      <!--actualAmount-->
-                      <el-table-column prop="loadAmount" sortable width="120" label="实到件数">
+                      <!--actualAmount  loadAmount-->
+                      <el-table-column prop="actualAmount" sortable width="120" label="实到件数" v-if="isModify">
                       </el-table-column>
-                      <!--actualWeight-->
-                      <el-table-column sortable prop="loadWeight" width="120" label="实到重量">
+                      <!--actualWeight   loadWeight-->
+                      <el-table-column sortable prop="actualWeight" width="120" label="实到重量" v-if="isModify">
                       </el-table-column>
-                      <!--actualVolume-->
-                      <el-table-column label="实到体积" width="120" prop="loadVolume" sortable>
+                      <!--actualVolume   loadVolume-->
+                      <el-table-column label="实到体积" width="120" prop="actualVolume" sortable v-if="isModify">
                       </el-table-column>
-                    </div>
-                    <div v-else="!isModify">
-                      <!--actualAmount-->
-                      <el-table-column prop="loadAmount" sortable width="120" label="实到件数">
+
+
+                      <el-table-column prop="actualAmount" sortable width="120" label="实到件数" v-if="!isModify">
+                        <template slot-scope="scope">
+                          <el-input type="number" :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualAmount" @change="changeData(scope.$index)" required></el-input>
+                        </template>
                       </el-table-column>
-                      <!--actualWeight-->
-                      <el-table-column prop="loadAmount"  width="120" label="实到件数">
+                      <el-table-column sortable prop="actualWeight" width="120" label="实到重量" v-if="!isModify">
+                        <template slot-scope="scope">
+                          <el-input type="number"  :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualWeight" @change="changeData(scope.$index)" required></el-input>
+                        </template>
                       </el-table-column>
-                      <el-table-column sortable prop="loadWeight" width="120" label="实到重量">
+                      <el-table-column sortable prop="actualVolume" width="120" label="实到体积" v-if="!isModify">
+                        <template slot-scope="scope">
+                          <el-input type="number"  :disabled="isEditActual" :size="btnsize" v-model.number="scope.row.actualVolume" @change="changeData(scope.$index)" required></el-input>
+                        </template>
                       </el-table-column>
-                      <el-table-column sortable prop="loadVolume" width="120" label="实到体积">
-                      </el-table-column>
-                      <!--actualVolume-->
-                      <!--<el-table-column label="实到体积" prop="loadVolume" width="120" sortable>-->
-                      <!--</el-table-column>-->
-                    </div>
                     <el-table-column prop="loadAmount" label="配载件数" width="120" sortable>
                     </el-table-column>
                     <el-table-column sortable prop="loadWeight" width="110" label="配载重量">
@@ -351,7 +354,7 @@
                       <el-input size="mini" disabled v-model="formModel.nowpayOilCard"></el-input>元，到付运费
                       <el-input size="mini" disabled v-model="formModel.arrivepayCarriage"></el-input>，到付油 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;卡
                       <el-input size="mini" disabled v-model="formModel.arrivepayOilCard"></el-input>元，回付运费
-                      <el-input size="mini" disabled v-model="formModel.nowpayCarriage"></el-input>元，回付油卡
+                      <el-input size="mini" disabled v-model="formModel.backpayCarriage"></el-input>元，回付油卡
                       <el-input size="mini" disabled v-model="formModel.backpayOilCard"></el-input>元，保险费
                       <el-input size="mini" disabled v-model="formModel.carloadInsuranceFee"></el-input>元 。乙方必须将货物安全 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完整及时运到本公司货运仓库，经双方验收无误后，甲方应一次性付清下次运费；
                     </el-form-item>
@@ -359,8 +362,9 @@
                   <div class="p_input">
                     <span></span>
                     <el-form-item label="六、本次发车时间为">
-                      <el-input size="mini" disabled :value="formModel.departureTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}')"></el-input>，到达时间为
-                      <el-input size="mini" disabled :value="formModel.planArrivedTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}')"></el-input>。
+                      <el-input size="mini" disabled :value="formModel.departureTime"></el-input>，到达时间为
+                      <!--<el-input size="mini" disabled :value="formModel.departureTime | parseTime('{y}-{m}-{d} {h}:{m}:{s}')"></el-input>，到达时间为-->
+                      <el-input size="mini" disabled :value="formModel.planArrivedTime "></el-input>。
                     </el-form-item>
                     <p class="p_salf">司机在行驶途中手机不得关机，以便甲方跟进了解运输途中情况；</p>
                   </div>
@@ -460,14 +464,34 @@ import { REGEX } from '@/utils/validate'
 import popRight from '@/components/PopRight/index'
 import selectType from '@/components/selectType/index'
 import { getLoadDetail, deleteTrack, postAddTrack, putUpdateTrack, getSelectLoadList } from '@/api/operation/track'
-import { getBatchNoId, postSelectLoadMainInfoList, postAddRepertory, postConfirmToCar } from '@/api/operation/arteryDelivery'
+import { postSelectLoadMainInfoList, postAddRepertory, postConfirmToCar } from '@/api/operation/arteryDelivery'
 import { getExportExcel } from '@/api/company/customerManage'
 import { mapGetters } from 'vuex'
 import SelectTree from '@/components/selectTree/index'
 import { objectMerge2, parseTime, closest } from '@/utils/'
 export default {
   data() {
+    const validateNum = function (rule,value,callback) {
+      if(!REGEX.ONLY_NUMBER.test(value)){
+        callback(new Error('请输入数字~'))
+      }else if(REGEX.KONGE.test(value)){
+        // this.$message.error('不能输入空格~')
+        callback(new Error('不能输入空格~'))
+      }else{
+        callback()
+      }
+    }
+
     return {
+      ruleData:{
+        arriveHandlingFee:[
+          {validator: validateNum, trigger: 'blur'},
+        ],//
+        arriveOtherFee:[
+          {validator: validateNum, trigger: 'blur'}
+        ],
+      },
+      tablekey: '1',
       // titleIcon:"到车确定",
       // titleIcon:"到车入库",
       getBatchNo: '',
@@ -480,7 +504,8 @@ export default {
       isFootSecond: false,
       isFootOther: false,
       isCancelFootEdit: false,
-      isHiddenBtn:false,
+      isHiddenBtn: false,
+      isEditActual: false,
       propsId: '',
       formModel: {},
       // formModel: {
@@ -494,7 +519,8 @@ export default {
       //   operatorUserid: 0
       // },
       btnsize: 'mini',
-      usersArr: [],
+      detailList: [],
+      selectDetailList: [],
       selected: [],
       //加载状态
       loading: true,
@@ -511,7 +537,7 @@ export default {
         // DateTimeFormat:'',//配载日期
         // requireArrivedTime:'',//要求到达日期：
         // remark:'',
-        //  nowpayCarriage:'',//现付运费
+        //  backpayCarriage:'',//现付运费
         //  nowpayOilCard:'',//现付油卡
         //  backpayCarriage:'',//回付运费
         //  backpayOilCard:'',//回付油卡
@@ -593,6 +619,15 @@ export default {
     }
   },
   watch: {
+    validateIsEmpty (msg = '不能为空！') {
+      return (rule, value, callback) => {
+        if(!value){
+          callback(new Error(msg))
+        }else{
+          callback()
+        }
+      }
+    },
     id(newVal) {
     },
     info(newVal) {
@@ -603,12 +638,14 @@ export default {
       else {
         this.popTitle = '到车入库'
       }
+      this.getBatchNo = this.info.batchNo
       this.propsId = this.info.id
       this.getDetail()
       this.fetchAllCustomer()
       this.fetchSelectLoadMainInfoList()
     },
     isModify(newVal) {
+      this.tablekey = +new Date()
       if (this.isModify) {
         this.popTitle = '到车确定'
       }
@@ -626,7 +663,6 @@ export default {
   mounted() {
 
     this.propsId = this.info.id
-    this.fetchBatchNo()
     if (this.popVisible) {
       this.getDetail()
       this.fetchAllCustomer()
@@ -635,14 +671,63 @@ export default {
     }
   },
   methods: {
-    //批次id
-    fetchBatchNo() {
-      this.loading = true
-      return getBatchNoId(this.otherinfo.orgid, 39).then(data => {
-        this.getBatchNo = data.data
-        this.loading = false
-      })
-
+    changeData(newVal) { // 判断当行
+      let curAmount = this.detailList[newVal].actualAmount // 实到件数
+      let curWeight = this.detailList[newVal].actualWeight // 实到重量
+      let curVolume = this.detailList[newVal].actualVolume // 实到体积
+      let curloadAmount = this.detailList[newVal].loadAmount // 配载件数
+      let curloadWeight = this.detailList[newVal].loadWeight // 配载重量
+      let curloadVolume = this.detailList[newVal].loadVolume // 配载体积
+      if (this.selectDetailList.length === 1 && curAmount === 0) {
+        console.log(this.selectDetailList.length, this.detailList.length)
+        this.detailList[newVal].actualAmount = curloadAmount
+        this.detailList[newVal].actualWeight = curloadWeight
+        this.detailList[newVal].actualVolume = curloadVolume
+        this.$notify({
+          title: '提示',
+          message: '实到件数不能为0',
+          type: 'warning'
+        })
+      }
+      if (curAmount !== 0 && curWeight === 0 && curVolume === 0) {
+        console.log(this.selectDetailList.length, this.detailList.length)
+        this.detailList[newVal].actualAmount = curloadAmount
+        this.detailList[newVal].actualWeight = curloadWeight
+        this.detailList[newVal].actualVolume = curloadVolume
+        this.$notify({
+          title: '提示',
+          message: '实到重量和实到体积不能同时为0',
+          type: 'warning'
+        })
+      }
+      if (curAmount === 0 && curVolume === 0 && curWeight === 0) {
+        this.$refs.multipleTable.toggleRowSelection(this.detailList[newVal], false)
+        console.log(this.selectDetailList.length)
+        if (this.selectDetailList.length === 0) {
+          this.$refs.multipleTable.toggleRowSelection(this.detailList[newVal], true)
+          this.detailList[newVal].actualAmount = curloadAmount
+          this.detailList[newVal].actualWeight = curloadWeight
+          this.detailList[newVal].actualVolume = curloadVolume
+        }
+        this.$notify({
+          title: '提示',
+          message: '实到数量都为0时,取消本条运单入库,但必须有一条运单',
+          type: 'warning'
+        })
+      } else if (curAmount > curloadAmount || curAmount < 0 || curWeight > curloadWeight || curWeight < 0 || curVolume > curloadVolume || curVolume < 0) {
+        this.$notify({
+          title: '提示',
+          message: '实到件数/实到重量/实到体积不能小于0大于库存数量,默认为该库存数量',
+          type: 'warning'
+        })
+        this.detailList[newVal].actualAmount = curloadAmount
+        this.detailList[newVal].actualWeight = curloadWeight
+        this.detailList[newVal].actualVolume = curloadVolume
+        this.$refs.multipleTable.toggleRowSelection(this.detailList[newVal], true)
+      } else {
+        this.$refs.multipleTable.toggleRowSelection(this.detailList[newVal], true)
+      }
+      return this.detailList[newVal].actualAmount && this.detailList[newVal].actualWeight && this.detailList[newVal].actualVolume
     },
     fetchSelectLoadMainInfoList() {
       this.loading = true
@@ -659,9 +744,16 @@ export default {
       let _id = this.propsId
       // console.log(_id);
       return getSelectLoadList(_id).then(data => {
-        this.usersArr = data
-        // console.log(this.usersArr);
+        this.detailList = data
+        this.toggleAllRows()
         this.loading = false
+        this.$nextTick(() => { // 默认设置实到数量为配载数量
+          this.detailList.forEach(e => {
+            e.actualAmount = e.loadAmount
+            e.actualWeight = e.loadWeight
+            e.actualVolume = e.loadVolume
+          })
+        })
       })
 
     },
@@ -669,6 +761,17 @@ export default {
       let id = this.propsId
       return getLoadDetail(id).then(data => {
         this.trackDetail = Object.assign([], data)
+      })
+    },
+    toggleAllRows() {
+      this.$nextTick(() => {
+        this.detailList.forEach((e, index) => {
+          if (e.actualVolume === 0 && e.actualWeight === 0 && e.actualAmount === 0) {
+            this.$refs.multipleTable.toggleRowSelection(e, false)
+          } else {
+            this.$refs.multipleTable.toggleRowSelection(e, true)
+          }
+        })
       })
     },
     handleClick(tab, event) {
@@ -746,16 +849,6 @@ export default {
     fetchData() {
       this.fetchAllCustomer()
     },
-    handlePageChange(obj) {
-      this.searchQuery.currentPage = obj.pageNum
-      this.searchQuery.pageSize = obj.pageSize
-    },
-    getSearchParam(obj) {
-      this.searchQuery.vo.orgid = obj.orgid
-      this.searchQuery.vo.customerMobile = obj.mobile
-      this.searchQuery.vo.customerName = obj.name
-      this.fetchAllCustomer()
-    },
     showImport() {
       // 显示导入窗口
     },
@@ -784,13 +877,16 @@ export default {
                 type: 'success',
                 message: '到车确定成功'
               })
-              this.closeMe()
-              this.isHiddenBtn = true
+              this.$emit("update:isModify", false)
+              this.$emit('success')
+              this.loading = false
+              // this.isHiddenBtn = false
             })
+            // this.closeMe()
           } else {
             this.sendModel.tmsOrderLoad.id = this.formModel.id
             this.sendModel.tmsOrderLoadFee.id = this.formModel.loadFeeId
-            this.sendModel.tmsOrderLoadFee.arriveOtherFee = this.formModel.arriveHandlingFee
+            this.sendModel.tmsOrderLoadFee.arriveHandlingFee = this.formModel.arriveHandlingFee
             this.sendModel.tmsOrderLoadFee.arriveOtherFee = this.formModel.arriveOtherFee
             this.sendModel.tmsOrderLoadDetailsList = []
             this.selected.forEach((value, index, array) => {
@@ -802,17 +898,15 @@ export default {
               })
             })
             data = this.sendModel
-            postAddRepertory(55, data).then(res => {
-              this.$message({
-                type: 'success',
-                message: '到车入库成功'
+              postAddRepertory(55, data).then(res => {
+                this.$message({
+                  type: 'success',
+                  message: '到车入库成功'
+                })
+                this.$emit('success')
               })
-            })
-            this.closeMe()
+              this.closeMe()
           }
-          // this.isModify = false
-          // this.selectInfo = {}
-          // this.openAddCustomer()
           break;
           // 导出数据
         case 'export':
@@ -868,7 +962,8 @@ export default {
 
 </script>
 <style lang="scss">
-.tabs-content {
+
+.tabs-cont {
   // height: calc(100% - 33px);
   display: flex;
   flex-direction: column;
@@ -881,8 +976,10 @@ export default {
     display: flex;
     flex-direction: column;
 
-    .btns_box {
+    ._btns_box {
+      padding-top: 17px ;
       margin-bottom: 10px;
+      border-top: 2px dotted #c8c8c8;
       .el-button {
         margin-right: 0;
       }
@@ -942,67 +1039,90 @@ export default {
   .info_form {
     margin-top: 85px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #dcdfe6;
+
     .sta_searchinfo {
+      border-left: #d4d4d4;
       .el-form-item {
         margin-right: 0;
         margin-bottom: 15px;
       }
-      .art_remk{
+      .el-form-item.art_remk{
         width: 100%;
         .el-form-item__content{
           width: 81%;
           .el-textarea.is-disabled {
             .el-textarea__inner{
               background-color: #fff;
-              color: #606266;
+              color: #3e9ff1;
             }
           }
         }
+
+      }
+      .el-form-item--mini{
+
       }
     }
     .el-input.is-disabled .el-input__inner{
-      color: #606266
+      color: #3e9ff1
     }
   }
-  .infos_table {
+  .infos_table_ {
     padding: 0 40px 10px 10px;
     margin-top: 10px;
     border-color: #dcdfe6;
-    ul {
-      /*border-top: 2px dotted #bbbbbb;
-        margin: 10px -10px -10px 0;
-        padding: 5px 10px 10px 10px;
-        /*background-color: #fbfbfb;*/
-      width: 100%;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: row;
-      flex-direction: row;
-      li:nth-of-type(1) {
-        padding-left: 0;
-      }
-      li:last-of-type {
-        border-right: none;
-      }
-      li {
-        border: 1px solid #eee;
-        width: 10%;
-        border-bottom: none;
-        border-left: none;
-        p {
-          font-size: 14px;
-          text-align: center;
-          line-height: 34px;
+    .sta_searchinfo{
+      border-left: 1px solid #d4d4d4;
+      border-right: 1px solid #d4d4d4;
+      ul {
+        /*border-top: 2px dotted #bbbbbb;
+          margin: 10px -10px -10px 0;
+          padding: 5px 10px 10px 10px;
+          /*background-color: #fbfbfb;*/
+        width: 100%;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        li:nth-of-type(1) {
+          padding-left: 0;
+        }
+        li:last-of-type {
+          border-right: none;
+        }
+        li {
+          border: 1px solid #eee;
+          width: 10%;
+          border-bottom: none;
+          border-left: none;
+          p {
+            font-size: 14px;
+            text-align: center;
+            line-height: 34px;
+            border-right-color:transparent ;
+
+            i{
+              color: red;
+            }
+          }
+          p:last-of-type{
+
+          }
+        }
+        .el-form-item {
+          margin-bottom: 0;
+          margin-right: 0;
         }
       }
-      .el-form-item {
-        margin-bottom: 0;
-        margin-right: 0;
-      }
     }
+
     .el-input.is-disabled .el-input__inner{
-      color: #606266;
+      color: #3e9ff1;
+      text-align: center;
+      border-radius: 0;
+      border-left-color:transparent ;
+      background: transparent;
+      border-radius: 0;
     }
   }
 }
@@ -1142,7 +1262,7 @@ export default {
   }
 }
 
-.tabs-content {
+.tabs-cont {
   .info_form,
   .infos_table {
     .el-input.is-disabled .el-input__inner {
@@ -1164,6 +1284,16 @@ export default {
   bottom: auto;
   min-width: 1000px;
   max-width: 1000px;
+  /*z-index: 1001 !important;*/
+  .el-input.is-disabled {
+    .el-input__inner{
+      /*color:#3e9ff1;*/
+      background-color: transparent;
+      /*border-top-color: transparent;*/
+      /*border-left-color: transparent;*/
+      /*border-right-color: transparent;*/
+    }
+  }
 }
 
 .batchTypeNo {
@@ -1371,8 +1501,14 @@ export default {
       }
       .p_cont,
       .p_input {
-        color: #606266;
+
         font-size: 14px;
+        .el-input__inner{
+          color: #606266;
+          border-top-color: transparent;
+          border-left-color: transparent;
+          border-right-color: transparent;
+        }
       }
       .p_cont {
         .p_textarea.el-form-item {
@@ -1403,6 +1539,7 @@ export default {
           .el-form-item__content {
             .el-input.el-input--mini.is-disabled {
               width: 13%;
+              color: #606266;
               .el-input__inner {
                 background: #fff;
               }
@@ -1422,12 +1559,14 @@ export default {
               width: 59%;
               .el-input__inner {
                 width: 200px;
+                color: #606266;
               }
             }
             .el-input.el-input--mini {
               width: 59%;
               input.el-input__inner {
                 width: 200px;
+                color: #606266;
               }
             }
 
@@ -1435,9 +1574,14 @@ export default {
             /*width: 20%*/
             /*}*/
           }
+          .el-input__inner{
+             border-top-color: transparent;
+             border-left-color: transparent;
+             border-right-color: transparent;
+          }
         }
         .el-form-item:last-of-type {
-          margin-bottom: 60px;
+          margin-bottom: 30px;
         }
       }
       .p_table:last-of-type {
@@ -1447,7 +1591,7 @@ export default {
         padding-left: 0;
         /*padding-left: 300px;*/
         .el-form-item:last-of-type {
-          margin-bottom: 100px;
+          margin-bottom: 50px;
         }
         span {
           margin-bottom: 100px;

@@ -50,7 +50,7 @@ export default {
       searchForm: {
         orgId: '',
         financialWayTypeId:'',
-        status: 0
+        status: ''
       },
       rules: {
 
